@@ -34,7 +34,6 @@ body {
 h1, h2, h3, h4, h5, h6 {
 	font-family: inherit;
 	font-size: inherit;
-	font-weight: 400;
 }
 ul, ol {
 	list-style: none;
@@ -46,7 +45,6 @@ table {
 input, textarea, button, select {
 	font-family: inherit;
 	font-size: inherit;
-	font-weight: 400;
 
 	border: 0;
 	-webkit-border-radius: 0;
@@ -79,7 +77,6 @@ input[type='search']::-webkit-search-decoration, input[type='search']::-webkit-s
 input:-webkit-autofill {
 	font-family: inherit;
 	font-size: inherit;
-	font-weight: 400;
 
 	background-color: transparent;
 	background-image: transparent;
