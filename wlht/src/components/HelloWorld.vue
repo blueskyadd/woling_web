@@ -76,7 +76,7 @@
           href="https://github.com/vuejs/awesome-vue"
           target="_blank"
         >
-          awesome-vue
+          这是vue
         </a>
       </li>
     </ul>
