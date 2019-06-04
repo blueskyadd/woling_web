@@ -5,8 +5,12 @@ import App from './App'
 import router from './router'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import conf from "./config/index.js";
+import http from "./track/http.js";
 
 Vue.use(ElementUI);
+Vue.prototype.$http = http
+Vue.prototype.$conf = conf
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

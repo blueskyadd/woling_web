@@ -4,6 +4,7 @@ import Layout from '../components/layout/layout'
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
