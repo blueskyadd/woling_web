@@ -76,7 +76,8 @@
           href="https://github.com/vuejs/awesome-vue"
           target="_blank"
         >
-          awesome-vue
+          这是vue
+
         </a>
       </li>
     </ul>
@@ -98,6 +99,7 @@ export default {
 <style scoped>
 h1, h2 {
   font-weight: normal;
+  font-family: Arial;
 }
 ul {
   list-style-type: none;
