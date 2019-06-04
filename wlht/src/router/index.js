@@ -8,6 +8,11 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'LoginRegister',
+      component:() => import('../components/LoginRegister'),
+    },
+    {
+      path: '/Layout',
       name: 'Layout',
       component: Layout,
       children:[
@@ -20,6 +25,11 @@ export default new Router({
           path: '/memberManagement',
           name: 'memberManagement',
           component:() => import('../view/Member/memberManagement')
+        },
+        {
+          path: '/appointment',
+          name: 'appointment',
+          component:() => import('../view/SiteManagement/appointment'),
         }
       ]
     },
