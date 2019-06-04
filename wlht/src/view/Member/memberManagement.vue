@@ -66,7 +66,7 @@ export default {
         }
       ],
       currentPage: 1,
-      perPage: 10,
+      perPage: 10,  
       activelyNumber:1,
       isLoading: false
     };
@@ -88,6 +88,7 @@ export default {
 <style lang="scss">
 .wl_memberManagement_list {
   padding: 0.24rem 0.44rem 0 0.33rem;
+  height: calc(100% - 1.7rem);
   .member_head_addIcon {
     float: right;
     margin-bottom: .07rem;
@@ -109,6 +110,7 @@ export default {
     }
   }
   .member_table_list{
+      height: 100%;
       .el-table{
            th{
               background-color: #EEF1F4;
