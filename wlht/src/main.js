@@ -7,7 +7,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import conf from "./config/index.js";
 import http from "./track/http.js";
-
+import '../src/components/css/index.scss'
 Vue.use(ElementUI);
 Vue.prototype.$http = http
 Vue.prototype.$conf = conf

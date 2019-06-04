@@ -1,0 +1,28 @@
+/**分页按钮*/
+.el-pager {
+    .number,.more {
+      background: #fff !important;
+      border-radius: 50% !important;
+      width: 0.32rem !important;
+      height: 0.32rem !important;
+      line-height: 0.32rem !important;
+    }
+    .active {
+      background: rgba(127, 99, 244, 1) !important;
+      color: #fff;
+    }
+  }
+  .btn-prev,
+  .btn-next {
+    background: #fff !important;
+    border-radius: 50% !important;
+    width: 0.32rem !important;
+    height: 0.32rem !important;
+    min-width: 0.32rem !important;
+    min-height: 0.32rem;
+    span {
+      min-width: 0.32rem;
+      line-height: 0.32rem;
+      height: 0.32rem;
+    }
+  }

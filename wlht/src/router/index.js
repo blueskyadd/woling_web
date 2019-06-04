@@ -15,6 +15,11 @@ export default new Router({
           path: '/index',
           name: 'index',
           component:() => import('../view/index/index'),
+        },
+        {
+          path: '/memberManagement',
+          name: 'memberManagement',
+          component:() => import('../view/Member/memberManagement')
         }
       ]
     },
