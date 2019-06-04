@@ -77,7 +77,10 @@
           target="_blank"
         >
           这是vue
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7509e4f615a8e9c654dcef152ed443957a1fbc77
         </a>
       </li>
     </ul>
@@ -99,7 +102,7 @@ export default {
 <style scoped>
 h1, h2 {
   font-weight: normal;
-  font-family: Arial;
+  font-size: 15px;
 }
 ul {
   list-style-type: none;
