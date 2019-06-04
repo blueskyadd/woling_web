@@ -10,3 +10,44 @@
     <!-- built files will be auto injected -->
   </body>
 </html>
+<style>
+  body,html{width: 100%;height:100%;}
+  body{background: #EEF1F4;}
+  body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td {margin:0;padding:0;}
+  table {border-collapse:collapse;border-spacing:0;}
+  fieldset,img {border:0}
+  address,caption,cite,code,dfn,em,strong,th,var {font-style:normal;font-weight:normal}
+  ol,ul {list-style:none}
+  caption,th {text-align:left}
+  h1,h2,h3,h4,h5,h6 {font-size:100%;font-weight:normal}
+  q:before,q:after {content:''}
+  abbr,acronym { border:0}
+  a{text-decoration: none}
+  input,button{outline: 0;border: 0;}
+  i{font-style: normal}
+
+</style>
+<script type="text/javascript">
+  function setRem(doc, win) {
+    let docEl = doc.documentElement,
+      resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+      recalc = function () {
+        let clientHeight = docEl.clientHeight;
+        let clientWidth = docEl.clientWidth;
+        if(clientWidth>(clientHeight*16/9))
+        {
+          doc.getElementsByTagName("html")[0].style.fontSize = 16*clientHeight*6.25/1080 +'px';
+        }
+        else
+        {
+          doc.getElementsByTagName("html")[0].style.fontSize = 16*clientWidth*6.25/1920 +'px';
+        }
+
+      };
+
+    if (!doc.addEventListener) return;
+    win.addEventListener(resizeEvt, recalc, false);
+    doc.addEventListener('DOMContentLoaded', recalc, false);
+  }
+  window.onload = setRem(document,window);
+</script>
