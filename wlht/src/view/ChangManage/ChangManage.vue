@@ -1,15 +1,14 @@
 <template>
   <div class="wl_ChangManage_list">
     <div class="ChangeManage_head_addIcon">
-      <span>
-        <img src="../../assets/img/add.png" alt>添加会员
-      </span>
+      <router-link :to="{name:'changeChang'}" tag="span">
+        <img src="../../assets/img/add.png" alt>添加
+      </router-link>
     </div>
     <!--表格部分-->
     <div class="member_table_list">
       <el-table :data="tableData" style="width: 100%" v-loading="isLoading">
-        <el-table-column prop="date" type='index' :index="setIndex" label="序号"></el-table-column>
-        <el-table-column prop="ChangName" label="场地名称" ></el-table-column>
+         <el-table-column prop="ChangName" label="场地名称" ></el-table-column>
         <el-table-column prop="money" label="场地租金"></el-table-column>
         <el-table-column prop="baoMon" label="包场租金" ></el-table-column>
         <el-table-column prop="proNum" label="预约人数"></el-table-column>
@@ -33,7 +32,9 @@
       prev-text='<<'
       next-text=">>">
     </el-pagination>
+
   </div>
+
 </template>
 <script>
     export default {

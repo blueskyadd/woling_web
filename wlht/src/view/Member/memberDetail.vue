@@ -5,48 +5,153 @@
         </header>
         <div class="member_main">
             <form action="" method="post">
-                <label ><span>姓名</span><input placeholder="请填写姓名"  type="text" id="name"></label>
-                <label ><span>手机号</span><input placeholder="请填写手机号" type="text" id="name"></label>
-                <label >
-                    <span>性别</span>
-                    <el-select popper-class='member_selete_list'  v-model="value" placeholder="请选择">
+              <div class="Form_Left">
+                <table>
+                  <tr>
+                    <td>
+                      <label>姓名</label>
+                      <el-input v-model="name" placeholder="请填写姓名"></el-input>
+                      <label  class="LR">手机号</label>
+                      <el-input v-model="phone" placeholder="请填写手机号"></el-input>
+                    </td>
+                    <td>
+                      <label>身高</label>
+                      <el-input v-model="height" placeholder="请填写姓名"></el-input>
+                      <label class="LR">体重</label>
+                      <el-input v-model="width" placeholder="请填写手机号"></el-input>
+                    </td>
+                    <td>
+                      <label for="">户籍</label>
+                      <el-input v-model="address" placeholder="请输入户籍所在地"></el-input>
+                    </td>
+                    <td>
+                      <label for="">护照号码</label>
+                      <el-input v-model="huzpho" placeholder="请输入护照号码"></el-input>
+                    </td>
+                    <td>
+                      <label for="">学籍卡号</label>
+                      <el-input v-model="kapho" placeholder="请输入学籍卡号"></el-input>
+                    </td>
+                    <td>
+                      <label>监护人一</label>
+                      <el-input v-model="JHRName" placeholder="请填写姓名"></el-input>
+                      <label  class="LR">手机号</label>
+                      <el-input v-model="JHRphone" placeholder="请填写手机号"></el-input>
+                    </td>
+                    <td>
+                      <label for="">兄妹情况</label>
+                      <el-select v-model="value" placeholder="请选择">
                         <el-option
-                        v-for="item in options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
+                          v-for="item in sister"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
                         </el-option>
-                    </el-select>
-                </label>
-                <label >
-                    <span>出生日期</span>
-                    <el-date-picker
-                    v-model="member_birthday"
-                    type="date"
-                    placeholder="选择日期">
-                    </el-date-picker>
-                </label>
-                <label ><span>身高</span><input placeholder="请填写身高" type="text" id="name"></label>
-                <label ><span>体重</span><input placeholder="请填写体重" type="text" id="name"></label>
-                <label ><span>民族</span><input placeholder="请输入民族" type="text" id="name"></label>
-                <label ><span>身份证号</span><input placeholder="请输入身份证号" type="text" id="name"></label>
-                <label ><span>户籍</span><input placeholder="请输入户籍所在地" type="text" id="name"></label>
-                <label ><span>课程顾问</span><input placeholder="" type="text" id="name"></label>
-                <label ><span>护照号码</span><input placeholder="请输入护照号码" type="text" id="name"></label>
-                <label ><span>学校</span><input placeholder="请输入学校" type="text" id="name"></label>
-                <label ><span>学籍卡号</span><input placeholder="请输入学籍卡号" type="text" id="name"></label>
-                <label ><span>家庭住址</span><input placeholder="请输入家庭住址" type="text" id="name"></label>
-                <label ><span>监护人一</span><input placeholder="请填写姓名" type="text" id="name"></label>                
-                <label ><span>手机号</span><input placeholder="请填写手机号" type="text" id="name"></label>
-                <label ><span>监护人二</span><input placeholder="请填写姓名" type="text" id="name"></label>
-                <label ><span>手机号</span><input placeholder="请填写手机号" type="text" id="name"></label>
-                <label ><span>兄妹情况</span><input placeholder="兄妹情况" type="text" id="name"></label>
-                <label ><span>保险情况</span><input placeholder="保险情况" type="text" id="name"></label>
-                <label ><span>既往病史</span><input placeholder="请填写既往病史" type="text" id="name"></label>
-                <label ><span>过敏源</span><input placeholder="请填写过敏源" type="text" id="name"></label>
-                <label ><span>个人备注</span><input placeholder="个人备注" type="text" id="name"></label>
+                      </el-select>
 
+
+                      <label  class="LR">保险情况</label>
+                      <el-select v-model="baoxian" placeholder="请选择">
+                        <el-option
+                          v-for="item in xian"
+                          :key="item.baoxian"
+                          :label="item.label"
+                          :value="item.baoxian">
+                        </el-option>
+                      </el-select>
+                    </td>
+                  </tr>
+                </table>
+
+              </div>
+              <div class="Form_RIght">
+                <table>
+                  <tr>
+                    <td>
+                      <label>性别</label>
+                      <el-select v-model="seatVal" placeholder="请选择">
+                        <el-option
+                          v-for="item in seat"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                        </el-option>
+                      </el-select>
+                      <label  class="LR">出生日期</label>
+                      <el-date-picker
+                        v-model="birthday"
+                        type="date"
+                        placeholder="选择日期">
+                      </el-date-picker>
+                    </td>
+                    <td>
+                      <label>民族</label>
+                      <el-input v-model="nation" placeholder="请输入民族"></el-input>
+                      <label class="LR">身份证号</label>
+                      <el-input type="number" v-model="identityCard " placeholder="请输入身份证号"></el-input>
+                    </td>
+                    <td>
+                      <label for="">课程顾问</label>
+                      <el-select v-model="teacher" placeholder="请选择顾问老师">
+                        <el-option
+                          v-for="item in teacherArr"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                        </el-option>
+                      </el-select>
+                      <label for="">电话</label>
+                      <el-input  v-model="teacherPhone " class="dandu"></el-input>
+                    </td>
+                    <td>
+                      <label for="">学校</label>
+                      <el-input v-model="school" placeholder="请输入学校"></el-input>
+                    </td>
+                    <td>
+                      <label for="">家庭住址</label>
+                      <el-input v-model="homeSeat" placeholder="请输入家庭住址"></el-input>
+                    </td>
+                    <td>
+                      <label>监护人二</label>
+                      <el-input v-model="JHRNameTwo" placeholder="请填写姓名"></el-input>
+                      <label  class="LR">手机号</label>
+                      <el-input v-model="JHRphoneTwo" placeholder="请填写手机号"></el-input>
+                    </td>
+
+                    <td>
+                      <label>既往病史</label>
+                      <el-input v-model="bingSHI" ></el-input>
+                      <label  class="LR">过敏原</label>
+                      <el-input v-model="guomin" placeholder="请填写过敏原"></el-input>
+                    </td>
+                  </tr>
+                </table>
+
+              </div>
+              <div class="Form_Bottom">
+                <label for="">个人备注</label>
+                <el-input
+                  type="textarea"
+                  :rows="4"
+                  placeholder="请输入内容"
+                  v-model="textarea">
+                </el-input>
+              </div>
+              <div class="OKSend">
+                <span>确定</span>
+              </div>
             </form>
+          <div class="updataPho">
+            <el-upload
+              class="upload-demo"
+              drag
+              action="https://jsonplaceholder.typicode.com/posts/"
+              multiple>
+              <i class="el-icon-upload"></i>
+              <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+              <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+            </el-upload>
+          </div>
         </div>
     </div>
 </template>
@@ -55,15 +160,69 @@ export default {
     name: 'memberDetail',
     data(){
         return{
-            member_birthday: '',//出生日期
-             options: [{
-                value: '1',
-                label: '女'
-                }, {
-                value: '2',
-                label: '男'
-                }],
-                value: ''
+          name:"",     //姓名
+          phone:"",     //手机号
+          height:"",     //身高
+          width:"",      //体重
+          address:"",      //户籍所在地
+          huzpho:"",       //护照号码
+          kapho:"",      //学籍卡号
+          JHRName:"",     //监护人一
+          JHRphone:"",    //监护人手机号
+
+          sister: [{
+            value: '无',
+            label: '无'
+          }, {
+            value: '有',
+            label: '有'
+          },],
+          value: '',    //有无兄弟姐妹
+
+
+          xian: [{
+            baoxian: '无',
+            label: '无'
+          }, {
+            baoxian: '有',
+            label: '有'
+          },],
+          baoxian: '',    //有无保险
+
+
+          seat: [{
+            value: '男',
+            label: '男'
+          }, {
+            value: '女',
+            label: '女'
+          },],
+          seatVal: '',    //性别
+          birthday:'',    //出生年月
+          nation:'',      //民族
+          identityCard:"",  //身份证号
+
+
+          teacherArr:[
+            {
+              value: '岳云鹏',
+              label: '岳云鹏'
+            }, {
+              value: '彭于晏',
+              label: '彭于晏'
+            },
+          ],
+          teacher:"",
+
+          teacherPhone:"13521202102",   //选择老师后的电话
+          school:"",     //学校
+          homeSeat:"",      //家庭地址
+          JHRNameTwo:"",     //监护人二姓名
+          JHRphoneTwo:"",     //监护人二电话
+          bingSHI:"",     // 病史
+          guomin:"",      //过敏原
+          textarea: ''
+
         }
     }
 }
@@ -87,51 +246,117 @@ export default {
     .member_main{
         padding: .39rem 0 0;
         height: calc(100% - 3.2%);
-        form{
-            overflow: hidden;
-             width: calc(100% - 20%);
-            input{
-                border: 1px solid  #DDDFE1;
-                height: .49rem;
-                float: left;
-                font-size: .16rem;
-                padding: 0 .19rem;
-                
+      display: flex;
+      form{
+           overflow: hidden;
+           width: calc(100% - 20%);
+           height: 100%;
+            display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+           .Form_Left{
+             width:49%;
+             height: 70%;
+             /*background: red;*/
+             table{
+               width: 100%;
+               height: 100%;
+                tr{
+                  td{
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: .3rem;
+                    .LR{
+                      padding-left: .3rem;
+                      display: block;
+                      width: 2rem;
+                    }
+                    label{
+                      white-space: nowrap;
+                      margin-right: .23rem;
+                    }
+                  }
+                }
+             }
+           }
+          .Form_RIght{
+            width: 49%;
+            height: 70%;
+            /*background: blue;*/
+            table{
+              width: 100%;
+              height: 100%;
+              tr{
+                width: 100%;
+                td{
+                  width: 100%;
+                  display: flex;
+                  align-items: center;
+                  margin-bottom: .3rem;
+                  flex-wrap: nowrap;
+                  .LR{
+                    padding-left: .3rem;
+                    display: block;
+                    width: 2rem;
+                  }
+                  .dandu{
+                    width: 50%;
+                  }
+                  label{
+                    white-space: nowrap;
+                    margin-right: .23rem;
+                  }
+                }
+              }
             }
-            label{
-                margin-bottom: .24rem;
-                display: block;
-                float: left;
-                margin-right: .44rem;
-                .el-date-editor.el-input{
-                    width: 2.03rem;
-                }
-               .el-input__icon{
-                    line-height: .49rem !important;
-                }
-                /*下拉框*/
-                .el-input__inner{
-                    padding: 0 .45rem;
-                }
-                .el-select>.el-input{
-                    width: 1.46rem;
-                }
-                .el-select .el-input.is-focus .el-input__inner,.el-select .el-input__inner:focus{
-                    border-color:#DDDFE1;
-                }
+          }
+          .Form_Bottom{
+            width: 100%;
+            height: 15%;
+            /*background: yellow;*/
+            margin-top:2%;
+            margin-bottom: 2%;
+            display: flex;
+            flex-wrap: nowrap;
+           label{
+             white-space: nowrap;
+             margin-right: .2rem;
+           }
+          }
+          .OKSend{
+            width: 100%;
+            height: 10%;
+            span{
+              display: block;
+              margin:0 auto;
+              width: 1.5rem;
+              height: .4rem;
+              border-radius: 4px;
+              background-color: rgba(127, 99, 244, 1);
+              color: rgba(255, 255, 255, 1);
+              font-size: .18rem;
+              text-align: center;
+              margin-top:5px;
+              line-height: .4rem;
+              cursor: pointer;
             }
-            label>span{
-                width: .8rem;
-                height: .49rem;
-                line-height: .49rem; 
-                display: block;
-                float: left; 
-                font-size: .18rem;
-                color: #464A53;
-            }
+          }
         }
+      .updataPho{
+        width: 20%;
+        .upload-demo{
+          width: 80%;
+          margin:0 auto;
+          .el-upload{
+            width: 100%;
+            .el-upload-dragger{
+              width:100%;
+            }
+          }
+        }
+      }
     }
-    
+
 }
 .member_selete_list{
     margin-top: .56rem !important;
