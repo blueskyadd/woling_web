@@ -1,7 +1,7 @@
 <template>
-  <div class="wl_PerManage_list">
+  <div class="wl_PerManage_list" v-if="isperManage">
     <div class="Per_head_addIcon">
-      <span>
+      <span @click="goPerDetail">
         <img src="../../assets/img/add.png" alt>添加会员
       </span>
     </div>
@@ -68,46 +68,50 @@
       next-text=">>">
     </el-pagination>
   </div>
+  <PerDetail v-else/>
 </template>
 
 <script>
+import PerDetail from "./PerDetail"
     export default {
+      components:{PerDetail},
         name: "PerManage",
       data() {
         return {
           tableData: [{
-            Yname: '瑞文',
-            phone: '110',
-            WeiOne: '教练',
-            WeiTwo:'顾问',
-            tag: '在职',
-            ping:'图',
-          }, {
-            Yname: '亚索',
-            phone: '111',
-            WeiOne: '酱油',
-            WeiTwo:'买菜',
-            tag: '离职',
-            ping:'图',
-          }, {
-            Yname: '劫',
-            phone: '112',
-            WeiOne: '刺客',
-            WeiTwo:'做饭吗',
-            tag: '离职',
-            ping:'图',
-          }, {
-            Yname: '瞎瞎',
-            phone: '113',
-            WeiOne: '吴志伟',
-            WeiTwo:'吃',
-            tag: '在职',
-            ping:'图',
+              Yname: '瑞文',
+              phone: '110',
+              WeiOne: '教练',
+              WeiTwo:'顾问',
+              tag: '在职',
+              ping:'图',
+            }, {
+              Yname: '亚索',
+              phone: '111',
+              WeiOne: '酱油',
+              WeiTwo:'买菜',
+              tag: '离职',
+              ping:'图',
+            }, {
+              Yname: '劫',
+              phone: '112',
+              WeiOne: '刺客',
+              WeiTwo:'做饭吗',
+              tag: '离职',
+              ping:'图',
+            }, {
+              Yname: '瞎瞎',
+              phone: '113',
+              WeiOne: '吴志伟',
+              WeiTwo:'吃',
+              tag: '在职',
+              ping:'图',
           }],
           currentPage: 1,
           perPage: 10,
           activelyNumber:1,
-          isLoading: false
+          isLoading: false,
+          isperManage: true,
         };
       },
       methods: {
@@ -133,6 +137,9 @@
         changePage(pageNumber){
           this.currentPage = pageNumber
         },
+        goPerDetail(){
+          this.isperManage=false
+        }
       },
     }
 </script>

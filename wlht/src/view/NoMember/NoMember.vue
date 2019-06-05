@@ -7,8 +7,8 @@
 <!--    </div>-->
     <!--表格部分-->
     <div class="member_table_list">
-      <el-table :data="tableData" style="width: 100%" v-loading="isLoading">
-        <el-table-column prop="date" type='index' :index="setIndex" label="序号"></el-table-column>
+      <el-table :data="tableData" :cell-style="changecolor" style="width: 100%" v-loading="isLoading">
+        <el-table-column prop="date" type='index' width="100%" :index="setIndex"  label="序号"></el-table-column>
         <el-table-column prop="name" label="姓名" ></el-table-column>
         <el-table-column prop="address" label="年龄"></el-table-column>
         <el-table-column prop="date" label="联系方式" ></el-table-column>
@@ -75,6 +75,15 @@
         changePage(pageNumber){
           this.currentPage = pageNumber
         },
+         changecolor(data){
+          if (data.columnIndex == 3) {
+            return "color:#7F63F4";
+          }
+          if(data.columnIndex == 4 || data.columnIndex == 2){
+            return "color:#ABAFB3";
+          }
+        },
+      
       },
     }
 </script>

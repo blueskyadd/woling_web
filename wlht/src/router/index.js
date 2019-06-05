@@ -47,6 +47,11 @@ export default new Router({
           component:() => import('../view/classManage/classManage'),
         },
         {
+          path: '/classDetail',
+          name: 'classDetail',
+          component:() => import('../view/classManage/classDetail'),
+        },
+        {
           path: '/GameManage',
           name: 'GameManage',
           component:() => import('../view/GameManage/GameManage'),
