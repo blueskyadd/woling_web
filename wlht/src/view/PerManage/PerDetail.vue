@@ -1,19 +1,23 @@
 <template>
-  <div class="wl_memberDetail">
+  <div class="wl_PerDetail">
     <header>
       <span @click="close()">
         <img src="../../assets/img/goback.png" alt>添加员工
       </span>
     </header>
-    <div class="member_main">
+    <div class="per_main">
       <form action method="post">
         <label>
-          <span>课程名称</span>
-          <input placeholder="请填写课程名称" type="text" id="name">
+          <span>员工姓名</span>
+          <input placeholder="请填写员工姓名" type="text" id="name">
         </label>
         <label>
-          <span>年龄段</span>
-          <el-select popper-class="member_selete_list" v-model="value" placeholder="请选择年龄段">
+          <span>工号</span>
+          <input placeholder="请填写工号" type="text" id="name">
+        </label>
+        <label>
+          <span>性别</span>
+          <el-select popper-class="per_selete_list" v-model="value" placeholder="请选择性别">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -23,8 +27,8 @@
           </el-select>
         </label>
         <label>
-          <span>课程类别</span>
-          <el-select popper-class="member_selete_list" v-model="value" placeholder="请选择课程类别">
+          <span>所属门店</span>
+          <el-select popper-class="per_selete_list" v-model="value" placeholder="请选择门店">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -34,20 +38,8 @@
           </el-select>
         </label>
         <label>
-          <span>上课人数</span>
-          <input placeholder="请填写上课人数" type="number" id="name">
-        </label>
-        <label>
-          <span>课程价格</span>
-          <input placeholder="请填写课程价格" type="number" id="name">
-        </label>
-        <label>
-          <span>课时</span>
-          <input placeholder="请填写课时" type="number" id="name">
-        </label>
-        <label>
-          <span>教练</span>
-          <el-select popper-class="member_selete_list" v-model="value" placeholder="请选择年龄段">
+          <span>职位</span>
+          <el-select popper-class="per_selete_list" v-model="value" placeholder="请选择职位">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -57,8 +49,20 @@
           </el-select>
         </label>
         <label>
-          <span>副教练</span>
-          <el-select popper-class="member_selete_list" v-model="value" placeholder="请选择年龄段">
+          <span>联系电话</span>
+          <input placeholder="请填写联系电话" type="number" id="name">
+        </label>
+        <label>
+          <span>电子邮箱</span>
+          <input placeholder="请填写邮箱" type="number" id="name">
+        </label>
+        <label>
+          <span>微信账号</span>
+          <input placeholder="请填写微信账号" type="number" id="name">
+        </label>
+        <label>
+          <span>员工状态</span>
+          <el-select popper-class="per_selete_list" v-model="value" placeholder="请选择状态">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -68,8 +72,8 @@
           </el-select>
         </label>
         <label>
-          <span>上课时间</span>
-          <el-select popper-class="member_selete_list" v-model="value" placeholder="请选择年龄段">
+          <span>转正日期</span>
+          <el-select popper-class="per_selete_list" v-model="value" placeholder="请选择转正日期">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -79,8 +83,8 @@
           </el-select>
         </label>
         <label>
-          <span>课程状态</span>
-          <el-select popper-class="member_selete_list" v-model="value" placeholder="请选择课程类别">
+          <span>入职时间</span>
+          <el-select popper-class="per_selete_list" v-model="value" placeholder="请选择入职时间">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -89,9 +93,9 @@
             ></el-option>
           </el-select>
         </label>
-        <label class="class_city">
-          <span>详细地址</span>
-          <el-select popper-class="member_selete_list" v-model="value" placeholder="添加省份">
+        <label>
+          <span>离职时间</span>
+          <el-select popper-class="per_selete_list" v-model="value" placeholder="请选择离职时间">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -99,30 +103,10 @@
               :value="item.value"
             ></el-option>
           </el-select>
-          <el-select popper-class="member_selete_list" v-model="value" placeholder="添加城市">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-          <el-select popper-class="member_selete_list" v-model="value" placeholder="添加市区">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-          <input placeholder="请填具体地址" type="number" id="name">
         </label>
-        <label class="class_introduction">
-          <span>课程介绍</span>
-          <textarea placeholder="填写课程介绍"></textarea>
-        </label>
+        
         <label class="pone_one" for>
-          <span>课程图片</span>
+          <span>照片</span>
           <el-upload
             class="upload-demo"
             action="string"
@@ -139,47 +123,9 @@
             </div>
           </el-upload>
         </label>
-        <label class="pone_one" for>
-          <span>课程勋章</span>
-          <el-upload
-            class="upload-demo"
-            ref="upload"
-            action="string"
-            :http-request="addAttachmentMedal"
-            drag
-            multiple
-          >
-            <img :src="classMedalImg" alt>
-            <i class="el-icon-upload"></i>
-            <div class="el-upload__text">
-              将文件拖到此处，或
-              <em>点击上传</em>
-            </div>
-          </el-upload>
-        </label>
-        <label for class="class_list">
+        <label class="class_introduction">
           <span>课程介绍</span>
-          <el-upload
-            action="string"
-            ref="upload"
-            list-type="picture-card"
-            :http-request="addAttachmentList"
-            :on-preview="handlePictureCardPreview"
-            :on-remove="handleRemovelist"
-            :file-list="classListDetail"
-            :multiple="true"
-            :limit="3"
-            :on-exceed="onExceed"
-            :before-upload="beforeAvatarUpload"
-            accept="image/png, image/jpeg"
-            class="photo"
-          >
-            <i class="el-icon-plus"></i>
-          </el-upload>
-
-          <el-dialog :visible.sync="dialogVisible">
-            <img width="100%" :src="dialogImageUrl" alt>
-          </el-dialog>
+          <textarea placeholder="填写课程介绍"></textarea>
         </label>
       </form>
       <button class="tijiao" @click="submitProject">确定</button>
@@ -191,7 +137,7 @@ export default {
   name: "PerDetail",
   data() {
     return {
-      member_birthday: "", //出生日期
+      per_birthday: "", //出生日期
       options: [
         {
           value: "1",
@@ -287,7 +233,7 @@ export default {
 };
 </script>
 <style lang="scss" >
-.wl_memberDetail {
+.wl_PerDetail {
   margin: 0.13rem 0.18rem 0.13rem 0.13rem;
   padding: 0.3rem 0.45rem 0.33rem 0.3rem;
   background: #fff;
@@ -301,7 +247,7 @@ export default {
       }
     }
   }
-  .member_main {
+  .per_main {
     padding: 0.39rem 0 0;
     height: calc(100% - 3.2%);
     form {
@@ -372,22 +318,8 @@ export default {
           padding: 0.1rem;
         }
       }
-      .class_city {
-        width: 91.3%;
-        display: flex;
-        .el-select {
-          width: 10%;
-          margin-right: 1%;
-        }
-        input {
-          width: 20%;
-        }
-      }
-      .class_city > span {
-        width: 6.4%;
-      }
       .pone_one {
-        width: 40%;
+        width: 100%;
         .el-upload-list {
           display: none !important;
         }
@@ -398,7 +330,7 @@ export default {
         }
       }
       .pone_one > span {
-        width: 15%;
+        width: 6.4%;
       }
       .class_list {
         width: 100%;
@@ -415,17 +347,20 @@ export default {
       }
     }
     .tijiao {
-      display: block;
-      width: 1.71rem;
-      height: 0.39rem;
-      line-height: 0.39rem;
-      background: rgba(127, 99, 244, 1);
-      border-radius: 3px;
-      left: 4.86rem;
-      color: #fff;
-      font-size: 0.18rem;
-      margin: 0 auto;
-      cursor: pointer;
+        display: block;
+        width: 1.71rem;
+        height: 0.39rem;
+        line-height: 0.39rem;
+        background: rgba(127, 99, 244, 1);
+        border-radius: 3px;
+        left: 4.86rem;
+        color: #fff;
+        font-size: 0.18rem;
+        margin: 0 auto;
+        cursor: pointer;
+        position: absolute;
+        bottom: 10%;
+        left: 50%;
     }
     .activelyOne-right {
       position: absolute;
@@ -457,7 +392,7 @@ export default {
     }
   }
 }
-.member_selete_list {
+.per_selete_list {
   margin-top: 0.56rem !important;
 }
 </style>

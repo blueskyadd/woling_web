@@ -1,11 +1,11 @@
 <template>
-  <div class="wl_memberDetail">
+  <div class="wl_classDetail">
     <header>
       <span>
         <img src="../../assets/img/goback.png" alt>添加课程
       </span>
     </header>
-    <div class="member_main">
+    <div class="class_main">
       <form action method="post">
         <label>
           <span>课程名称</span>
@@ -13,7 +13,7 @@
         </label>
         <label>
           <span>年龄段</span>
-          <el-select popper-class="member_selete_list" v-model="value" placeholder="请选择年龄段">
+          <el-select popper-class="class_selete_list" v-model="value" placeholder="请选择年龄段">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -24,7 +24,7 @@
         </label>
         <label>
           <span>课程类别</span>
-          <el-select popper-class="member_selete_list" v-model="value" placeholder="请选择课程类别">
+          <el-select popper-class="class_selete_list" v-model="value" placeholder="请选择课程类别">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -47,7 +47,7 @@
         </label>
         <label>
           <span>教练</span>
-          <el-select popper-class="member_selete_list" v-model="value" placeholder="请选择年龄段">
+          <el-select popper-class="class_selete_list" v-model="value" placeholder="请选择年龄段">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -58,7 +58,7 @@
         </label>
         <label>
           <span>副教练</span>
-          <el-select popper-class="member_selete_list" v-model="value" placeholder="请选择年龄段">
+          <el-select popper-class="class_selete_list" v-model="value" placeholder="请选择年龄段">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -69,7 +69,7 @@
         </label>
         <label>
           <span>上课时间</span>
-          <el-select popper-class="member_selete_list" v-model="value" placeholder="请选择年龄段">
+          <el-select popper-class="class_selete_list" v-model="value" placeholder="请选择年龄段">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -80,7 +80,7 @@
         </label>
         <label>
           <span>课程状态</span>
-          <el-select popper-class="member_selete_list" v-model="value" placeholder="请选择课程类别">
+          <el-select popper-class="class_selete_list" v-model="value" placeholder="请选择课程类别">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -89,33 +89,15 @@
             ></el-option>
           </el-select>
         </label>
-        <label class="class_city">
+        <label class="class_city" for>
           <span>详细地址</span>
-          <el-select popper-class="member_selete_list" v-model="value" placeholder="添加省份">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-          <el-select popper-class="member_selete_list" v-model="value" placeholder="添加城市">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-          <el-select popper-class="member_selete_list" v-model="value" placeholder="添加市区">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-          <input placeholder="请填具体地址" type="number" id="name">
+          <el-cascader
+            :options="options"
+            v-model="selectedOptions"
+            @change="handleChange"
+            :separator="' '"
+            >
+            </el-cascader>
         </label>
         <label class="class_introduction">
           <span>课程介绍</span>
@@ -187,11 +169,12 @@
   </div>
 </template>
 <script>
+import  options from '../../../static/city'
 export default {
   name: "classDetail",
   data() {
     return {
-      member_birthday: "", //出生日期
+      class_birthday: "", //出生日期
       options: [
         {
           value: "1",
@@ -209,7 +192,9 @@ export default {
       classMedalImgFile: "", //
       dialogVisible: false,
       dialogImageUrl: "",//预览图片
-      classListDetail: []
+      classListDetail: [],
+      selectedOptions: [],//存放默认值
+        options:options   //存放城市数据
 
     };
   },
@@ -277,13 +262,16 @@ export default {
             console.log(element)
             
         });
-    }
+    },
+    handleChange(value) {
+    console.log(value);
+    },
 
   }
 };
 </script>
 <style lang="scss" >
-.wl_memberDetail {
+.wl_classDetail {
   margin: 0.13rem 0.18rem 0.13rem 0.13rem;
   padding: 0.3rem 0.45rem 0.33rem 0.3rem;
   background: #fff;
@@ -297,7 +285,7 @@ export default {
       }
     }
   }
-  .member_main {
+  .class_main {
     padding: 0.39rem 0 0;
     height: calc(100% - 3.2%);
     form {
@@ -371,12 +359,15 @@ export default {
       .class_city {
         width: 91.3%;
         display: flex;
+        .el-cascader{
+            width: 25%;
+        }
         .el-select {
           width: 10%;
           margin-right: 1%;
         }
         input {
-          width: 20%;
+          width: 100%;
         }
       }
       .class_city > span {
@@ -453,7 +444,7 @@ export default {
     }
   }
 }
-.member_selete_list {
+.class_selete_list {
   margin-top: 0.56rem !important;
 }
 </style>
