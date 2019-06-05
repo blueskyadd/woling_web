@@ -33,7 +33,7 @@
             </div>
             <input type="text" class="search-ipt" placeholder="搜索...">
           </div>
-          <div class="header-back" @click="SignOut">
+          <div class="header-back">
             <div class="image-box">
               <img src="../../assets/img/header_img.jpg" alt>
             </div>
@@ -53,7 +53,7 @@ export default {
     return {
       tabList: [
         {
-          name: "商品管理",
+          name: "会员管理",
           image_normal: require("../../assets/img/member_normal.png"),
           image_actively: require("../../assets/img/member_actively.png"),
           link: "/memberManagement"
@@ -102,9 +102,6 @@ export default {
         }
       ]
     };
-  },
-  mounted() {
-    console.log(this.$route.path);
   }
 };
 </script>

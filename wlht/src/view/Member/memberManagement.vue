@@ -1,24 +1,23 @@
 <template>
   <div class="wl_memberManagement_list">
     <div class="member_head_addIcon">
-      <span>
-        <img src="../../assets/img/add.png" alt>添加会员
+      <span @click="goMemberDetail()">
+        <img src="../../assets/img/add.png" alt>添加
       </span>
     </div>
     <!--表格部分-->
     <div class="member_table_list">
-      <el-table :data="tableData" style="width: 100%" v-loading="isLoading">
-        <el-table-column prop="date" type='index' :index="setIndex" label="序号"></el-table-column>
+      <el-table :data="tableData" :cell-style="changecolor" style="width: 100%" v-loading="isLoading" @cell-mouse-enter="showEdit" @cell-mouse-leave="leaveEdit">
+        <el-table-column prop="date" type='index' :index="setIndex" label="序号" width='100%'></el-table-column>
         <el-table-column prop="name" label="姓名" ></el-table-column>
-        <el-table-column prop="address" label="性别"></el-table-column>
-        <el-table-column prop="date" label="添加时间" ></el-table-column>
-        <el-table-column prop="name" label="照片"></el-table-column>
+        <el-table-column prop="address" label="年龄" ></el-table-column>
+        <el-table-column prop="date" label="联系方式" ></el-table-column>
+        <el-table-column prop="name" label="申请时间" ></el-table-column>
         <el-table-column
         prop="operation"
         label="操作">
         <template slot-scope="scope">
             <el-button  type="text" size="small" v-show="scope.row.flag"><img src="../../assets/img/bianji.png" alt="" srcset=""></el-button>
-            <el-button type="text" size="small" v-show="scope.row.flag"><img src="../../assets/img/del.png" alt="" srcset=""></el-button>
         </template>
         </el-table-column>
       </el-table>
@@ -44,25 +43,25 @@ export default {
           date: "2016-05-02",
           flag: false,
           name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          address: "上"
         },
         {
           flag: false,
           date: "2016-05-04",
           name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
+          address: "上"
         },
         {
           flag: false,
           date: "2016-05-01",
           name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
+          address: "上"
         },
         {
           flag: false,
           date: "2016-05-03",
           name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
+          address: "上"
         }
       ],
       currentPage: 1,
@@ -82,6 +81,23 @@ export default {
        changePage(pageNumber){
         this.currentPage = pageNumber
       },
+      showEdit(row) {
+        row.flag = true;
+      },
+      leaveEdit(row) {
+        row.flag = false;
+      },
+      changecolor(data){
+        if (data.columnIndex == 3) {
+          return "color:#7F63F4";
+        }
+        if(data.columnIndex == 4){
+          return "color:#ABAFB3";
+        }
+      },
+      goMemberDetail(){
+        this.$router.push({name:'memberDetail'})
+      }
   },
 };
 </script>

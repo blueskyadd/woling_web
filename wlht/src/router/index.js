@@ -27,10 +27,15 @@ export default new Router({
           component:() => import('../view/Member/memberManagement')
         },
         {
+          path: '/memberDetail',
+          name: 'memberDetail',
+          component:() => import('../view/Member/memberDetail'),
+        },
+        {
           path: '/appointment',
           name: 'appointment',
           component:() => import('../view/SiteManagement/appointment'),
-        }
+        },
       ]
     },
   ]
