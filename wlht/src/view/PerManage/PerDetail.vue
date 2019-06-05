@@ -367,13 +367,13 @@ export default {
         width: 6.2%;
       }
       .email_list{
-          width: 25%;
+          width: 34%;
           input{
-              width: 59%;
+              width: 60%;
           }
       }
       .email_list>span{
-        width: 24%;
+        width: 18%;
       }
       .perStatus{
           width: 70%;
