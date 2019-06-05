@@ -77,14 +77,30 @@ export default new Router({
           component:() => import('../view/pullRe/pullRe'),
         },
         {
+          path: '/AddPullRe',
+          name: 'AddPullRe',
+          component:() => import('../view/pullRe/AddPullRe'),
+        },
+
+        {
           path: '/orderManage',
           name: 'orderManage',
           component:() => import('../view/orderManage/orderManage'),
         },
         {
+          path: '/AddOrder',
+          name: 'AddOrder',
+          component:() => import('../view/orderManage/AddOrder'),
+        },
+        {
           path: '/shoppManage',
           name: 'shoppManage',
           component:() => import('../view/shoppManage/shoppManage'),
+        },
+        {
+          path: '/AddShopp',
+          name: 'AddShopp',
+          component:() => import('../view/shoppManage/AddShopp'),
         },
 
       ]

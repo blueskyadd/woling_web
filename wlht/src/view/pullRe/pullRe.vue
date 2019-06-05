@@ -1,9 +1,9 @@
 <template>
   <div class="wl_PullRe_list">
     <div class="PullRe_head_addIcon">
-      <span>
+      <router-link to="/AddPullRe" tag="span">
         <img src="../../assets/img/add.png" alt>添加会员
-      </span>
+      </router-link>
     </div>
     <!--表格部分-->
     <div class="member_table_list">

@@ -1,9 +1,9 @@
 <template>
   <div class="wl_Order_list">
     <div class="Order_head_addIcon">
-      <span>
+      <router-link to="/AddOrder" tag="span">
         <img src="../../assets/img/add.png" alt>添加会员
-      </span>
+      </router-link>
     </div>
     <!--表格部分-->
     <div class="member_table_list">

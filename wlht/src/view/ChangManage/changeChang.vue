@@ -18,10 +18,9 @@
                 <label for="">场地状态</label>
                 <el-select v-model="value" placeholder="请选择" popper-class="shenqi">
                   <el-option
-                    v-for="item in options"
+                    v-for="item in changStatus"
                     :key="item.value"
                     :label="item.label"
-
                     :value="item.value">
                   </el-option>
                 </el-select>
@@ -45,7 +44,7 @@
                   :separator="' '"
                 >
                 </el-cascader>
-                <el-input v-model="ChangName" placeholder="请填写详细地址"></el-input>
+                <el-input v-model="ChangName" placeholder="请填写详细地址" class="xiangxiAddress"></el-input>
               </td>
               <td>
                 <label for="">场地介绍</label>
@@ -53,7 +52,7 @@
                 <el-input
                   type="textarea"
                   autosize
-                  :autosize="{ minRows: 12}"
+                  :autosize="{ minRows: 12,maxRows:17}"
                   placeholder="请输入内容"
                   v-model="changJan">
                 </el-input>
@@ -75,6 +74,9 @@
                   </div>
                 </el-upload>
               </td>
+              <td style="height: .4rem;position: relative" class="bcBox">
+                <el-button type="primary" class="Pub_But">主要按钮</el-button>
+              </td>
             </tr>
           </table>
 
@@ -90,7 +92,7 @@
       data(){
           return{
             ChangName:'',    //场地名称
-            options: [{
+            changStatus: [{
               value: '选项1',
               label: '黄金糕'
             }, {
@@ -219,6 +221,19 @@
               .LeftM{
                 margin-left:1rem;
               }
+            }
+            .Three{
+              .xiangxiAddress{
+                width: 4.8rem;
+                margin-left:.2rem;
+              }
+            }
+            .bcBox{
+                .Pub_But{
+                  position: absolute;
+                  left: 40%;
+                  top: 150%;
+                }
             }
           }
         }

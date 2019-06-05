@@ -1,7 +1,7 @@
 /**分页按钮*/
 .el-pagination{
     float: right;
-.el-pager { 
+.el-pager {
         .number,.more {
             background: #fff !important;
             border-radius: 50% !important;
@@ -38,4 +38,20 @@
   .el-button{
       padding: 0;
   }
-    
+
+  /*  el-button 通用class名*/
+  .Pub_But{
+    background: #7F63F4 !important;
+    width: 1.50rem;
+    height: .4rem;
+    border-radius: 4px;
+    background-color: rgba(127, 99, 244, 1) !important;
+    color: rgba(255, 255, 255, 1);
+    font-size: .18rem;
+    text-align: center;
+    border-color: rgba(127, 99, 244, 1) !important;
+  }
+  .Pub_But:hover{
+    border-color: rgba(127, 99, 244, 1);
+    background-color: rgba(127, 99, 244, 1);
+  }
