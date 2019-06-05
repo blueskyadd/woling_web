@@ -13,9 +13,9 @@
         </label>
         <label>
           <span>年龄段</span>
-          <el-select popper-class="class_selete_list" v-model="value" placeholder="请选择年龄段">
+          <el-select popper-class="class_selete_list" v-model="ageData" placeholder="请选择年龄段">
             <el-option
-              v-for="item in options"
+              v-for="item in ageList"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -24,9 +24,9 @@
         </label>
         <label>
           <span>课程类别</span>
-          <el-select popper-class="class_selete_list" v-model="value" placeholder="请选择课程类别">
+          <el-select popper-class="class_selete_list" v-model="curriculumData" placeholder="请选择课程类别">
             <el-option
-              v-for="item in options"
+              v-for="item in curriculumList"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -69,20 +69,18 @@
         </label>
         <label>
           <span>上课时间</span>
-          <el-select popper-class="class_selete_list" v-model="value" placeholder="请选择年龄段">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
+            <el-date-picker
+            popper-class='class_selete_list_time'
+            v-model="classBeginsTime"
+            type="date"
+            placeholder="选择上课时间">
+            </el-date-picker>
         </label>
         <label>
           <span>课程状态</span>
-          <el-select popper-class="class_selete_list" v-model="value" placeholder="请选择课程类别">
+          <el-select popper-class="class_selete_list" v-model="curriculumStatusData" placeholder="请选择课程类别">
             <el-option
-              v-for="item in options"
+              v-for="item in curriculumStatusList"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -194,7 +192,61 @@ export default {
       dialogImageUrl: "",//预览图片
       classListDetail: [],
       selectedOptions: [],//存放默认值
-        options:options   //存放城市数据
+      options:options,   //存放城市数据
+      ageList:[
+          { 
+            value: "1",
+            label: "5-6"
+          },
+          {
+            value: "2",
+            label: "9-10"
+          },
+          {
+            value: "3",
+            label: "10-12"
+          },
+          {
+            value: "4",
+            label: "0-100(成人足球)"
+          }
+      ],
+      ageData: '',//年龄段
+      curriculumList:[
+          { 
+            value: "1",
+            label: "基础足球课"
+          },
+          {
+            value: "2",
+            label: "进阶足球课"
+          },
+          {
+            value: "3",
+            label: "成人足球课"
+          },
+          {
+            value: "4",
+            label: "守门员课"
+          }
+      ],
+      curriculumData: '',
+      curriculumStatusList:[
+         { 
+            value: "1",
+            label: "未开课(试听、课程)"
+          },
+          {
+            value: "2",
+            label: "已开课(试听)"
+          },
+          {
+            value: "3",
+            label: "已结束"
+          } 
+      ],
+      curriculumStatusData: '',
+      classBeginsTime: '',//上课时间
 
     };
   },
@@ -329,6 +381,14 @@ export default {
         .el-input__suffix-inner {
           line-height: 0.49rem;
         }
+        .el-date-editor.el-input{
+            width: 100%;
+            position: static;
+            display: block;
+        }
+        .el-icon-date{
+            display: none;
+        }
       }
       label > span {
         width: 28%;
@@ -446,5 +506,8 @@ export default {
 }
 .class_selete_list {
   margin-top: 0.56rem !important;
+}
+.class_selete_list_time{
+    margin: .56rem 0 0 .85rem!important;
 }
 </style>

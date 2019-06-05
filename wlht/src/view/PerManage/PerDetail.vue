@@ -15,7 +15,7 @@
           <span>工号</span>
           <input placeholder="请填写工号" type="text" id="name">
         </label>
-        <label>
+        <label class="sex_list">
           <span>性别</span>
           <el-select popper-class="per_selete_list" v-model="value" placeholder="请选择性别">
             <el-option
@@ -52,7 +52,7 @@
           <span>联系电话</span>
           <input placeholder="请填写联系电话" type="number" id="name">
         </label>
-        <label>
+        <label class="email_list">
           <span>电子邮箱</span>
           <input placeholder="请填写邮箱" type="number" id="name">
         </label>
@@ -60,11 +60,11 @@
           <span>微信账号</span>
           <input placeholder="请填写微信账号" type="number" id="name">
         </label>
-        <label>
+        <label class="perStatus">
           <span>员工状态</span>
-          <el-select popper-class="per_selete_list" v-model="value" placeholder="请选择状态">
+          <el-select popper-class="per_selete_list" v-model="perStatusData" placeholder="请选择状态">
             <el-option
-              v-for="item in options"
+              v-for="item in perStatusList"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -73,36 +73,30 @@
         </label>
         <label>
           <span>转正日期</span>
-          <el-select popper-class="per_selete_list" v-model="value" placeholder="请选择转正日期">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
+          <el-date-picker
+            popper-class='per_selete_list_time'
+            v-model="BecomeTime"
+            type="date"
+            placeholder="选择上课时间">
+            </el-date-picker>
         </label>
         <label>
           <span>入职时间</span>
-          <el-select popper-class="per_selete_list" v-model="value" placeholder="请选择入职时间">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
+          <el-date-picker
+            popper-class='per_selete_list_time'
+            v-model="EntryTime"
+            type="date"
+            placeholder="选择上课时间">
+            </el-date-picker>
         </label>
         <label>
           <span>离职时间</span>
-          <el-select popper-class="per_selete_list" v-model="value" placeholder="请选择离职时间">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
+          <el-date-picker
+            popper-class='per_selete_list_time'
+            v-model="QuitTime"
+            type="date"
+            placeholder="选择上课时间">
+            </el-date-picker>
         </label>
         
         <label class="pone_one" for>
@@ -155,7 +149,26 @@ export default {
       classMedalImgFile: "", //
       dialogVisible: false,
       dialogImageUrl: "",//预览图片
-      classListDetail: []
+      classListDetail: [],
+      perStatusList:[
+          {
+              label:'在职',
+              value:'1'
+          },
+          {
+              label:'兼职',
+              value:'2'
+          },
+          {
+              label:'离职',
+              value:'3'
+          }
+      ],
+      perStatusData: '',
+      QuitTime:'0',
+      EntryTime:'',
+      BecomeTime: ''
+
 
     };
   },
@@ -291,6 +304,14 @@ export default {
         .el-input__suffix-inner {
           line-height: 0.49rem;
         }
+        .el-date-editor.el-input{
+            width: 100%;
+            position: static;
+            display: block;
+        }
+        .el-icon-date{
+            display: none;
+        }
       }
       label > span {
         width: 28%;
@@ -345,6 +366,29 @@ export default {
       .class_list > span {
         width: 6.2%;
       }
+      .email_list{
+          width: 25%;
+          input{
+              width: 59%;
+          }
+      }
+      .email_list>span{
+        width: 24%;
+      }
+      .perStatus{
+          width: 70%;
+          .el-select{
+             width: 21.4%;
+          }
+      }
+      .perStatus>span{
+          width: 8.3%;
+      }
+      .sex_list{
+          .el-select{
+             width: 40%; 
+          }
+      }
     }
     .tijiao {
         display: block;
@@ -393,6 +437,9 @@ export default {
   }
 }
 .per_selete_list {
-  margin-top: 0.56rem !important;
+    margin-top: 0.56rem !important;
+}
+.per_selete_list_time{
+    margin: 0.56rem 0px 0px 0.85rem!important;
 }
 </style>
