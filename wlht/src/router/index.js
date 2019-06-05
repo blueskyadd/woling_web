@@ -30,7 +30,48 @@ export default new Router({
           path: '/appointment',
           name: 'appointment',
           component:() => import('../view/SiteManagement/appointment'),
-        }
+        },
+        {
+          path: '/NoMember',
+          name: 'NoMember',
+          component:() => import('../view/NoMember/NoMember'),
+        },
+        {
+          path: '/classManage',
+          name: 'classManage',
+          component:() => import('../view/classManage/classManage'),
+        },
+        {
+          path: '/GameManage',
+          name: 'GameManage',
+          component:() => import('../view/GameManage/GameManage'),
+        },
+        {
+          path: '/ChangManage',
+          name: 'ChangManage',
+          component:() => import('../view/ChangManage/ChangManage'),
+        },
+        {
+          path: '/PerManage',
+          name: 'PerManage',
+          component:() => import('../view/PerManage/PerManage'),
+        },
+        {
+          path: '/pullRe',
+          name: 'pullRe',
+          component:() => import('../view/pullRe/pullRe'),
+        },
+        {
+          path: '/orderManage',
+          name: 'orderManage',
+          component:() => import('../view/orderManage/orderManage'),
+        },
+        {
+          path: '/shoppManage',
+          name: 'shoppManage',
+          component:() => import('../view/shoppManage/shoppManage'),
+        },
+
       ]
     },
   ]

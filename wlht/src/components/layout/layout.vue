@@ -33,7 +33,7 @@
             </div>
             <input type="text" class="search-ipt" placeholder="搜索...">
           </div>
-          <div class="header-back" @click="SignOut">
+          <div class="header-back">
             <div class="image-box">
               <img src="../../assets/img/header_img.jpg" alt>
             </div>
@@ -62,43 +62,49 @@ export default {
           name: "非会员管理",
           image_normal: require("../../assets/img/nomember_normal.png"),
           image_actively: require("../../assets/img/nomember_actively.png"),
-          link: "/index"
+          link: "/NoMember"
         },
         {
           name: "课程管理",
           image_normal: require("../../assets/img/yx_normal.png"),
           image_actively: require("../../assets/img/yx_actively.png"),
-          link: "/index"
-        },
-        {
-          name: "课表管理",
-          image_normal: require("../../assets/img/shop_normal.png"),
-          image_actively: require("../../assets/img/shop_actively.png"),
-          link: "/index"
+          link: "/classManage"
         },
         {
           name: "比赛管理",
           image_normal: require("../../assets/img/bs_normal.png"),
           image_actively: require("../../assets/img/bs_actively.png"),
-          link: "/index"
-        },
-        {
-          name: "主推热点",
-          image_normal: require("../../assets/img/rd_normal.png"),
-          image_actively: require("../../assets/img/rd_actively.png"),
-          link: "/index"
+          link: "/GameManage"
         },
         {
           name: "场地管理",
           image_normal: require("../../assets/img/cd_normal.png"),
           image_actively: require("../../assets/img/cd_actively.png"),
-          link: "/index"
+          link: "/ChangManage"
         },
         {
-          name: "任职人员管理",
+          name: "员工管理",
           image_normal: require("../../assets/img/user_normal.png"),
           image_actively: require("../../assets/img/user_actively.png"),
-          link: "/index"
+          link: "/PerManage"
+        },
+        {
+          name: "主推热点",
+          image_normal: require("../../assets/img/rd_normal.png"),
+          image_actively: require("../../assets/img/rd_actively.png"),
+          link: "/pullRe"
+        },
+        {
+          name: "订单管理",
+          image_normal: require("../../assets/img/cd_normal.png"),
+          image_actively: require("../../assets/img/cd_actively.png"),
+          link: "/orderManage"
+        },
+        {
+          name: "商城商品管理",
+          image_normal: require("../../assets/img/cd_normal.png"),
+          image_actively: require("../../assets/img/cd_actively.png"),
+          link: "/shoppManage"
         }
       ]
     };
