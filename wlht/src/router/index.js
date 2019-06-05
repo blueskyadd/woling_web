@@ -57,6 +57,11 @@ export default new Router({
           component:() => import('../view/ChangManage/ChangManage'),
         },
         {
+          path: '/changeChang',
+          name: 'changeChang',
+          component:() => import('../view/ChangManage/changeChang'),
+        },
+        {
           path: '/PerManage',
           name: 'PerManage',
           component:() => import('../view/PerManage/PerManage'),
