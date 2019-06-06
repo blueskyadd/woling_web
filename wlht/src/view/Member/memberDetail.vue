@@ -79,7 +79,6 @@
                       </el-select>
                       <label  class="LR">出生日期</label>
                       <el-date-picker
-                        class="birtody"
                         v-model="birthday"
                         type="date"
                         placeholder="选择日期">
@@ -101,7 +100,7 @@
                           :value="item.value">
                         </el-option>
                       </el-select>
-                      <label for="" class="LR">电话</label>
+                      <label for="">电话</label>
                       <el-input  v-model="teacherPhone " class="dandu"></el-input>
                     </td>
                     <td>
@@ -288,10 +287,13 @@ export default {
               width: 100%;
               height: 100%;
               tr{
+                width: 100%;
                 td{
+                  width: 100%;
                   display: flex;
                   align-items: center;
                   margin-bottom: .3rem;
+                  flex-wrap: nowrap;
                   .LR{
                     padding-left: .3rem;
                     display: block;
@@ -303,9 +305,6 @@ export default {
                   label{
                     white-space: nowrap;
                     margin-right: .23rem;
-                  }
-                  .el-date-editor.el-input, .el-date-editor.el-input__inner{
-                    width: auto;
                   }
                 }
               }

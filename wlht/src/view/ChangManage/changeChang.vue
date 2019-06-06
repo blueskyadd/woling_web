@@ -2,10 +2,10 @@
     <div class="ChangeChang_BOx">
       <section class="ChangeChang">
         <div class="header_Tit">
-          <div class="Title">
-            <router-link to="/">
+          <div class="Title" @click="gochangeManage">
+            <span >
               <img src="../../assets/img/goback.png" alt="">
-            </router-link>
+            </span>
             <span>添加场地</span>
           </div>
         </div>
@@ -142,6 +142,10 @@
             this.classImg = obj.url
           };
         },
+        gochangeManage(){
+          console.log('aaaa')
+          this.$parent.isChangEdit = true
+        }
       }
     }
 </script>

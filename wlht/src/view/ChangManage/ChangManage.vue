@@ -1,13 +1,13 @@
 <template>
-  <div class="wl_ChangManage_list">
+  <div class="wl_ChangManage_list" v-if="isChangEdit">
     <div class="ChangeManage_head_addIcon">
-      <router-link :to="{name:'changeChang'}" tag="span">
+      <span @click="gochangeDetail">
         <img src="../../assets/img/add.png" alt>添加
-      </router-link>
+      </span>
     </div>
     <!--表格部分-->
     <div class="member_table_list">
-      <el-table :data="tableData" style="width: 100%" v-loading="isLoading">
+      <el-table :data="tableData" style="width: 100%" v-loading="isLoading"  @cell-mouse-enter="showEdit" @cell-mouse-leave="leaveEdit">
          <el-table-column prop="ChangName" label="场地名称" ></el-table-column>
         <el-table-column prop="money" label="场地租金"></el-table-column>
         <el-table-column prop="baoMon" label="包场租金" ></el-table-column>
@@ -32,12 +32,13 @@
       prev-text='<<'
       next-text=">>">
     </el-pagination>
-
   </div>
-
+<change-chang v-else></change-chang>
 </template>
 <script>
+import changeChang from './changeChang.vue'
     export default {
+      components:{changeChang},
         name: "ChangManage",
       data() {
         return {
@@ -90,7 +91,8 @@
           currentPage: 1,
           perPage: 10,
           activelyNumber:1,
-          isLoading: false
+          isLoading: false,
+          isChangEdit: true
         };
       },
       methods: {
@@ -104,6 +106,15 @@
         changePage(pageNumber){
           this.currentPage = pageNumber
         },
+        showEdit(row) {
+        row.flag = true;
+      },
+      leaveEdit(row) {
+        row.flag = false;
+      }, 
+      gochangeDetail(){
+        this.isChangEdit = false
+      }
       },
     }
 </script>

@@ -2,10 +2,10 @@
   <div class="ReDian_BOx">
     <section class="ChangeChang">
       <div class="header_Tit">
-        <div class="Title">
-          <router-link to="/">
+        <div class="Title" @click="goPullManage">
+          <span>
             <img src="../../assets/img/goback.png" alt="">
-          </router-link>
+          </span>
           <span>添加主推热点</span>
         </div>
       </div>
@@ -174,6 +174,9 @@
           }
           return isJPG  || isPng ;
         },
+        goPullManage(){
+          this.$parent.isPullEdit = true
+        }
       }
     }
 </script>

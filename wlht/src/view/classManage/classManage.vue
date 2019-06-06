@@ -1,5 +1,5 @@
 <template>
-  <div class="wl_ClassMange_list">
+  <div class="wl_ClassMange_list" v-if="isclassEdit">
     <div class="Class_head_addIcon">
       <span @click="goMemberDetail()">
         <img src="../../assets/img/add.png" alt>添加课程
@@ -44,9 +44,12 @@
       next-text=">>"
     ></el-pagination>
   </div>
+  <classDetail v-else />
 </template>
 <script>
+import classDetail from './classDetail.vue'
 export default {
+  components:{classDetail},
   name: "classManage",
   data() {
     return {
@@ -91,7 +94,8 @@ export default {
       currentPage: 1,
       perPage: 10,
       activelyNumber: 1,
-      isLoading: false
+      isLoading: false,
+      isclassEdit: true
     };
   },
   methods: {
@@ -120,7 +124,7 @@ export default {
       row.flag = false;
     },
     goMemberDetail(){
-      this.$router.push({name:'classDetail'})
+      this.isclassEdit = false
     }
   }
 };

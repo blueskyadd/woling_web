@@ -2,10 +2,10 @@
   <div class="Order_BOx">
     <section class="Order">
       <div class="header_Tit">
-        <div class="Title">
-          <router-link to="/">
+        <div class="Title" @click="goorderManage">
+          <span>
             <img src="../../assets/img/goback.png" alt="">
-          </router-link>
+          </span>
           <span>添加主推热点</span>
         </div>
       </div>
@@ -208,6 +208,9 @@
           }
           return isJPG  || isPng ;
         },
+        goorderManage(){
+          this.$parent.isorderEdit = true
+        }
       }
     }
 </script>

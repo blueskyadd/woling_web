@@ -1,5 +1,5 @@
 <template>
-  <div class="wl_memberManagement_list">
+  <div class="wl_memberManagement_list" v-if="isMemberEdit">
     <div class="member_head_addIcon">
       <span @click="goMemberDetail()">
         <img src="../../assets/img/add.png" alt>添加
@@ -32,9 +32,12 @@
         next-text=">>">
     </el-pagination>
   </div>
+  <memberDetail v-else/>
 </template>
 <script>
+import memberDetail from './memberDetail.vue'
 export default {
+  components:{memberDetail},
   name: "memberManagement",
   data() {
     return {
@@ -67,7 +70,8 @@ export default {
       currentPage: 1,
       perPage: 10,  
       activelyNumber:1,
-      isLoading: false
+      isLoading: false,
+      isMemberEdit: true
     };
   },
   methods: {
@@ -96,7 +100,7 @@ export default {
         }
       },
       goMemberDetail(){
-        this.$router.push({name:'memberDetail'})
+        this.isMemberEdit = false
       }
   },
 };

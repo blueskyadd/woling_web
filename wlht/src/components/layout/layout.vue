@@ -33,12 +33,18 @@
             </div>
             <input type="text" class="search-ipt" placeholder="搜索...">
           </div>
-          <div class="header-back">
+          <div class="header-back" @click="showOut = !showOut">
             <div class="image-box">
               <img src="../../assets/img/header_img.jpg" alt>
             </div>
             <span>名字</span>
           </div>
+          <transition name="el-zoom-in-top">
+            <div  v-show="showOut" class="header_out transition-box">
+              <span @click="goeditLogin(false)">更改密码</span><span @click="goeditLogin(true)">注销</span>
+            </div>
+          </transition>
+
         </div>
       </el-header>
       <router-view></router-view>
@@ -51,6 +57,7 @@ export default {
   name: "layout",
   data() {
     return {
+      showOut: false,
       tabList: [
         {
           name: "会员管理",
@@ -108,7 +115,13 @@ export default {
         }
       ]
     };
-  }
+  },
+  methods: {
+    goeditLogin(flag){
+      this.$store.commit("changeisEditOut", flag);
+      this.$router.push({name:'LoginRegister'})
+    }
+  },
 };
 </script>
 
@@ -165,7 +178,8 @@ export default {
   .header {
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    // overflow: hidden;
+    position: relative;
     .search-box {
       position: relative;
       overflow: hidden;
@@ -197,6 +211,7 @@ export default {
       overflow: hidden;
       cursor: pointer;
       margin-top: 0.1rem;
+      margin-right: 4.4%;
       .image-box {
         float: left;
         img {
@@ -215,6 +230,24 @@ export default {
         line-height: .47rem;
       }
     }
+    .header_out{
+      width: 2rem;
+      height: 1rem;
+      background: #fff;
+      position: absolute;
+      right: 1.4%;
+      bottom: -120%;
+      z-index: 1;
+      span{
+        cursor: pointer;
+        display: block;
+        text-align: center;
+        font-size: .16rem;
+        line-height: .5rem;
+       
+      }
+    }
   }
+  
 }
 </style>

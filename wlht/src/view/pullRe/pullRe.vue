@@ -1,13 +1,13 @@
 <template>
-  <div class="wl_PullRe_list">
+  <div class="wl_PullRe_list" v-if="isPullEdit">
     <div class="PullRe_head_addIcon">
-      <router-link to="/AddPullRe" tag="span">
+      <span @click="gopullDetail">
         <img src="../../assets/img/add.png" alt>添加会员
-      </router-link>
+      </span>
     </div>
     <!--表格部分-->
     <div class="member_table_list">
-      <el-table :data="tableData" style="width: 100%" v-loading="isLoading">
+      <el-table :data="tableData" style="width: 100%" v-loading="isLoading"  @cell-mouse-enter="showEdit" @cell-mouse-leave="leaveEdit">
         <el-table-column prop="date" type='index' :index="setIndex" label="序号"></el-table-column>
         <el-table-column prop="address" label="主推地点" ></el-table-column>
         <el-table-column prop="ReTimer" label="热点时间"></el-table-column>
@@ -44,10 +44,13 @@
       next-text=">>">
     </el-pagination>
   </div>
+  <add-pull-re v-else></add-pull-re>
 </template>
 
 <script>
+import AddPullRe from './AddPullRe.vue'
     export default {
+      components:{AddPullRe},
         name: "pullRe",
       data() {
         return {
@@ -88,6 +91,7 @@
           currentPage: 1,
           perPage: 10,
           activelyNumber:1,
+          isPullEdit: true,
           isLoading: false
         };
       },
@@ -124,6 +128,15 @@
         changePage(pageNumber){
           this.currentPage = pageNumber
         },
+        showEdit(row) {
+        row.flag = true;
+      },
+      leaveEdit(row) {
+        row.flag = false;
+      },
+      gopullDetail(){
+        this.isPullEdit = false
+      }
       },
     }
 </script>

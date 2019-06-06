@@ -389,6 +389,12 @@ export default {
              width: 40%; 
           }
       }
+      .el-upload{
+        width: 20%;
+        .el-upload-dragger{
+          width: 100%;
+        }
+      }
     }
     .tijiao {
         display: block;

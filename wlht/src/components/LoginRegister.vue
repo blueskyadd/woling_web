@@ -1,6 +1,6 @@
 <template>
     <div class="LoginBox">
-        <div class="Login_Init" :class="AA == 0?'':'activea'">
+        <div class="Login_Init" :class="AA ?'':'activea'">
           <p class="Login_Tit">用户登录</p>
           <div class="username_Box">
             <div class="ImageBox">
@@ -19,7 +19,7 @@
           <div class="Login">登录</div>
           <span class="wangji" @click="changeAA">忘记密码</span>
         </div>
-        <div class="Register_Init" :class="AA == 1?'':'activeb'">
+        <div class="Register_Init" :class="!AA?'':'activeb'">
           <p class="Login_Tit"><i class="el-icon-arrow-left" @click="changeAAs"></i><span>修改密码</span></p>
           <div class="username_Box">
             <div class="ImageBox">
@@ -47,6 +47,7 @@
 </template>
 
 <script>
+import store from "../store/index.js"
     export default {
         name: "LoginRegister",
       data() {
@@ -56,16 +57,25 @@
           YZM:'',
           NewPas:'',
           OKPas:'',
-          AA:0,
+          AA: this.$store.state.isEditOut ,
         }
+      },
+      computed: {
+            //获取企业资质的宽度
+          getAA() {
+            return this.$store.state.isEditOut;
+          }
+      },
+      mounted(){
+        console.log(this.AA)
       },
       methods:{
         changeAA(){
           console.log(13)
-          this.AA = 1
+          this.AA =  false
         },
         changeAAs(){
-          this.AA = 0
+          this.AA = true
         }
       }
     }

@@ -2,10 +2,10 @@
   <div class="Shopp_BOx">
     <section class="Shopping">
       <div class="header_Tit">
-        <div class="Title">
-          <router-link to="/">
+        <div class="Title" @click="goshopManage">
+          <span>
             <img src="../../assets/img/goback.png" alt="">
-          </router-link>
+          </span>
           <span>添加主推热点</span>
         </div>
       </div>
@@ -200,6 +200,9 @@
           }
           return isJPG  || isPng ;
         },
+        goshopManage(){
+          this.$parent.isshopEdit = true
+        }
       }
     }
 </script>

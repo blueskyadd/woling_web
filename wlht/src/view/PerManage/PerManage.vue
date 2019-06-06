@@ -8,6 +8,8 @@
     <!--表格部分-->
     <div class="member_table_list">
       <el-table
+      @cell-mouse-enter="showEdit"
+       @cell-mouse-leave="leaveEdit"
         ref="filterTable"
         :data="tableData"
         style="width: 100%">
@@ -85,6 +87,7 @@ import PerDetail from "./PerDetail"
               WeiTwo:'顾问',
               tag: '在职',
               ping:'图',
+              flag:false,
             }, {
               Yname: '亚索',
               phone: '111',
@@ -92,12 +95,14 @@ import PerDetail from "./PerDetail"
               WeiTwo:'买菜',
               tag: '离职',
               ping:'图',
+              flag:false,
             }, {
               Yname: '劫',
               phone: '112',
               WeiOne: '刺客',
               WeiTwo:'做饭吗',
               tag: '离职',
+              flag:false,
               ping:'图',
             }, {
               Yname: '瞎瞎',
@@ -106,6 +111,7 @@ import PerDetail from "./PerDetail"
               WeiTwo:'吃',
               tag: '在职',
               ping:'图',
+              flag:false,
           }],
           currentPage: 1,
           perPage: 10,
@@ -139,7 +145,13 @@ import PerDetail from "./PerDetail"
         },
         goPerDetail(){
           this.isperManage=false
-        }
+        },
+        showEdit(row) {
+        row.flag = true;
+      },
+      leaveEdit(row) {
+        row.flag = false;
+      },
       },
     }
 </script>

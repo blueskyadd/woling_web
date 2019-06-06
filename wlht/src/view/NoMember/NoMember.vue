@@ -1,18 +1,19 @@
 <template>
   <div class="wl_NoMeber_list">
-<!--    <div class="NoMember_head_addIcon">-->
+   <!-- <div class="NoMember_head_addIcon">-->
 <!--      <span>-->
 <!--        <img src="../../assets/img/add.png" alt>添加-->
 <!--      </span>-->
-<!--    </div>-->
+<!--    </div> -->
     <!--表格部分-->
     <div class="member_table_list">
-      <el-table :data="tableData" :cell-style="changecolor" style="width: 100%" v-loading="isLoading">
+      <el-table :data="tableData" :cell-style="changecolor" style="width: 100%" v-loading="isLoading" >
         <el-table-column prop="date" type='index' width="100%" :index="setIndex"  label="序号"></el-table-column>
         <el-table-column prop="name" label="姓名" ></el-table-column>
         <el-table-column prop="address" label="年龄"></el-table-column>
         <el-table-column prop="date" label="联系方式" ></el-table-column>
         <el-table-column prop="name" label="申请时间"></el-table-column>
+
       </el-table>
     </div>
     <el-pagination
@@ -83,7 +84,7 @@
             return "color:#ABAFB3";
           }
         },
-      
+           
       },
     }
 </script>

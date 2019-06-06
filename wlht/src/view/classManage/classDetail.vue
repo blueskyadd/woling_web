@@ -1,7 +1,7 @@
 <template>
   <div class="wl_classDetail">
     <header>
-      <span>
+      <span @click="goclassManage">
         <img src="../../assets/img/goback.png" alt>添加课程
       </span>
     </header>
@@ -320,7 +320,9 @@ export default {
     handleChange(value) {
     console.log(value);
     },
-
+    goclassManage(){
+      this.$parent.isclassEdit = true
+    }
   }
 };
 </script>
@@ -445,11 +447,19 @@ export default {
           .el-upload-list {
             display: none !important;
           }
-          .el-upload-dragger {
-            img {
-              width: 100%;
-            }
+          .el-upload{
+            width: 50%;
+             .el-upload-dragger {
+                width: 100%;
+                img {
+                  width: 100%;
+                }
+              }
+              .el-upload__text{
+                font-size: 10%;
+              }
           }
+         
         }
         .pone_one > span {
           width: 15%;
