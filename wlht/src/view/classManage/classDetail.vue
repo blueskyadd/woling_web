@@ -6,163 +6,165 @@
       </span>
     </header>
     <div class="class_main">
-      <form action method="post">
-        <label>
-          <span>课程名称</span>
-          <input placeholder="请填写课程名称" type="text" id="name">
-        </label>
-        <label>
-          <span>年龄段</span>
-          <el-select popper-class="class_selete_list" v-model="ageData" placeholder="请选择年龄段">
-            <el-option
-              v-for="item in ageList"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </label>
-        <label>
-          <span>课程类别</span>
-          <el-select popper-class="class_selete_list" v-model="curriculumData" placeholder="请选择课程类别">
-            <el-option
-              v-for="item in curriculumList"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </label>
-        <label>
-          <span>上课人数</span>
-          <input placeholder="请填写上课人数" type="number" id="name">
-        </label>
-        <label>
-          <span>课程价格</span>
-          <input placeholder="请填写课程价格" type="number" id="name">
-        </label>
-        <label>
-          <span>课时</span>
-          <input placeholder="请填写课时" type="number" id="name">
-        </label>
-        <label>
-          <span>教练</span>
-          <el-select popper-class="class_selete_list" v-model="value" placeholder="请选择年龄段">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </label>
-        <label>
-          <span>副教练</span>
-          <el-select popper-class="class_selete_list" v-model="value" placeholder="请选择年龄段">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </label>
-        <label>
-          <span>上课时间</span>
-            <el-date-picker
-            popper-class='class_selete_list_time'
-            v-model="classBeginsTime"
-            type="date"
-            placeholder="选择上课时间">
-            </el-date-picker>
-        </label>
-        <label>
-          <span>课程状态</span>
-          <el-select popper-class="class_selete_list" v-model="curriculumStatusData" placeholder="请选择课程类别">
-            <el-option
-              v-for="item in curriculumStatusList"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </label>
-        <label class="class_city" for>
-          <span>详细地址</span>
-          <el-cascader
-            :options="options"
-            v-model="selectedOptions"
-            @change="handleChange"
-            :separator="' '"
+      <div class="ScrollY">
+        <form action method="post">
+          <label>
+            <span>课程名称</span>
+            <input placeholder="请填写课程名称" type="text" id="name">
+          </label>
+          <label>
+            <span>年龄段</span>
+            <el-select popper-class="class_selete_list" v-model="ageData" placeholder="请选择年龄段">
+              <el-option
+                v-for="item in ageList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </label>
+          <label>
+            <span>课程类别</span>
+            <el-select popper-class="class_selete_list" v-model="curriculumData" placeholder="请选择课程类别">
+              <el-option
+                v-for="item in curriculumList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </label>
+          <label>
+            <span>上课人数</span>
+            <input placeholder="请填写上课人数" type="number" id="name">
+          </label>
+          <label>
+            <span>课程价格</span>
+            <input placeholder="请填写课程价格" type="number" id="name">
+          </label>
+          <label>
+            <span>课时</span>
+            <input placeholder="请填写课时" type="number" id="name">
+          </label>
+          <label>
+            <span>教练</span>
+            <el-select popper-class="class_selete_list" v-model="value" placeholder="请选择年龄段">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </label>
+          <label>
+            <span>副教练</span>
+            <el-select popper-class="class_selete_list" v-model="value" placeholder="请选择年龄段">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </label>
+          <label>
+            <span>上课时间</span>
+              <el-date-picker
+              popper-class='class_selete_list_time'
+              v-model="classBeginsTime"
+              type="date"
+              placeholder="选择上课时间">
+              </el-date-picker>
+          </label>
+          <label>
+            <span>课程状态</span>
+            <el-select popper-class="class_selete_list" v-model="curriculumStatusData" placeholder="请选择课程类别">
+              <el-option
+                v-for="item in curriculumStatusList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </label>
+          <label class="class_city" for>
+            <span>详细地址</span>
+            <el-cascader
+              :options="options"
+              v-model="selectedOptions"
+              @change="handleChange"
+              :separator="' '"
+              >
+              </el-cascader>
+          </label>
+          <label class="class_introduction">
+            <span>课程介绍</span>
+            <textarea placeholder="填写课程介绍"></textarea>
+          </label>
+          <label class="pone_one" for>
+            <span>课程图片</span>
+            <el-upload
+              class="upload-demo"
+              action="string"
+              ref="upload"
+              :http-request="addAttachment"
+              drag
+              multiple
             >
-            </el-cascader>
-        </label>
-        <label class="class_introduction">
-          <span>课程介绍</span>
-          <textarea placeholder="填写课程介绍"></textarea>
-        </label>
-        <label class="pone_one" for>
-          <span>课程图片</span>
-          <el-upload
-            class="upload-demo"
-            action="string"
-            ref="upload"
-            :http-request="addAttachment"
-            drag
-            multiple
-          >
-            <img :src="classImg" alt>
-            <i class="el-icon-upload"></i>
-            <div class="el-upload__text">
-              将文件拖到此处，或
-              <em>点击上传</em>
-            </div>
-          </el-upload>
-        </label>
-        <label class="pone_one" for>
-          <span>课程勋章</span>
-          <el-upload
-            class="upload-demo"
-            ref="upload"
-            action="string"
-            :http-request="addAttachmentMedal"
-            drag
-            multiple
-          >
-            <img :src="classMedalImg" alt>
-            <i class="el-icon-upload"></i>
-            <div class="el-upload__text">
-              将文件拖到此处，或
-              <em>点击上传</em>
-            </div>
-          </el-upload>
-        </label>
-        <label for class="class_list">
-          <span>课程介绍</span>
-          <el-upload
-            action="string"
-            ref="upload"
-            list-type="picture-card"
-            :http-request="addAttachmentList"
-            :on-preview="handlePictureCardPreview"
-            :on-remove="handleRemovelist"
-            :file-list="classListDetail"
-            :multiple="true"
-            :limit="3"
-            :on-exceed="onExceed"
-            :before-upload="beforeAvatarUpload"
-            accept="image/png, image/jpeg"
-            class="photo"
-          >
-            <i class="el-icon-plus"></i>
-          </el-upload>
+              <img :src="classImg" alt>
+              <i class="el-icon-upload"></i>
+              <div class="el-upload__text">
+                将文件拖到此处，或
+                <em>点击上传</em>
+              </div>
+            </el-upload>
+          </label>
+          <label class="pone_one" for>
+            <span>课程勋章</span>
+            <el-upload
+              class="upload-demo"
+              ref="upload"
+              action="string"
+              :http-request="addAttachmentMedal"
+              drag
+              multiple
+            >
+              <img :src="classMedalImg" alt>
+              <i class="el-icon-upload"></i>
+              <div class="el-upload__text">
+                将文件拖到此处，或
+                <em>点击上传</em>
+              </div>
+            </el-upload>
+          </label>
+          <label for class="class_list">
+            <span>课程介绍</span>
+            <el-upload
+              action="string"
+              ref="upload"
+              list-type="picture-card"
+              :http-request="addAttachmentList"
+              :on-preview="handlePictureCardPreview"
+              :on-remove="handleRemovelist"
+              :file-list="classListDetail"
+              :multiple="true"
+              :limit="3"
+              :on-exceed="onExceed"
+              :before-upload="beforeAvatarUpload"
+              accept="image/png, image/jpeg"
+              class="photo"
+            >
+              <i class="el-icon-plus"></i>
+            </el-upload>
 
-          <el-dialog :visible.sync="dialogVisible">
-            <img width="100%" :src="dialogImageUrl" alt>
-          </el-dialog>
-        </label>
-      </form>
-      <button class="tijiao" @click="submitProject">确定</button>
+            <el-dialog :visible.sync="dialogVisible">
+              <img width="100%" :src="dialogImageUrl" alt>
+            </el-dialog>
+          </label>
+        </form>
+        <button class="tijiao" @click="submitProject">确定</button>
+      </div>
     </div>
   </div>
 </template>
@@ -194,7 +196,7 @@ export default {
       selectedOptions: [],//存放默认值
       options:options,   //存放城市数据
       ageList:[
-          { 
+          {
             value: "1",
             label: "5-6"
           },
@@ -213,7 +215,7 @@ export default {
       ],
       ageData: '',//年龄段
       curriculumList:[
-          { 
+          {
             value: "1",
             label: "基础足球课"
           },
@@ -232,7 +234,7 @@ export default {
       ],
       curriculumData: '',
       curriculumStatusList:[
-         { 
+         {
             value: "1",
             label: "未开课(试听、课程)"
           },
@@ -243,7 +245,7 @@ export default {
           {
             value: "3",
             label: "已结束"
-          } 
+          }
       ],
       curriculumStatusData: '',
       classBeginsTime: '',//上课时间
@@ -295,7 +297,7 @@ export default {
       this.$message.error("最多添加三张图片");
     },
     /**@图片格式判断 */
-    beforeAvatarUpload(file){ 
+    beforeAvatarUpload(file){
       const isJPG = file.type === "image/jpeg"
       const isPng = file.type === "image/png"
       if (!isJPG && !isPng) {
@@ -312,7 +314,7 @@ export default {
     VerificationData(){
         document.getElementsByTagName("input").each(element => {
             console.log(element)
-            
+
         });
     },
     handleChange(value) {
@@ -340,166 +342,159 @@ export default {
   .class_main {
     padding: 0.39rem 0 0;
     height: calc(100% - 3.2%);
-    form {
-      overflow: hidden;
-      width: calc(100% - 2.32rem);
-      display: flex;
-      flex-wrap: wrap;
-      input {
-        border: 1px solid #dddfe1;
-        height: 0.49rem;
-        float: left;
-        font-size: 18%;
-        padding: 0 0.19rem;
-        width: 70%;
-        margin-left: 0.05rem;
-      }
-      label {
-        margin-bottom: 0.24rem;
-        display: block;
-        float: left;
-        margin-right: 0.44rem;
-        width: 21%;
-        font-size: 70%;
-        color: #464a53;
-        .el-select {
+    overflow: hidden;
+    .ScrollY{
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      form {
+        overflow: hidden;
+        width: calc(100% - 2.32rem);
+        display: flex;
+        flex-wrap: wrap;
+        input {
+          border: 1px solid #dddfe1;
+          height: 0.49rem;
+          float: left;
+          font-size: 18%;
+          padding: 0 0.19rem;
           width: 70%;
-          .el-input.is-focus .el-input__inner,
-          .el-input__inner:focus {
-            border-color: #dddfe1;
-          }
-          .el-input__icon {
-            line-height: 0 !important;
-          }
-          /*下拉框*/
-          .el-input__inner {
-            padding: 0 0.45rem;
-            width: 100%;
-            padding-left: 10%;
-          }
+          margin-left: 0.05rem;
         }
-        .el-input__suffix-inner {
-          line-height: 0.49rem;
-        }
-        .el-date-editor.el-input{
+        label {
+          margin-bottom: 0.2rem;
+          display: block;
+          float: left;
+          margin-right: 0.44rem;
+          width: 21%;
+          font-size: 70%;
+          color: #464a53;
+          .el-select {
+            width: 70%;
+            .el-input.is-focus .el-input__inner,
+            .el-input__inner:focus {
+              border-color: #dddfe1;
+            }
+            .el-input__icon {
+              line-height: 0 !important;
+            }
+            /*下拉框*/
+            .el-input__inner {
+              padding: 0 0.45rem;
+              width: 100%;
+              padding-left: 10%;
+            }
+          }
+          .el-input__suffix-inner {
+            line-height: 0.49rem;
+          }
+          .el-date-editor.el-input{
             width: 100%;
             position: static;
             display: block;
-        }
-        .el-icon-date{
+          }
+          .el-icon-date{
             display: none;
+          }
         }
-      }
-      label > span {
-        width: 28%;
-        height: 0.49rem;
-        line-height: 0.49rem;
-        display: block;
-        float: left;
-        color: #464a53;
-        font-size: 70%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-      .class_introduction {
-        width: 91.3%;
-        display: flex;
-        span {
-          width: 6.7%;
+        label > span {
+          width: 28%;
+          height: 0.49rem;
+          line-height: 0.49rem;
+          display: block;
+          float: left;
+          color: #464a53;
+          font-size: 70%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
-        textarea {
-          width: 80%;
-          height: 1.04rem;
-          border: 1px solid #dddfe1;
-          font-size: 0.14rem;
-          padding: 0.1rem;
+        .class_introduction {
+          width: 91.3%;
+          display: flex;
+          span {
+            width: 6.7%;
+          }
+          textarea {
+            width: 80%;
+            height: 1.04rem;
+            border: 1px solid #dddfe1;
+            font-size: 0.14rem;
+            padding: 0.1rem;
+          }
         }
-      }
-      .class_city {
-        width: 91.3%;
-        display: flex;
-        .el-cascader{
+        .class_city {
+          width: 91.3%;
+          display: flex;
+          .el-cascader{
             width: 25%;
-        }
-        .el-select {
-          width: 10%;
-          margin-right: 1%;
-        }
-        input {
-          width: 100%;
-        }
-      }
-      .class_city > span {
-        width: 6.4%;
-      }
-      .pone_one {
-        width: 40%;
-        .el-upload-list {
-          display: none !important;
-        }
-        .el-upload-dragger {
-          img {
+          }
+          .el-select {
+            width: 10%;
+            margin-right: 1%;
+          }
+          input {
             width: 100%;
           }
         }
-      }
-      .pone_one > span {
-        width: 15%;
-      }
-      .class_list {
-        width: 100%;
-        .el-upload-list--picture-card,
-        .el-upload-list__item-status-label {
-          top: -0.02rem;
-          right: -0.6rem;
-          width: 40%;
-          height: 20%;
+        .class_city > span {
+          width: 6.4%;
         }
-      }
-      .class_list > span {
-        width: 6.2%;
-      }
-    }
-    .tijiao {
-      display: block;
-      width: 1.71rem;
-      height: 0.39rem;
-      line-height: 0.39rem;
-      background: rgba(127, 99, 244, 1);
-      border-radius: 3px;
-      left: 4.86rem;
-      color: #fff;
-      font-size: 0.18rem;
-      margin: 0 auto;
-      cursor: pointer;
-    }
-    .activelyOne-right {
-      position: absolute;
-      top: 0.52rem;
-      right: 0.45rem;
-      .app-show {
-        width: 5.25rem;
-        height: 8.5rem;
-        padding: 0.53rem 0.315rem 0.21rem 0.315rem;
-        box-sizing: border-box;
-        background: #d3d3d3;
-        .app-box {
-          width: 100%;
-          height: 100%;
-          background: #fff;
-          overflow: hidden;
-          overflow-y: scroll;
-          .app-tit {
-            width: 100%;
-            height: 20px;
+        .pone_one {
+          width: 40%;
+          .el-upload-list {
+            display: none !important;
+          }
+          .el-upload-dragger {
             img {
               width: 100%;
-              height: 100%;
-              display: block;
             }
           }
         }
+        .pone_one > span {
+          width: 15%;
+        }
+        .class_list {
+          width: 100%;
+          .el-upload-list--picture-card,
+          .el-upload-list__item-status-label {
+            top: -0.02rem;
+            right: -0.6rem;
+            width: 40%;
+            height: 20%;
+          }
+        }
+        .class_list > span {
+          width: 6.2%;
+        }
+      }
+      .tijiao {
+        display: block;
+        width: 1.71rem;
+        height: 0.39rem;
+        line-height: 0.39rem;
+        background: rgba(127, 99, 244, 1);
+        border-radius: 3px;
+        left: 4.86rem;
+        color: #fff;
+        font-size: 0.18rem;
+        margin: 0 auto;
+        cursor: pointer;
+      }
+      &::-webkit-scrollbar {/*滚动条整体样式*/
+        width: 10px;     /*高宽分别对应横竖滚动条的尺寸*/
+        height: 4px;
+      }
+      &::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+        border-radius: 5px;
+        -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+        background: RGBA(243, 243, 243, 1);
+      }
+      &::-webkit-scrollbar-track {/*滚动条里面轨道*/
+        -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+        border-radius: 8px;
+        background: rgba(0,0,0,0.1);
+        display: none;
       }
     }
   }

@@ -10,75 +10,78 @@
           </div>
         </div>
         <div class="NewWords">
-          <table>
-            <tr>
-              <td class="One">
-                <label for="">场地名称</label>
-                <el-input v-model="ChangName" placeholder="请输入场地名称"></el-input>
-                <label for="">场地状态</label>
-                <el-select v-model="value" placeholder="请选择" popper-class="shenqi">
-                  <el-option
-                    v-for="item in changStatus"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </td>
+          <div class="WordsScroll">
 
-              <td class="Two">
-                <label for="">场地租金</label>
-                <el-input v-model="ChangName" placeholder="请填写场地租金"></el-input>
-                元/小时
-                <label for="" class="LeftM">包场租金</label>
-                <el-input v-model="ChangName" placeholder="请填写场地租金"></el-input>
-                元/小时
-              </td>
+            <table>
+              <tr>
+                <td class="One">
+                  <label for="">场地名称</label>
+                  <el-input v-model="ChangName" placeholder="请输入场地名称"></el-input>
+                  <label for="">场地状态</label>
+                  <el-select v-model="value" placeholder="请选择" popper-class="shenqi">
+                    <el-option
+                      v-for="item in changStatus"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </td>
 
-              <td class="Three">
-                <label for="">详细地址</label>
-                <el-cascader
-                  :options="options"
-                  v-model="selectedOptions"
-                  @change="handleChange"
-                  :separator="' '"
-                >
-                </el-cascader>
-                <el-input v-model="ChangName" placeholder="请填写详细地址" class="xiangxiAddress"></el-input>
-              </td>
-              <td>
-                <label for="">场地介绍</label>
+                <td class="Two">
+                  <label for="">场地租金</label>
+                  <el-input v-model="ChangName" placeholder="请填写场地租金"></el-input>
+                  元/小时
+                  <label for="" class="LeftM">包场租金</label>
+                  <el-input v-model="ChangName" placeholder="请填写场地租金"></el-input>
+                  元/小时
+                </td>
 
-                <el-input
-                  type="textarea"
-                  autosize
-                  :autosize="{ minRows: 12,maxRows:17}"
-                  placeholder="请输入内容"
-                  v-model="changJan">
-                </el-input>
-              </td>
-              <td>
-                <label for="">场地图片</label>
-                <el-upload
-                  class="photo"
-                  action="string"
-                  ref="upload"
-                  :http-request="addAttachment"
-                  drag
-                >
-                  <img :src="classImg" alt="">
-                  <i class="el-icon-upload"></i>
-                  <div class="el-upload__text">
-                    将文件拖到此处，或
-                    <em>点击上传</em>
-                  </div>
-                </el-upload>
-              </td>
-              <td style="height: .4rem;position: relative" class="bcBox">
-                <el-button type="primary" class="Pub_But">主要按钮</el-button>
-              </td>
-            </tr>
-          </table>
+                <td class="Three">
+                  <label for="">详细地址</label>
+                  <el-cascader
+                    :options="options"
+                    v-model="selectedOptions"
+                    @change="handleChange"
+                    :separator="' '"
+                  >
+                  </el-cascader>
+                  <el-input v-model="ChangName" placeholder="请填写详细地址" class="xiangxiAddress"></el-input>
+                </td>
+                <td>
+                  <label for="">场地介绍</label>
+
+                  <el-input
+                    type="textarea"
+                    autosize
+                    :autosize="{ minRows: 12,maxRows:17}"
+                    placeholder="请输入内容"
+                    v-model="changJan">
+                  </el-input>
+                </td>
+                <td>
+                  <label for="">场地图片</label>
+                  <el-upload
+                    class="photo"
+                    action="string"
+                    ref="upload"
+                    :http-request="addAttachment"
+                    drag
+                  >
+                    <img :src="classImg" alt="">
+                    <i class="el-icon-upload"></i>
+                    <div class="el-upload__text">
+                      将文件拖到此处，或
+                      <em>点击上传</em>
+                    </div>
+                  </el-upload>
+                </td>
+                <td style="height: .4rem;position: relative" class="bcBox">
+                  <el-button type="primary" class="Pub_But">主要按钮</el-button>
+                </td>
+              </tr>
+            </table>
+          </div>
 
         </div>
       </section>
@@ -181,60 +184,97 @@
       .NewWords{
         width: 100%;
         height: 87%;
-        table{
+        overflow: hidden;
+        .WordsScroll{
           width: 100%;
-          height:100%;
-          tr{
-            td{
-              margin-bottom:.18rem;
-              display: flex;
-              align-items: center;
-              padding-left: .3rem;
-              label{
-                margin-right: .18rem;
-                white-space: nowrap;
-              }
-              .photo{
-                img{
-                  width:100%;
-                  height:100%;
+          height: 100%;
+          overflow-x: hidden;
+          overflow-y: scroll;
+          table{
+            width: 100%;
+            height:100%;
+            tr{
+              td{
+                margin-bottom:.18rem;
+                display: flex;
+                align-items: center;
+                padding-left: .3rem;
+                label{
+                  margin-right: .18rem;
+                  white-space: nowrap;
                 }
-                .el-upload-list{
-                  display: none;
+                .photo{
+                  img{
+                    width:100%;
+                    height:100%;
+                  }
+                  .el-upload-list{
+                    display: none;
+                  }
+                }
+                textarea{
+                  width: 50%;
+                  &::-webkit-scrollbar {/*滚动条整体样式*/
+                    width: 10px;     /*高宽分别对应横竖滚动条的尺寸*/
+                    height: 4px;
+                  }
+                  &::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+                    border-radius: 5px;
+                    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+                    background: RGBA(243, 243, 243, 1);
+                  }
+                  &::-webkit-scrollbar-track {/*滚动条里面轨道*/
+                    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+                    border-radius: 8px;
+                    background: rgba(0,0,0,0.1);
+                    display: none;
+                  }
                 }
               }
-              textarea{
-                width: 50%;
+              .One{
+                .el-input{
+                  width: 2.76rem;
+                  margin-right: 1.18rem;
+                }
               }
-            }
-            .One{
-              .el-input{
-                width: 2.76rem;
-                margin-right: 1.18rem;
+              .Two{
+                .el-input{
+                  width: 2.34rem;
+                  margin-right: .13rem;
+                }
+                .LeftM{
+                  margin-left:1rem;
+                }
               }
-            }
-            .Two{
-              .el-input{
-                width: 2.34rem;
-                margin-right: .13rem;
+              .Three{
+                .xiangxiAddress{
+                  width: 4.8rem;
+                  margin-left:.2rem;
+                }
               }
-              .LeftM{
-                margin-left:1rem;
-              }
-            }
-            .Three{
-              .xiangxiAddress{
-                width: 4.8rem;
-                margin-left:.2rem;
-              }
-            }
-            .bcBox{
+              .bcBox{
                 .Pub_But{
                   position: absolute;
                   left: 40%;
                   top: 150%;
                 }
+              }
             }
+          }
+          &::-webkit-scrollbar {/*滚动条整体样式*/
+            width: 10px;     /*高宽分别对应横竖滚动条的尺寸*/
+            height: 4px;
+          }
+          &::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+            border-radius: 5px;
+            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+            background: RGBA(243, 243, 243, 1);
+          }
+          &::-webkit-scrollbar-track {/*滚动条里面轨道*/
+            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+            border-radius: 8px;
+            background: rgba(0,0,0,0.1);
+            display: none;
           }
         }
       }
