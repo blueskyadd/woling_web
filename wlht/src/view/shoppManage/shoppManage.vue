@@ -2,7 +2,7 @@
   <div class="wl_ShoppMan_list" v-if="isshopEdit">
     <div class="ShoppMan_head_addIcon">
       <span @click="goaddshopDetail">
-        <img src="../../assets/img/add.png" alt>添加会员
+        <img src="../../assets/img/add.png" alt>添加
       </span>
     </div>
     <!--表格部分-->

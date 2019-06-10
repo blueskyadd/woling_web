@@ -7,10 +7,10 @@
     </header>
     <div class="class_main">
       <div class="ScrollY">
-        <form action method="post">
+        <form action method="post" id="formData">
           <label>
             <span>课程名称</span>
-            <input placeholder="请填写课程名称" type="text" id="name">
+            <input placeholder="请填写课程名称" type="text" >
           </label>
           <label>
             <span>年龄段</span>
@@ -36,15 +36,15 @@
           </label>
           <label>
             <span>上课人数</span>
-            <input placeholder="请填写上课人数" type="number" id="name">
+            <input placeholder="请填写上课人数" type="number">
           </label>
           <label>
             <span>课程价格</span>
-            <input placeholder="请填写课程价格" type="number" id="name">
+            <input placeholder="请填写课程价格" type="number">
           </label>
           <label>
             <span>课时</span>
-            <input placeholder="请填写课时" type="number" id="name">
+            <input placeholder="请填写课时" type="number">
           </label>
           <label>
             <span>教练</span>
@@ -307,15 +307,26 @@ export default {
     },
     //表单提交
     submitProject() {
-      console.log(document.getElementsByTagName("input")[2].value);
       this.VerificationData()
+      console.log(this.getElements('formData'));
     },
     //数据校验
     VerificationData(){
-        document.getElementsByTagName("input").each(element => {
-            console.log(element)
-
-        });
+      for(let i = 0 ; i < this.getElements('formData').length; i++){  
+        if(!this.getElements('formData')[i]){
+          this.$message({ message: '请完善您的信息', type: 'warning'});
+          return false
+        }
+      }
+    },
+    getElements(formId) {    
+        var form = document.getElementById(formId);    
+        var elements = new Array();    
+        var tagElements = form.getElementsByTagName('input');    
+        for (var j = 0; j < tagElements.length; j++){ 
+            elements.push(tagElements[j].value);
+        }  
+        return elements;    
     },
     handleChange(value) {
     console.log(value);
@@ -371,6 +382,7 @@ export default {
           width: 21%;
           font-size: 70%;
           color: #464a53;
+          font-weight: 700;
           .el-select {
             width: 70%;
             .el-input.is-focus .el-input__inner,

@@ -10,6 +10,7 @@
         </div>
       </div>
       <div class="NewWords">
+        <form id="formData">
         <table>
           <tr>
             <td class="One">
@@ -78,11 +79,11 @@
               </el-dialog>
             </td>
             <td style="height: .4rem;position: relative" class="bcBox">
-              <el-button type="primary" class="Pub_But">主要按钮</el-button>
+              <el-button type="primary" class="Pub_But" @click="submit">保存</el-button>
             </td>
           </tr>
         </table>
-
+        </form>
       </div>
     </section>
   </div>
@@ -176,7 +177,29 @@
         },
         goPullManage(){
           this.$parent.isPullEdit = true
-        }
+        },
+        submit(){
+          this.VerificationData()
+          console.log(this.getElements('formData'))
+        },
+        //数据校验
+        VerificationData(){
+          for(let i = 0 ; i < this.getElements('formData').length-1; i++){  
+            if(!this.getElements('formData')[i]){
+              this.$message({ message: '请完善您的信息', type: 'warning'});
+              return false
+            }
+          }
+        },
+        getElements(formId) {    
+            var form = document.getElementById(formId);    
+            var elements = new Array();    
+            var tagElements = form.getElementsByTagName('input');    
+            for (var j = 0; j < tagElements.length; j++){ 
+                elements.push(tagElements[j].value);
+            }  
+            return elements;    
+        },
       }
     }
 </script>
@@ -231,6 +254,7 @@
               label{
                 margin-right: .18rem;
                 white-space: nowrap;
+               font-size: .18rem;
               }
               .photo{
                 img{

@@ -62,7 +62,7 @@
           currentPage: 1,
           perPage: 10,
           activelyNumber:1,
-          isLoading: false
+          isLoading: true
         };
       },
       methods: {
@@ -84,7 +84,16 @@
             return "color:#ABAFB3";
           }
         },
-           
+        getUserList(){
+          this.$http.get(this.$conf.env.userList).then( res =>{
+            this.isLoading = false
+          }).catch(err =>{
+            this.isLoading = false
+          })
+        }
+      },
+      mounted() {
+        this.getUserList()
       },
     }
 </script>

@@ -6,18 +6,18 @@
       </span>
     </header>
     <div class="per_main">
-      <form action method="post">
+      <form action method="post" id="formData">
         <label>
           <span>员工姓名</span>
-          <input placeholder="请填写员工姓名" type="text" id="name">
+          <input placeholder="请填写员工姓名" type="text">
         </label>
         <label>
           <span>工号</span>
-          <input placeholder="请填写工号" type="text" id="name">
+          <input placeholder="请填写工号" type="text">
         </label>
         <label class="sex_list">
           <span>性别</span>
-          <el-select popper-class="per_selete_list" v-model="value" placeholder="请选择性别">
+          <el-select popper-class="per_selete_list" v-model="classSex" placeholder="请选择性别">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -41,31 +41,31 @@
           <span>职位</span>
           <el-select popper-class="per_selete_list" v-model="value" placeholder="请选择职位">
             <el-option
-              v-for="item in options"
+              v-for="item in classPosition"
               :key="item.value"
-              :label="item.label"
+              :label="item.value"
               :value="item.value"
-            ></el-option>
+            >{{item.label}}</el-option>
           </el-select>
         </label>
         <label>
           <span>联系电话</span>
-          <input placeholder="请填写联系电话" type="number" id="name">
+          <input placeholder="请填写联系电话" type="number" >
         </label>
         <label class="email_list">
           <span>电子邮箱</span>
-          <input placeholder="请填写邮箱" type="number" id="name">
+          <input placeholder="请填写邮箱" type="email">
         </label>
         <label>
           <span>微信账号</span>
-          <input placeholder="请填写微信账号" type="number" id="name">
+          <input placeholder="请填写微信账号" type="number" >
         </label>
         <label class="perStatus">
           <span>员工状态</span>
           <el-select popper-class="per_selete_list" v-model="perStatusData" placeholder="请选择状态">
             <el-option
               v-for="item in perStatusList"
-              :key="item.value"
+              :key="item.label"
               :label="item.label"
               :value="item.value"
             ></el-option>
@@ -115,11 +115,12 @@
               将文件拖到此处，或
               <em>点击上传</em>
             </div>
+            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
           </el-upload>
         </label>
         <label class="class_introduction">
           <span>课程介绍</span>
-          <textarea placeholder="填写课程介绍"></textarea>
+          <textarea placeholder="填写课程介绍" v-model="classIntroduction"></textarea>
         </label>
       </form>
       <button class="tijiao" @click="submitProject">确定</button>
@@ -135,18 +136,47 @@ export default {
       options: [
         {
           value: "1",
-          label: "a"
+          label: "男"
         },
         {
           value: "2",
-          label: "b"
+          label: "女"
         }
       ],
+      classPosition:[
+        {
+          label:'教练员',
+          value: '1'
+        },
+        {
+          label:'总教练',
+          value: '2'
+        },
+        {
+          label:'教务老师',
+          value: '3'
+        },
+        {
+          label:'文员',
+          value: '4'
+        },
+        {
+          label:'新媒体运营',
+          value: '5'
+        },
+        {
+          label:'总经理',
+          value: '6'
+        },
+        {
+          label:'课程顾问',
+          value: '7'
+        },
+      ],  
       value: "",
       classImg: "",
       classImgFile: "",
       classMedalImg: "", //勋章图片路径
-      classMedalImgFile: "", //
       dialogVisible: false,
       dialogImageUrl: "",//预览图片
       classListDetail: [],
@@ -167,7 +197,9 @@ export default {
       perStatusData: '',
       QuitTime:'0',
       EntryTime:'',
-      BecomeTime: ''
+      BecomeTime: '',
+      classIntroduction: '',//课程介绍
+      classSex: '',//性别
 
 
     };
@@ -186,11 +218,6 @@ export default {
       this.baseImg(params.file, true);
     },
 
-    //课程勋章上传
-    addAttachmentMedal(params) {
-      this.classMedalImgFile = params.file;
-      this.baseImg(params.file, false);
-    },
     //课程介绍图片上传
     addAttachmentList(params) {
       console.log(params);
@@ -205,7 +232,7 @@ export default {
         let obj = {};
         obj.url = "data:image/jpeg;base64," + arr[1];
         obj.image = files;
-        flag ? (this.classImg = obj.url) : (this.classMedalImg = obj.url);
+        this.classImg = obj.url;
       };
     },
     /**@name图片删除 */
@@ -227,17 +254,40 @@ export default {
     },
     //表单提交
     submitProject() {
-      console.log(document.getElementsByTagName("input")[2].value);
-      this.VerificationData()
+      if(!this.VerificationData()) return
+      console.log(this.getElements('formData'))
+      
     },
     //数据校验
     VerificationData(){
-        document.getElementsByTagName("input").each(element => {
-            console.log(element)
-            
-        });
+      for(let i =0 ; i < this.getElements('formData').length - 2; i++){
+        if(!this.getElements('formData')[i]  || !this.classImgFile || !this.classIntroduction){
+          this.$message({ message: '请完善您的信息', type: 'warning'});
+          return false
+        }
+      var myreg = /^0?(13[0-9]|14[5-9]|15[012356789]|166|17[0-8]|18[0-9]|19[8-9])[0-9]{8}$/;
+      var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");   
+        if (!myreg.test(this.getElements('formData')[5])) {
+            this.$message({ message: '请填写正确的手机号', type: 'warning'});
+            return false
+        }else if(!reg.test(this.getElements('formData')[6])){
+            this.$message("请填写正确的邮箱地址")
+            return
+        }else{
+          return true
+        }
+        
+      }
     },
-
+    getElements(formId) {    
+        var form = document.getElementById(formId);    
+        var elements = new Array();    
+        var tagElements = form.getElementsByTagName('input');    
+        for (var j = 0; j < tagElements.length; j++){ 
+            elements.push(tagElements[j].value);
+        }  
+        return elements;    
+    },
     close(){
         this.$parent.isperManage = true
     }
@@ -285,6 +335,7 @@ export default {
         width: 21%;
         font-size: 70%;
         color: #464a53;
+        font-weight: 700;
         .el-select {
           width: 70%;
           .el-input.is-focus .el-input__inner,

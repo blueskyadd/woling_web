@@ -2,7 +2,7 @@
   <div class="wl_PullRe_list" v-if="isPullEdit">
     <div class="PullRe_head_addIcon">
       <span @click="gopullDetail">
-        <img src="../../assets/img/add.png" alt>添加会员
+        <img src="../../assets/img/add.png" alt>添加
       </span>
     </div>
     <!--表格部分-->

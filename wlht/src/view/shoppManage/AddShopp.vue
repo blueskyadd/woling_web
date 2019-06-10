@@ -10,6 +10,7 @@
         </div>
       </div>
       <div class="NewWords">
+        <form action="" id="formData">
         <table>
           <tr>
             <td class="One">
@@ -28,7 +29,7 @@
             </td>
             <td class="Two">
               <label for="">商品单价</label>
-              <el-input v-model="ReName" placeholder="请输入场地名称"></el-input>
+              <el-input v-model="ReName1" placeholder="请输入场地名称"></el-input>
               <label for="">商品分类</label>
               <el-select v-model="value" placeholder="请选择" popper-class="shenqi">
                 <el-option
@@ -40,13 +41,13 @@
                 </el-option>
               </el-select>
               <label for="">商品数量</label>
-              <el-input v-model="ReName" placeholder="请输入场地名称"></el-input>
+              <el-input v-model="ReName2" placeholder="请输入场地名称"></el-input>
 
             </td>
             <td class="Three">
 
               <div class="Left">
-                <label for="">热点图片</label>
+                <label for="">商品封面</label>
                 <el-upload
                   class="photo"
                   action="string"
@@ -86,10 +87,6 @@
                   <img width="100%" :src="dialogImageUrl" alt>
                 </el-dialog>
               </div>
-
-
-
-
             </td>
             <td class="Four">
               <label for="">商品介绍</label>
@@ -102,22 +99,20 @@
               </el-input>
             </td>
             <td style="height: .4rem;position: relative" class="bcBox">
-              <el-button type="primary" class="Pub_But">主要按钮</el-button>
+              <el-button type="primary" class="Pub_But"  @click="submit">保存</el-button>
             </td>
           </tr>
         </table>
-
+        </form>
       </div>
     </section>
   </div>
 </template>
-
-
 <script>
     export default {
         name: "AddShopp",
       data(){
-        return{
+        return{ 
           ReName:'',    //场地名称
           changStatus: [{
             value: '选项1',
@@ -140,8 +135,6 @@
 
           classImgFile:"",
           classImg:"",
-
-
           classListDetail:[],
           dialogImageUrl: "",//预览图片
           dialogVisible: false,
@@ -202,7 +195,29 @@
         },
         goshopManage(){
           this.$parent.isshopEdit = true
-        }
+        },
+         submit(){
+          this.VerificationData()
+          console.log(this.getElements('formData'))
+        },
+        //数据校验
+        VerificationData(){
+          for(let i = 0 ; i < this.getElements('formData').length-1; i++){  
+            if(!this.getElements('formData')[i]){
+              this.$message({ message: '请完善您的信息', type: 'warning'});
+              return false
+            }
+          }
+        },
+        getElements(formId) {    
+            var form = document.getElementById(formId);    
+            var elements = new Array();    
+            var tagElements = form.getElementsByTagName('input');    
+            for (var j = 0; j < tagElements.length; j++){ 
+                elements.push(tagElements[j].value);
+            }  
+            return elements;    
+        },
       }
     }
 </script>
@@ -257,6 +272,7 @@
               label{
                 margin-right: .18rem;
                 white-space: nowrap;
+                font-size: .18rem;
               }
               .photo{
                 img{

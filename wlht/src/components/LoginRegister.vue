@@ -13,10 +13,10 @@
             <el-input v-model="password" placeholder="密码" show-password></el-input>
           </div>
           <div class="jizhu_Pas">
-            <span class="jizhu_k active"></span>
+            <span @click="rememberPassword = !rememberPassword" :class="rememberPassword ? 'active jizhu_k' : 'jizhu_k'"></span>
             <span class="juzhu_W">记住密码</span>
           </div>
-          <div class="Login">登录</div>
+          <div class="Login"  @click="LoginDown()">登录</div>
           <span class="wangji" @click="changeAA">忘记密码</span>
         </div>
         <div class="Register_Init" :class="!AA?'':'activeb'">
@@ -30,7 +30,7 @@
           <div class="username_Box YZM_Box">
             <div class="ImageBox_YZ"></div>
             <el-input v-model="YZM" placeholder="验证码"></el-input>
-            <div class="Get_YZM">获取验证码</div>
+            <div class="Get_YZM" @click="isTimeDown && setTime()">{{isTimeDown ? '获取验证码': timeDown}}</div>
           </div>
           <div class="username_Box">
             <div class="ImageBox_Pas"></div>
@@ -40,8 +40,8 @@
             <div class="ImageBox_Pas"></div>
             <el-input v-model="OKPas" placeholder="确认密码" show-password></el-input>
           </div>
+          <div  @click="LoginSubmit"  :class="!AA?'Login':'activeb Login'">确定</div>
 
-          <div class="Login">登录</div>
         </div>
     </div>
 </template>
@@ -52,11 +52,14 @@ import store from "../store/index.js"
         name: "LoginRegister",
       data() {
         return {
-          username: '',
-          password:'',
+          username: 'hllyzms',
+          password:'asd123456',
           YZM:'',
           NewPas:'',
           OKPas:'',
+          timeDown: 60,
+          isTimeDown: true,
+          rememberPassword: false,
           AA: this.$store.state.isEditOut ,
         }
       },
@@ -76,6 +79,123 @@ import store from "../store/index.js"
         },
         changeAAs(){
           this.AA = true
+        },
+        isLoading(){
+            
+        },
+        setTime(){
+          this.isTimeDown = false
+          this.Countdown()
+          this.getCode()
+        },
+        Countdown(){
+          var that = this
+          if(this.timeDown == 50){
+            window.clearTimeout()
+            this.isTimeDown = true
+            return false
+          }
+          setTimeout(()=>{
+            that.timeDown -=1
+            that.Countdown()
+          },1000)
+        },
+        LoginDown(){
+          const loading = this.$loading({
+              lock: true,
+              text: 'Loading',
+              spinner: 'el-icon-loading',
+              background: 'rgba(0, 0, 0, 0.7)'
+            });
+          console.log(this.username, this.password)
+          var params={
+            'username': this.username,
+            'password': this.password,
+            'remember': this.rememberPassword
+          }
+          console.log(params)
+
+          this.$http.post(this.$conf.env.loginWeb , params).then( res =>{
+            if(res.status == '201'){
+                 loading.close()
+              if(res.data.token){
+                sessionStorage.setItem('jp_token', res.data.token)
+                this.$router.push({name:"memberManagement"})
+              }
+            }else{
+                loading.close()
+                this.$message({
+                  message: res.data.msg,
+                  type: 'warning'
+                });
+              }
+          }).catch(err =>{
+            loading.close()
+            this.$message({
+              message: '网络错误',
+              duration:1000,
+              type: 'warning'
+            });
+          })
+        },
+        /**@name 获取短信验证码 */
+        getCode(){
+          if(!this.VerificationData) return
+          var params={
+            'username': this.username
+          }
+          this.$http.post(this.$conf.env.getCode, params).then(res =>{
+            if(res.status == '200'){
+            }
+            
+          }).catch(err =>{
+            console.log(err)
+          })
+        },
+
+        /**@name手机号验证 */
+        VerificationData(){
+           var myreg = /^0?(13[0-9]|14[5-9]|15[012356789]|166|17[0-8]|18[0-9]|19[8-9])[0-9]{8}$/;
+            if (!this.username) {
+                this.$message({ message: '请填写正确的手机号', type: 'warning'});
+                return false
+            }else{
+              return true
+            }
+        },
+        LoginSubmit(){
+          const loading = this.$loading({
+              lock: true,
+              text: 'Loading',
+              spinner: 'el-icon-loading',
+              background: 'rgba(0, 0, 0, 0.7)'
+            });
+          console.log(this.username, this.password)
+          var params={
+            'username': this.username,
+            'code': this.YZM,
+            'password': this.NewPas,
+            'password1': this.OKPas
+          }
+          console.log(params)
+          this.$http.post(this.$conf.env.setPassWord , params).then( res =>{
+            if(res.status == '201'){
+                loading.close()
+              if(res.data.token){
+                sessionStorage.setItem('jp_token', res.data.token)
+                this.$router.push({name:"memberManagement"})
+              }
+            }else{
+                loading.close()
+                this.$message({
+                  message: res.data.msg,
+                  type: 'warning'
+                });
+              }
+          }).catch(err =>{
+             loading.close()
+            console.log(errr)
+          })
         }
       }
     }

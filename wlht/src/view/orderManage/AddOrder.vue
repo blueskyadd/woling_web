@@ -6,16 +6,17 @@
           <span>
             <img src="../../assets/img/goback.png" alt="">
           </span>
-          <span>添加主推热点</span>
+          <span>添加订单</span>
         </div>
       </div>
       <div class="NewWords">
+        <form id="formData">
         <table>
           <tr>
             <td class="One">
-              <label for="">商品名称</label>
+              <label for="">电话检索</label>
               <el-input v-model="ReName" placeholder="请输入场地名称"></el-input>
-              <label for="">商品状态</label>
+              <label for="">学生选择</label>
               <el-select v-model="value" placeholder="请选择" popper-class="shenqi">
                 <el-option
                   v-for="item in changStatus"
@@ -27,9 +28,9 @@
               </el-select>
             </td>
             <td class="Two">
-              <label for="">商品单价</label>
+              <label for="">订单类型</label>
               <el-input v-model="ReName" placeholder="请输入场地名称"></el-input>
-              <label for="">商品分类</label>
+              <label for="">课程选择</label>
               <el-select v-model="value" placeholder="请选择" popper-class="shenqi">
                 <el-option
                   v-for="item in changStatus"
@@ -39,67 +40,19 @@
                   :value="item.value">
                 </el-option>
               </el-select>
-              <label for="">商品数量</label>
+              <label for="">订单状态</label>
               <el-input v-model="ReName" placeholder="请输入场地名称"></el-input>
 
             </td>
-            <td class="Three">
-
-              <div class="Left">
-                <label for="">热点详情</label>
-                <el-upload
-                  action="string"
-                  ref="upload"
-                  list-type="picture-card"
-                  :http-request="addAttachmentList"
-                  :on-preview="handlePictureCardPreview"
-                  :on-remove="handleRemovelist"
-                  :file-list="classListDetail"
-                  :multiple="true"
-                  :limit="3"
-                  :on-exceed="onExceed"
-                  :before-upload="beforeAvatarUpload"
-                  accept="image/png, image/jpeg"
-                  class="photo"
-                >
-                  <i class="el-icon-plus"></i>
-                </el-upload>
-
-                <el-dialog :visible.sync="dialogVisible">
-                  <img width="100%" :src="dialogImageUrl" alt>
-                </el-dialog>
-              </div>
-              <div class="Right">
-                <label for="">热点详情</label>
-                <el-upload
-                  action="string"
-                  ref="upload"
-                  list-type="picture-card"
-                  :http-request="addAttachmentList"
-                  :on-preview="handlePictureCardPreview"
-                  :on-remove="handleRemovelist"
-                  :file-list="classListDetail"
-                  :multiple="true"
-                  :limit="3"
-                  :on-exceed="onExceed"
-                  :before-upload="beforeAvatarUpload"
-                  accept="image/png, image/jpeg"
-                  class="photo"
-                >
-                  <i class="el-icon-plus"></i>
-                </el-upload>
-
-                <el-dialog :visible.sync="dialogVisible">
-                  <img width="100%" :src="dialogImageUrl" alt>
-                </el-dialog>
-              </div>
-
-
-
+            <td class="One">
+              <label for="">价格&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+              <el-input v-model="ReName" placeholder="请输入场地名称"></el-input>
+              <label for="">折扣&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+              <el-input v-model="ReName" placeholder="请输入场地名称"></el-input>
 
             </td>
             <td class="Four">
-              <label for="">商品介绍</label>
+              <label for="">订单备注</label>
               <el-input
                 type="textarea"
                 autosize
@@ -109,11 +62,11 @@
               </el-input>
             </td>
             <td style="height: .4rem;position: relative" class="bcBox">
-              <el-button type="primary" class="Pub_But">主要按钮</el-button>
+              <el-button type="primary" class="Pub_But"  @click="submit">保存</el-button>
             </td>
           </tr>
         </table>
-
+        </form>
       </div>
     </section>
   </div>
@@ -210,7 +163,29 @@
         },
         goorderManage(){
           this.$parent.isorderEdit = true
-        }
+        },
+        submit(){
+          this.VerificationData()
+          console.log(this.getElements('formData'))
+        },
+        //数据校验
+        VerificationData(){
+          for(let i = 0 ; i < this.getElements('formData').length-1; i++){  
+            if(!this.getElements('formData')[i]){
+              this.$message({ message: '请完善您的信息', type: 'warning'});
+              return false
+            }
+          }
+        },
+        getElements(formId) {    
+            var form = document.getElementById(formId);    
+            var elements = new Array();    
+            var tagElements = form.getElementsByTagName('input');    
+            for (var j = 0; j < tagElements.length; j++){ 
+                elements.push(tagElements[j].value);
+            }  
+            return elements;    
+        },
       }
     }
 </script>
@@ -266,6 +241,7 @@
               label{
                 margin-right: .18rem;
                 white-space: nowrap;
+                    font-size: .18rem;
               }
               .photo{
                 img{
