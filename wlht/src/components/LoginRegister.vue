@@ -52,7 +52,7 @@ import store from "../store/index.js"
         name: "LoginRegister",
       data() {
         return {
-          username: 'hllyzms',
+          username: '17630718188',
           password:'asd123456',
           YZM:'',
           NewPas:'',
@@ -131,6 +131,7 @@ import store from "../store/index.js"
               }
           }).catch(err =>{
             loading.close()
+            console.log(err.code)
             this.$message({
               message: '网络错误',
               duration:1000,

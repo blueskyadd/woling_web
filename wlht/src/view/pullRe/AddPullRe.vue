@@ -1,5 +1,5 @@
 <template>
-  <div class="ReDian_BOx">
+  <div class="ReDian_BOx" v-loading.fullscreen.lock="isLoading">
     <section class="ChangeChang">
       <div class="header_Tit">
         <div class="Title" @click="goPullManage">
@@ -17,7 +17,7 @@
               <label for="">主推热点</label>
               <el-input v-model="ReName" placeholder="请输入场地名称"></el-input>
               <label for="">热点状态</label>
-              <el-select v-model="value" placeholder="请选择" popper-class="shenqi">
+              <el-select v-model="activelyStatus" placeholder="请选择" popper-class="shenqi">
                 <el-option
                   v-for="item in changStatus"
                   :key="item.value"
@@ -30,11 +30,12 @@
             <td class="Two">
               <label for="">活动时间</label>
               <el-date-picker
-                v-model="value6"
+                v-model="pullBeginsTime"
                 type="daterange"
                 range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期">
+                :start-placeholder="pullNewTime"
+                :end-placeholder="pullOldTime"
+                value-format="yyyy-MM-dd">
               </el-date-picker>
             </td>
             <td class="Three">
@@ -91,36 +92,34 @@
 
 <script>
     export default {
-        name: "AddPullRe",
+      name: "AddPullRe",
+      props:{
+        activelyId:{
+          type:Number,
+          required: true
+        }
+      },
       data(){
         return{
           ReName:'',    //场地名称
+          activelyStatus: '',
           changStatus: [{
-            value: '选项1',
-            label: '黄金糕'
-          }, {
-            value: '选项2',
-            label: '双皮奶'
-          }, {
-            value: '选项3',
-            label: '蚵仔煎'
-          }, {
-            value: '选项4',
-            label: '龙须面'
-          }, {
-            value: '选项5',
-            label: '北京烤鸭'
-          }],
+              value:  true,
+              label: '上架'
+            }, {
+              value: false,
+              label: '下架'
+            }],
           value: '',
-          value6:"",
-
+          pullBeginsTime:"",
           classImgFile:"",
           classImg:"",
-
-
           classListDetail:[],
           dialogImageUrl: "",//预览图片
           dialogVisible: false,
+          isLoading: false,
+          pullNewTime: '开始时间',//开始时间
+          pullOldTime:'结束时间',//结束时间
         }
       },
       methods: {
@@ -146,6 +145,17 @@
         //课程介绍图片上传
         addAttachmentList(params) {
           console.log(params);
+          let reader = new FileReader();
+          let imgFile;
+          reader.readAsDataURL(params.file);
+          reader.onload = e => {
+            imgFile = e.target.result;
+            let arr = imgFile.split(",");
+            let obj = {};
+            obj.url = "data:image/jpeg;base64," + arr[1];
+            obj.raw = params.file;
+          this.classListDetail.push(obj)
+          }
         },
 
         /**@name图片预览 */
@@ -158,8 +168,18 @@
         /**@name图片删除 */
         handleRemovelist(file, fileList){
           this.classListDetail = fileList
+          console.log('fileList',fileList);
+          if(file.id){
+            this.deleteActivelyImg(file.id)
+          }
         },
-
+        deleteActivelyImg(ID){
+          this.http.delete(this.conf.env.deleteActivelyImg + '/').then( res =>{
+            console.log(res)
+          }).catch(err =>{
+           this.message.error('网络错误');
+          })
+        },
 
         /**@文件超出个数限制 */
         onExceed() {
@@ -179,15 +199,30 @@
           this.$parent.isPullEdit = true
         },
         submit(){
-          this.VerificationData()
+          if(!this.VerificationData()) return
           console.log(this.getElements('formData'))
+          var params = new FormData()
+          params.append('name', this.getElements('formData')[0])//课程名称
+          params.append('start_time',this.getElements('formData')[2])//开始日期
+          params.append('end_time',this.getElements('formData')[3])//结束日期
+          params.append('status', this.activelyStatus)//状态 True False
+          params.append('image', this.classImgFile ? this.classImgFile : '')//封面图
+          this.classListDetail.forEach( elements =>{
+            if(!elements.id){
+              params.append('activity_image', elements.raw)//详情图列表[image,image]
+            }
+          })
+
+
         },
         //数据校验
         VerificationData(){
-          for(let i = 0 ; i < this.getElements('formData').length-1; i++){  
+          for(let i = 0 ; i < this.getElements('formData').length - 2; i++){  
             if(!this.getElements('formData')[i]){
               this.$message({ message: '请完善您的信息', type: 'warning'});
               return false
+            }else{
+              return true
             }
           }
         },
@@ -200,6 +235,44 @@
             }  
             return elements;    
         },
+        setElements(data, index){
+          var form = document.getElementById('formData');   
+          var tagElements = form.getElementsByTagName('input');
+          tagElements[index].value = data
+        },
+        getActivelyDeail(){
+          console.log(this.activelyId)
+          this.$http.get(this.$conf.env.setActivelyData + this.activelyId + '/').then( res =>{
+            if(!res.data)return 
+            this.isLoading = false
+            this.setElements(res.data.name?res.data.name : '', 0 )//课程名称
+            this.pullNewTime = res.data.start_time?res.data.start_time : ''//开始日期
+            this.pullOldTime = res.data.end_time ? res.data.end_time : ''//结束日期
+            this.pullBeginsTime = [this.pullNewTime, this.pullOldTime]
+            this.activelyStatus = res.data.status?res.data.status : ''//状态 True False
+            this.classImg = res.data.image?res.data.image : ''//封面图
+            res.data.images.forEach( elements =>{
+              elements.url = elements.image
+            })
+            this.classListDetail =  res.data.images ? res.data.images : []//详情图列表[image,image]
+          }).catch(err =>{
+            console.log(err)
+            this.isLoading = false
+            this.message.error('网络错误');
+          })
+        }
+      },
+      mounted() {
+        if(this.activelyId != -1){
+          this.isLoading = true
+          this.getActivelyDeail()
+        }
+      },
+      watch:{
+        pullBeginsTime(newData, oldData){
+          this.pullNewTime = newData[0]
+          this.pullOldTime =  newData[1]
+        }
       }
     }
 </script>

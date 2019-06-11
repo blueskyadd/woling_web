@@ -1,5 +1,5 @@
 // 开发环境配置
-const winchaingroupApi = "https://www.bmeauto.cn/";
+const winchaingroupApi = "http://94.191.15.122/";
 
 module.exports = {
 //API
@@ -14,5 +14,16 @@ module.exports = {
 
     //非会员
     userList: winchaingroupApi + 'user/staff/',//非会员
+
+    //课程
+    setClassData: winchaingroupApi + 'good/course/',//课程
+    getCoachList: winchaingroupApi +'user/coach/',//教练列表
+
+    //场地
+    setPitchData: winchaingroupApi + 'good/pitch/',//场地
+
+    //热点
+    setActivelyData: winchaingroupApi + 'good/activity/',//热点
+    deleteActivelyImg: winchaingroupApi + 'good/activity_image/',//主推热点详情图删除
 
 }

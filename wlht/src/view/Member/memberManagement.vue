@@ -52,7 +52,7 @@ export default {
   },
   methods: {
       setIndex(index){
-          if(index < 10 ){
+          if(index < 9 ){
               return '0'+ (index +1)
           }else{
              return (this.currentPage - 1) * this.perPage + index + 1
@@ -60,6 +60,7 @@ export default {
       },
        changePage(pageNumber){
         this.currentPage = pageNumber
+        this.setPageViplist()
       },
       showEdit(row) {
         row.flag = true;
@@ -81,30 +82,29 @@ export default {
 
       },
       handleClick(row){
-        console.log(row.id)
         this.vipId = row.id
-       this.isMemberEdit = false
-
+        this.isMemberEdit = false
       },
       getVipList(){
         this.isLoading = false
-        this.tableData =  [
-              {
-                  "id":2,
-                  'flag': false,
-                  "name": "张同学",
-                  "age": 8,
-                  "mobile": "176-3071-8189",
-                  "date_joined": "06/04/2019"
-              }
-          ]
-        // this.$http.get(this.$conf.env.setVipData).then( res =>{
-        //   this.isLoading = false
-        //   console.log(res)
-        // }).catch(err =>{
-        //   this.isLoading = false
-        //   console.log(err)
-        // })
+        this.$http.get(this.$conf.env.setVipData).then( res =>{
+          this.isLoading = false
+           if (res.data && res.data.length > 0) {
+              res.data.forEach(element => {
+                element.flag = false;
+              });
+              
+              this.tableData = res.data.slice(0, 10);
+            }else{
+              this.tableData = []
+            }
+        }).catch(err =>{
+          this.isLoading = false;
+          this.$message.error("网络错误");
+        })
+      },
+      setPageViplist(){
+        console.log( Math.ceil(res.data.length/10));
       }
   },
   mounted(){

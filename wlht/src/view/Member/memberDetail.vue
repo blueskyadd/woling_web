@@ -1,7 +1,7 @@
 <template>
-    <div class="wl_memberDetail">
+    <div class="wl_memberDetail" v-loading.fullscreen.lock="isLoading">
         <header @click="gomemberManage">
-            <span><img src="../../assets/img/goback.png" alt="">添加会员</span>
+            <span><img src="../../assets/img/goback.png" alt="">{{VipId == -1 ?'添加会员':'编辑会员'}}</span>
         </header>
         <div class="member_main">
             <form action="" method="post" id="formData">
@@ -48,8 +48,6 @@
                           :value="item.value">
                         </el-option>
                       </el-select>
-
-
                       <label  class="LR">保险情况</label>
                       <el-select v-model="baoxian" placeholder="请选择">
                         <el-option
@@ -93,12 +91,12 @@
                     </td>
                     <td>
                       <label for="">课程顾问</label>
-                      <el-select v-model="teacher" filterable value-key="value" @change='changeIphone' placeholder="请选择顾问老师">
+                      <el-select v-model="teacher"   @change='changeIphone' placeholder="请选择顾问老师">
                         <el-option
                           v-for="item in teacherArr"
                           :key="item.id"
                           :label="item.name"
-                          :value="item">
+                          :value="item.id">
                         </el-option>
                       </el-select>
                       <label for="" class="LR">电话</label>
@@ -106,28 +104,27 @@
                     </td>
                     <td>
                       <label for="">学校</label>
-                      <el-input placeholder="请输入学校"></el-input>
+                      <el-input v-model="scholl" placeholder="请输入学校"></el-input>
                     </td>
                     <td>
                       <label for="">家庭住址</label>
-                      <el-input  placeholder="请输入家庭住址"></el-input>
+                      <el-input v-model="city" placeholder="请输入家庭住址"></el-input>
                     </td>
                     <td>
                       <label>监护人二</label>
-                      <el-input  placeholder="请填写姓名"></el-input>
+                      <el-input v-model="phoneName" placeholder="请填写姓名"></el-input>
                       <label  class="LR">手机号</label>
-                      <el-input placeholder="请填写手机号"></el-input>
+                      <el-input v-model="phoneName_ipone" placeholder="请填写手机号"></el-input>
                     </td>
 
                     <td>
                       <label>既往病史</label>
-                      <el-input ></el-input>
+                      <el-input v-model="guomin" placeholder="请填写既往病史"></el-input>
                       <label  class="LR">过敏原</label>
-                      <el-input placeholder="请填写过敏原"></el-input>
+                      <el-input v-model="bingshi" placeholder="请填写过敏原"></el-input>
                     </td>
                   </tr>
                 </table>
-
               </div>
               <div class="Form_Bottom">
                 <label for="">个人备注</label>
@@ -161,13 +158,14 @@
 </template>
 <script>
 export default {
+    inject:['reload'],
     name: 'memberDetail',
     props:{
-    VipId:{
-      type: Number,
-      required: true
+      VipId:{
+        type: Number,
+        required: true
+      },
     },
-  },
     data(){
         return{
           name:"",     //姓名
@@ -179,33 +177,39 @@ export default {
           kapho:"",      //学籍卡号
           JHRName:"",     //监护人一
           JHRphone:"",    //监护人手机号
+          guomin: '',
+          scholl: '',
+          city: '',
+          phoneName: '',
+          phoneName_ipone: '',
+          bingshi: '',
           userImg: '',
           userImgFile: '',
           sister: [{
-            value: '0',
+            value: false,
             label: '无'
           }, {
-            value: '1',
+            value: true,
             label: '有'
           },],
           isSister: '',    //有无兄弟姐妹
 
 
           xian: [{
-            baoxian: '无',
+            baoxian: false,
             label: '无'
           }, {
-            baoxian: '有',
+            baoxian: true,
             label: '有'
           },],
           baoxian: '',    //有无保险
 
 
           seat: [{
-            value: '男',
+            value: 0,
             label: '男'
           }, {
-            value: '女',
+            value: 1,
             label: '女'
           },],
           seatVal: '',    //性别
@@ -218,7 +222,8 @@ export default {
           teacher:"",
 
           teacherPhone:"",   //选择老师后的电话
-          textarea: ''
+          textarea: '',
+          isLoading: false,//加载
 
         }
     },
@@ -259,15 +264,15 @@ export default {
           var params = new FormData()
           params.append('name', this.getElements('formData')[0])//姓名
           params.append('mobile', this.getElements('formData')[1])//手机号
-          params.append('sex' , this.getElements('formData')[11])//性别
+          params.append('sex' , this.seatVal)//性别
           params.append('birth' , this.getElements('formData')[12])//生日
           params.append('height' , this.getElements('formData')[2])//身高cm
           params.append('weight' , this.getElements('formData')[3])//体重
           params.append('nation' , this.getElements('formData')[13])//民族
           params.append('id_card' , this.getElements('formData')[14])//身份证号
-          params.append('picture' , this.userImgFile)//头像
+          params.append('picture' , this.userImgFile ? this.userImgFile : '')//头像
           params.append('census_register' , this.getElements('formData')[4])//户籍
-          params.append('counselor' , this.getElements('formData')[16])//课程顾问 外键
+          params.append('counselor' , this.teacher)//课程顾问 外键
           params.append('passport_number' , this.getElements('formData')[5])//	护照号码
           params.append('school' , this.getElements('formData')[17])//学校
           params.append('school_cart' , this.getElements('formData')[6])//学籍卡号
@@ -281,17 +286,41 @@ export default {
           params.append('medical_history' , this.getElements('formData')[21])//既往病史
           params.append('allergen' , this.getElements('formData')[22])//过敏源
           params.append('comment' , this.textarea)//备注
-          this.$http.post(this.$conf.env.setVipData, params).then( res =>{
-            console.log(res)
+          this.isLoading = true;
+          this.VipId != -1 ? this.updataMember(params): this.addMember(params)
+        },
+        addMember(params){
+          this.$http.post(this.$conf.env.setVipData, params, true).then( res =>{
+            this.isLoading = false
+            if(res.status == '201'){
+              this.$message({  message: '添加成功', type: 'success'});
+              this.reload()
+            }else{
+               this.$message({ message: '添加失败', type: 'warning'});
+            }
           }).catch(err =>{
-            console.log(err)
+            this.isLoading = false;
+            this.$message.error("网络错误");
           })
-          
+        },
+        updataMember(params){
+          this.$http.put(this.$conf.env.setVipData + this.VipId +'/', params, true).then( res =>{
+            this.isLoading = false
+            if(res.status == '200'){
+                this.$message({ message: '修改成功', type: 'success'});
+                this.reload()
+            }else{
+                this.$message({ message: '修改失败', type: 'warning'});              
+            }
+          }).catch(err =>{
+            this.isLoading = false;
+            this.$message.error("网络错误");
+          })
         },
         //数据校验
         VerificationData(){
-              if(!this.getElements('formData')[0] || !this.getElements('formData')[1] || !this.getElements('formData')[11] ){
-                this.$message({ message: '姓名、手机号、性别为必填项', type: 'warning'});
+              if(!this.getElements('formData')[0] || !this.getElements('formData')[1] || !this.getElements('formData')[11] || !this.getElements('formData')[12] ){
+                this.$message({ message: '姓名、手机号、性别、生日为必填项', type: 'warning'});
                 return false
               }
               var myreg = /^0?(13[0-9]|14[5-9]|15[012356789]|166|17[0-8]|18[0-9]|19[8-9])[0-9]{8}$/;
@@ -319,33 +348,63 @@ export default {
           }  
           return elements;    
       },
-      setElements(data){
-        var form = document.getElementById('formData');    
-          var elements = new Array();    
-          
-          var tagElements = form.getElementsByTagName('input');    
-          for (var j = 0; j < tagElements.length; j++){ 
-              
-              tagElements[j].value = data[j]
-          }  
+      setElements(data, index){
+        var form = document.getElementById('formData');   
+        var tagElements = form.getElementsByTagName('input');
+        tagElements[index].value = data
       },
+      
       changeIphone(data){
-        this.teacherPhone = data.username
+        if(!data) return
+        this.teacherArr.forEach( elements =>{
+          if(data == elements.id){
+            this.teacherPhone = elements.username
+          }
+        })
       },
       getVipDetail(){
         this.$http.get(this.$conf.env.setVipData+this.VipId+'/').then( res =>{
-          console.log(res)
+          this.isLoading = false;
+          this.setElements(res.data.name?res.data.name:'', 0)
+          this.setElements(res.data.mobile?res.data.mobile:'', 1)
+          // this.setElements(res.data.sex?res.data.sex:'', 11)//性别
+          this.seatVal = res.data.sex ? res.data.sex: 0
+          this.setElements(res.data.birth?res.data.birth:'', 12)//生日
+          this.setElements(res.data.height?res.data.height:'', 2)//身高cm
+          this.setElements(res.data.weight?res.data.weight:'', 3)//体重
+          this.setElements(res.data.nation?res.data.nation:'', 13)//民族
+          this.setElements(res.data.id_card?res.data.id_card:'', 14)//身份证号
+          this.userImg = res.data.picture?res.data.picture:''//头像
+          this.setElements(res.data.census_register?res.data.census_register:'', 4)//户籍
+           this.teacher = res.data.counselor ? res.data.counselor : ''//课程顾问 外键
+           this.changeIphone(res.data.counselor)
+          this.setElements(res.data.passport_number?res.data.passport_number:'', 5)//	护照号码
+          this.setElements(res.data.school?res.data.school:'', 17)//学校
+          this.setElements(res.data.school_cart?res.data.school_cart:'', 6)//学籍卡号
+          this.setElements(res.data.address?res.data.address:'', 18)//家庭地址
+          this.setElements(res.data.guardian_one?res.data.guardian_one:'', 7)//监护人1姓名
+          this.setElements(res.data.guardian_one_phone?res.data.guardian_one_phone:'', 8)//监护人1手机号
+          this.setElements(res.data.guardian_two?res.data.guardian_two:'', 19)//监护人2姓名
+          this.setElements(res.data.guardian_two_phone?res.data.guardian_two_phone:'', 20)//监护人2手机号
+          this.isSister = res.data.hasbrother ? res.data.hasbrother: false//兄妹情况 0.1
+          this.baoxian = res.data.insurance ? res.data.insurance: false//保险情况 0 1
+          this.setElements(res.data.medical_history?res.data.medical_history:'', 21)//既往病史
+          this.setElements(res.data.allergen?res.data.allergen:'', 22)//过敏源
+          this.textarea = res.data.comment?res.data.comment:''//备注
           
         }).catch( err =>{
-          console.log(err)
+          this.isLoading = false;
+          this.$message.error("网络错误");
         })
       },
       getTeacherList(){
         this.$http.get(this.$conf.env.getTeacherList).then( res =>{
+        
           this.teacherArr = res.data
           
         }).catch( err =>{
-          console.log(err)
+          this.isLoading = false;
+          this.$message.error("网络错误");
         })
       }
     },
