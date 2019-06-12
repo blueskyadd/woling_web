@@ -8,16 +8,17 @@
     <!--表格部分-->
     <div class="member_table_list">
       <el-table :data="tableData" style="width: 100%" v-loading="isLoading"  @cell-mouse-enter="showEdit" @cell-mouse-leave="leaveEdit">
-         <el-table-column prop="ChangName" label="场地名称" ></el-table-column>
-        <el-table-column prop="money" label="场地租金"></el-table-column>
-        <el-table-column prop="baoMon" label="包场租金" ></el-table-column>
+        <el-table-column prop="date" type='index' width="100%" :index="setIndex" label="序号"></el-table-column>
+         <el-table-column prop="name" label="场地名称" ></el-table-column>
+        <el-table-column prop="price" label="场地租金"></el-table-column>
+        <el-table-column prop="all_price" label="包场租金" ></el-table-column>
         <el-table-column prop="proNum" label="预约人数"></el-table-column>
         <el-table-column prop="Yxiang" label="预定详情"></el-table-column>
         <el-table-column
           prop="operation"
           label="操作">
           <template slot-scope="scope">
-            <el-button  type="text" size="small" v-show="scope.row.flag"><img src="../../assets/img/bianji.png" alt="" srcset=""></el-button>
+            <el-button  type="text" size="small" v-show="scope.row.flag"  @click="handleClick(scope.row)"><img src="../../assets/img/bianji.png" alt="" srcset=""></el-button>
             <el-button type="text" size="small" v-show="scope.row.flag"><img src="../../assets/img/del.png" alt="" srcset=""></el-button>
           </template>
         </el-table-column>
@@ -33,7 +34,7 @@
       next-text=">>">
     </el-pagination>
   </div>
-<change-chang v-else></change-chang>
+<change-chang v-else :changId='changId'></change-chang>
 </template>
 <script>
 import changeChang from './changeChang.vue'
@@ -42,56 +43,12 @@ import changeChang from './changeChang.vue'
         name: "ChangManage",
       data() {
         return {
-          tableData: [
-            {
-              date: "2016-05-02",
-              flag: false,
-              name: "王小虎",
-              address: "上海市普陀区金沙江路 1518 弄",
-              ChangName:"黄埔一号球场",
-              money:"120.00元/小时",
-              baoMon:"129.00远/小时",
-              proNum:"10",
-              Yxiang:"查看",
-            },
-            {
-              flag: false,
-              date: "2016-05-04",
-              name: "王小虎",
-              address: "上海市普陀区金沙江路 1517 弄",
-              ChangName:"黄埔一号球场",
-              money:"120.00元/小时",
-              baoMon:"129.00远/小时",
-              proNum:"10",
-              Yxiang:"查看",
-            },
-            {
-              flag: false,
-              date: "2016-05-01",
-              name: "王小虎",
-              address: "上海市普陀区金沙江路 1519 弄",
-              ChangName:"黄埔一号球场",
-              money:"120.00元/小时",
-              baoMon:"129.00远/小时",
-              proNum:"10",
-              Yxiang:"查看",
-            },
-            {
-              flag: false,
-              date: "2016-05-03",
-              name: "王小虎",
-              address: "上海市普陀区金沙江路 1516 弄",
-              ChangName:"黄埔一号球场",
-              money:"120.00元/小时",
-              baoMon:"129.00远/小时",
-              proNum:"10",
-              Yxiang:"查看",
-            }
-          ],
+          tableData: [],
           currentPage: 1,
           perPage: 10,
           activelyNumber:1,
-          isLoading: false,
+          isLoading: true,
+          changId: -1,
           isChangEdit: true
         };
       },
@@ -106,16 +63,38 @@ import changeChang from './changeChang.vue'
         changePage(pageNumber){
           this.currentPage = pageNumber
         },
+        handleClick(row){
+          this.changId = row.id
+          this.isChangEdit = false
+        },
         showEdit(row) {
-        row.flag = true;
+          row.flag = true;
+        },
+        leaveEdit(row) {
+          row.flag = false;
+        }, 
+        gochangeDetail(){
+          this.changId = -1
+          this.isChangEdit = false
+        },
+        getPitchList(){
+          this.$http.get(this.$conf.env.setPitchData).then( res =>{
+            this.isLoading = false
+            if(res.status == '200'){
+              res.data.forEach(element => {
+                element.flag = false; 
+              });
+              this.tableData = res.data
+            }
+          }).catch(err =>{
+            this.isLoading = false
+            this.message.error('网络错误');
+          })
+        }
       },
-      leaveEdit(row) {
-        row.flag = false;
-      }, 
-      gochangeDetail(){
-        this.isChangEdit = false
+      mounted(){
+        this.getPitchList()
       }
-      },
     }
 </script>
 

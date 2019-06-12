@@ -1,24 +1,24 @@
 <template>
-    <div class="ChangeChang_BOx">
+    <div class="ChangeChang_BOx" v-loading.fullscreen.lock="isLoading">
       <section class="ChangeChang">
         <div class="header_Tit">
           <div class="Title" @click="gochangeManage">
             <span >
               <img src="../../assets/img/goback.png" alt="">
             </span>
-            <span>添加场地</span>
+            <span>{{changId== -1 ?'添加场地' : '编辑场地'}}</span>
           </div>
         </div>
         <div class="NewWords">
           <div class="WordsScroll">
-
+            <form id="formData">
             <table>
               <tr>
                 <td class="One">
                   <label for="">场地名称</label>
-                  <el-input v-model="ChangName" placeholder="请输入场地名称"></el-input>
+                  <el-input v-model="name"  placeholder="请输入场地名称"></el-input>
                   <label for="">场地状态</label>
-                  <el-select v-model="value" placeholder="请选择" popper-class="shenqi">
+                  <el-select v-model="changStatusData" placeholder="请选择" popper-class="shenqi">
                     <el-option
                       v-for="item in changStatus"
                       :key="item.value"
@@ -30,10 +30,10 @@
 
                 <td class="Two">
                   <label for="">场地租金</label>
-                  <el-input v-model="ChangName" placeholder="请填写场地租金"></el-input>
+                  <el-input v-model="price"  placeholder="请填写场地租金"></el-input>
                   元/小时
                   <label for="" class="LeftM">包场租金</label>
-                  <el-input v-model="ChangName" placeholder="请填写场地租金"></el-input>
+                  <el-input v-model="all_price"  placeholder="请填写场地租金"></el-input>
                   元/小时
                 </td>
 
@@ -46,7 +46,7 @@
                     :separator="' '"
                   >
                   </el-cascader>
-                  <el-input v-model="ChangName" placeholder="请填写详细地址" class="xiangxiAddress"></el-input>
+                  <el-input placeholder="请填写详细地址" v-model="all_city" class="xiangxiAddress"></el-input>
                 </td>
                 <td>
                   <label for="">场地介绍</label>
@@ -77,10 +77,11 @@
                   </el-upload>
                 </td>
                 <td style="height: .4rem;position: relative" class="bcBox">
-                  <el-button type="primary" class="Pub_But">主要按钮</el-button>
+                  <el-button type="primary" class="Pub_But" @click="submit">保存</el-button>
                 </td>
               </tr>
             </table>
+            </form>
           </div>
 
         </div>
@@ -92,31 +93,35 @@
   import  options from '../../../static/city'
     export default {
         name: "changeChang",
+        inject:['reload'],
+        props:{
+          changId:{
+            type: Number,
+            required: true
+          }
+        },
       data(){
           return{
+            name:'',//场地名称
+            price: '',//租金
+            all_price: '',//包场租金 
+            all_city: '',//详细地址
             ChangName:'',    //场地名称
             changStatus: [{
-              value: '选项1',
-              label: '黄金糕'
-            }, {
-              value: '选项2',
-              label: '双皮奶'
-            }, {
-              value: '选项3',
-              label: '蚵仔煎'
-            }, {
-              value: '选项4',
-              label: '龙须面'
-            }, {
-              value: '选项5',
-              label: '北京烤鸭'
-            }],
-            value: '',
+                value: 0,
+                label: '维护'
+              }, {
+                value: 1,
+                label: '上架'
+              }, {
+                value: 2,
+                label: '下架'
+              }],
+            changStatusData: '',//续航地状态ID
             changJan:'',   //场地介绍
-
-            classImgFile:'',
-            classImg:'',
-
+            classImgFile:'',//场地图片文件
+            classImg:'',//场地图片路径
+            isLoading: false,//加载
             selectedOptions: [],//存放默认值
             options:options   //存放城市数据
           }
@@ -127,10 +132,10 @@
         },
         addAttachment(params){
           this.classImgFile = params.file
-          this.baseImg(params.file,)
+          this.baseImg(params.file)
         },
 
-        baseImg(files, flag) {
+        baseImg(files) {
           let reader = new FileReader();
           let imgFile;
           reader.readAsDataURL(files);
@@ -145,6 +150,112 @@
         gochangeManage(){
           console.log('aaaa')
           this.$parent.isChangEdit = true
+        },
+        submit(){
+          if(!this.VerificationData()) return
+          var params = new FormData()
+          params.append('name', this.getElements('formData')[0])//课程名称
+          params.append('price', this.getElements('formData')[2])//价格
+          params.append('all_price', this.getElements('formData')[3])//包场价格
+          params.append('status', this.changStatusData)//状态 (0,”维护”),(1,”上架”),(2,”下架”)
+          params.append('province', this.getElements('formData')[4].split(' ')[0])//省
+          params.append('city', this.getElements('formData')[4].split(' ')[1])//市
+          params.append('area', this.getElements('formData')[4].split(' ')[2])//区县
+          params.append('address', this.getElements('formData')[5])//位置详情
+          params.append('desc', this.changJan)//介绍
+          params.append('front_image', this.classImgFile ? this.classImgFile : '')//封面图
+          this.isLoading = true
+          this.changId == -1 ? this.addChang(params) : this.updataChang(params)
+        },
+        addChang(params){
+          this.$http.post(this.$conf.env.setPitchData, params, true).then( res =>{
+            this.isLoading = false
+            if(res.status == '201'){
+              this.$message({  message: '添加成功', type: 'success'});
+              this.reload()
+            }else{
+               this.$message({ message: '添加失败', type: 'warning'});
+            }
+          }).catch(err =>{
+            this.isLoading = false
+            this.message.error('网络错误');
+          })
+        },
+        updataChang(params){
+          this.$http.put(this.$conf.env.setPitchData + this.changId + '/', params, true).then( res =>{
+            this.isLoading = false
+            if(res.status == '200'){
+                this.$message({ message: '修改成功', type: 'success'});
+                this.reload()
+            }else{
+                this.$message({ message: '修改失败', type: 'warning'});              
+            }
+          }).catch(err =>{
+            this.isLoading = false
+            this.message.error('网络错误');
+          })
+        },
+        //数据校验
+        VerificationData(){
+          for(let i = 0 ; i < this.getElements('formData').length-1; i++){  
+            if(!this.getElements('formData')[i] || !this.changJan){
+              this.$message({ message: '请完善您的信息', type: 'warning'});
+              return false
+            }
+          }
+          console.log(this.getElements('formData')[3]);
+          
+          if(this.getElements('formData')[2] <0.01 || this.getElements('formData')[2] == 0.01 || this.getElements('formData')[3] <0.01 || this.getElements('formData')[3] == 0.01){
+            this.$message({
+                message: "价格不得低于0.02",
+                type: "warning"
+              });
+              return false
+            }else if(this.getElements('formData')[2].toString().split(".")[1] && this.getElements('formData')[2].toString().split(".")[1].length>2 || this.getElements('formData')[3].toString().split(".")[1] && this.getElements('formData')[3].toString().split(".")[1].length>2){
+              this.$message({
+                message: "请确保价格不超过 2 个小数位",
+                type: "warning"
+              });
+              return false
+            }else{
+              return true
+            }
+            
+        },
+        getElements(formId) {    
+            var form = document.getElementById(formId);    
+            var elements = new Array();    
+            var tagElements = form.getElementsByTagName('input');    
+            for (var j = 0; j < tagElements.length; j++){ 
+                elements.push(tagElements[j].value);
+            }  
+            return elements;    
+        },
+        setElements(data, index){
+          var form = document.getElementById('formData');   
+          var tagElements = form.getElementsByTagName('input');
+          tagElements[index].value = data
+        },
+        getpitchDetail(){
+          this.$http.get(this.$conf.env.setPitchData + this.changId + '/').then( res =>{
+            this.isLoading = false;
+            this.setElements(res.data.name ? res.data.name : '', 0)//课程名称
+            this.setElements(res.data.price ? res.data.price : '', 2)//价格
+            this.setElements(res.data.all_price ? res.data.all_price : '', 3)//包场价格
+            this.changStatusData = res.data.status ? res.data.status : ''//状态 (0,”维护”),(1,”上架”),(2,”下架”)
+            this.setElements(res.data.province +' ' + res.data.city + ' ' + res.data.area , 4)
+            this.setElements(res.data.address ? res.data.address : '', 5)//位置详情
+            this.changJan = res.data.desc ? res.data.desc : ''//介绍
+            this.classImg = res.data.front_image ? res.data.front_image : ''//封面图
+          }).catch(err =>{
+            this.isLoading = false;
+            this.message.error('网络错误');
+          })
+        }
+      },
+      mounted(){
+        if(this.changId != -1){
+          this.getpitchDetail()
         }
       }
     }
@@ -203,9 +314,11 @@
                 display: flex;
                 align-items: center;
                 padding-left: .3rem;
+                font-size: .18rem;
                 label{
                   margin-right: .18rem;
                   white-space: nowrap;
+                  font-size: .18rem;
                 }
                 .photo{
                   img{

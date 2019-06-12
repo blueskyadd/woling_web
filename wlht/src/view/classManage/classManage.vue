@@ -18,13 +18,13 @@
         <el-table-column prop="date" type="index" width="100%" :index="setIndex" label="序号"></el-table-column>
         <el-table-column prop="name" label="课程名称"></el-table-column>
         <el-table-column prop="address" label="时间段"></el-table-column>
-        <el-table-column prop="date" label="课时"></el-table-column>
-        <el-table-column prop="Num" label="报名人数"></el-table-column>
+        <el-table-column prop="course_num" label="课时"></el-table-column>
+        <el-table-column prop="sold_num" label="报名人数"></el-table-column>
         <el-table-column prop="status" label="状态"></el-table-column>
         <el-table-column prop="ClassTab" label="课表详情"></el-table-column>
         <el-table-column prop="operation" label="操作">
           <template slot-scope="scope">
-            <el-button type="text" size="small" v-show="scope.row.flag">
+            <el-button type="text" size="small"  @click="handleClick(scope.row)" v-show="scope.row.flag">
               <img src="../../assets/img/bianji.png" alt srcset>
             </el-button>
             <el-button type="text" size="small" v-show="scope.row.flag">
@@ -44,7 +44,7 @@
       next-text=">>"
     ></el-pagination>
   </div>
-  <classDetail v-else />
+  <classDetail v-else  :classId='classId' />
 </template>
 <script>
 import classDetail from './classDetail.vue'
@@ -53,48 +53,12 @@ export default {
   name: "classManage",
   data() {
     return {
-      tableData: [
-        {
-          date: "14",
-          flag: false,
-          name: "足球课",
-          address: "2019.3-2019.7",
-          Num: "10",
-          status: "1",
-          ClassTab: "图片"
-        },
-        {
-          flag: false,
-          date: "14",
-          name: "足球课",
-          address: "2019.3-2019.7",
-          Num: "10",
-          status: "1",
-          ClassTab: "图片"
-        },
-        {
-          flag: false,
-          date: "15",
-          name: "足球课",
-          address: "2019.3-2019.7",
-          Num: "10",
-          status: "1",
-          ClassTab: "图片"
-        },
-        {
-          flag: false,
-          date: "15",
-          name: "足球课",
-          address: "2019.3-2019.7",
-          Num: "10",
-          status: "1",
-          ClassTab: "图片"
-        }
-      ],
+      tableData: [],
       currentPage: 1,
       perPage: 10,
       activelyNumber: 1,
-      isLoading: false,
+      isLoading: true,
+      classId: -1,
       isclassEdit: true
     };
   },
@@ -107,7 +71,15 @@ export default {
       }
     },
     changePage(pageNumber) {
+
       this.currentPage = pageNumber;
+
+    },
+    handleClick(row){
+      console.log('row',row);
+      
+      this.classId = row.id
+      this.isclassEdit = false
     },
     changecolor(data) {
       if (data.columnIndex == 4) {
@@ -124,8 +96,29 @@ export default {
       row.flag = false;
     },
     goMemberDetail(){
+      this.classId = -1
       this.isclassEdit = false
+    },
+    /**@name获取课程列表 */
+    getClassList(){
+      this.$http.get(this.$conf.env.setClassData).then( res =>{
+        this.isLoading = false;
+        if(res.status == '200'){
+          if (res.data.results && res.data.results.length > 0) {
+              res.data.results.forEach(element => {
+                element.flag = false;
+              });
+              this.tableData = res.data.results;
+            }
+        }
+      }).catch(err =>{
+        this.isLoading = false;
+        this.$message.error("网络错误");
+      })
     }
+  },
+  mounted(){
+    this.getClassList()
   }
 };
 </script>

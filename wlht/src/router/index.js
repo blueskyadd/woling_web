@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Layout from '../components/layout/layout'
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   routes: [
     {
@@ -107,3 +107,21 @@ export default new Router({
     },
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  console.log(to.path)
+  if (to.path === '/') {
+    next();
+  }else{
+    let token = sessionStorage.getItem('jp_token');
+    if (token === null || token === '') {
+      next({name: "Login"});
+      return false;
+    } else {
+      next()
+    }
+  }
+
+});
+
+export default router;

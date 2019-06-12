@@ -2,7 +2,7 @@
   <div class="wl_ShoppMan_list" v-if="isshopEdit">
     <div class="ShoppMan_head_addIcon">
       <span @click="goaddshopDetail">
-        <img src="../../assets/img/add.png" alt>添加会员
+        <img src="../../assets/img/add.png" alt>添加
       </span>
     </div>
     <!--表格部分-->
@@ -14,32 +14,32 @@
         @cell-mouse-enter="showEdit"
         @cell-mouse-leave="leaveEdit"
       >
-        <el-table-column prop="date" type="index" :index="setIndex" label="序号"></el-table-column>
-        <el-table-column prop="shoppNmae" label="商品名称"></el-table-column>
+        <el-table-column prop="date" width="100%" type="index" :index="setIndex" label="序号"></el-table-column>
+        <el-table-column prop="name" label="商品名称"></el-table-column>
 
-        <el-table-column prop="shoppPrice" label="商品单价"></el-table-column>
-        <el-table-column prop="shoppLei" label="商品分类"></el-table-column>
-        <el-table-column prop="Num" label="数量"></el-table-column>
+        <el-table-column prop="price" label="商品单价"></el-table-column>
+        <el-table-column prop="goods_type" label="商品分类"></el-table-column>
+        <el-table-column prop="inventory" label="数量"></el-table-column>
 
         <el-table-column
-          prop="shoppStatus"
+          prop="status"
           label="商品状态"
-          :filters="[{ text: '上架', value: '上架' }, { text: '已结束', value: '已结束' }]"
+          :filters="[{ text: '上架', value: '上架' }, { text: '下架', value: '下架' }]"
           :filter-method="filterOrder"
           :filter-multiple="false"
           filter-placement="bottom-end"
         >
           <template slot-scope="scope">
             <el-tag
-              :type="scope.row.shoppStatus === '上架' ? 'primary' : 'success'"
+              :type="scope.row.status === '上架' ? 'primary' : 'success'"
               disable-transitions
-            >{{scope.row.shoppStatus}}</el-tag>
+            >{{scope.row.status}}</el-tag>
           </template>
         </el-table-column>
 
         <el-table-column prop="operation" label="操作">
           <template slot-scope="scope">
-            <el-button type="text" size="small" v-show="scope.row.flag">
+            <el-button type="text" size="small"  @click="goaddshopDetail(scope.row)" v-show="scope.row.flag">
               <img src="../../assets/img/bianji.png" alt srcset>
             </el-button>
             <el-button type="text" size="small" v-show="scope.row.flag">
@@ -59,7 +59,7 @@
       next-text=">>"
     ></el-pagination>
   </div>
-  <add-shop v-else></add-shop>
+  <add-shop v-else :ProjectId='ProjectId'></add-shop>
 </template>
 
 <script>
@@ -69,51 +69,19 @@ export default {
   name: "shoppManage",
   data() {
     return {
-      tableData: [
-        {
-          flag: false,
-          shoppNmae: "衣服",
-          shoppPrice: "120.00元",
-          Num: "2",
-          shoppStatus: "已结束",
-          shoppLei: "球鞋"
-        },
-        {
-          flag: false,
-          shoppNmae: "裤子",
-          shoppPrice: "120.00元",
-          Num: "30",
-          shoppStatus: "上架",
-          shoppLei: "球衣"
-        },
-        {
-          flag: false,
-          shoppNmae: "帽子",
-          shoppPrice: "129.00元",
-          Num: "50",
-          shoppStatus: "已结束",
-          shoppLei: "球鞋"
-        },
-        {
-          flag: false,
-          shoppNmae: "手套",
-          shoppPrice: "129.00元",
-          Num: "40",
-          shoppStatus: "上架",
-          shoppLei: "球衣"
-        }
-      ],
+      tableData: [],
+      ProjectId: -1,
       currentPage: 1,
-      perPage: 10,
+      perPage: 6,
       activelyNumber: 1,
-      isLoading: false,
+      isLoading: true,
       isshopEdit: true
     };
   },
   methods: {
     //订单状态
     filterOrder(value, row) {
-      return row.shoppStatus === value;
+      return row.status === value;
     },
     setIndex(index) {
       if (index < 10) {
@@ -125,6 +93,8 @@ export default {
 
     changePage(pageNumber) {
       this.currentPage = pageNumber;
+      this.isLoading = true
+      this.getProjectDara(pageNumber)
     },
     showEdit(row) {
       row.flag = true;
@@ -132,10 +102,31 @@ export default {
     leaveEdit(row) {
       row.flag = false;
     },
-    goaddshopDetail(){
+    goaddshopDetail(row){
+      this.ProjectId = row.id ? row.id : -1
       this.isshopEdit = false
+    },
+    /**@获取商品列表 */
+    getProjectDara(number){
+      var url = this.$conf.env.getProjectDara + "?p=" + number;
+      this.$http.get(number ? url : this.$conf.env.getProjectDara ).then( res =>{
+        console.log(res)
+        this.isLoading = false;
+        if(!res.data) return
+        this.activelyNumber = res.data.count
+        res.data.results.forEach( element =>{
+          element.flag = false
+        })
+        this.tableData = res.data.results
+      }).catch(err =>{
+        this.isLoading = false;
+        this.message.error('网络错误');
+      })
     }
-  }
+  },
+  mounted() {
+    this.getProjectDara()
+  },
 };
 </script>
 

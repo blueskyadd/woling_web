@@ -7,17 +7,17 @@
     </div>
     <!--表格部分-->
     <div class="member_table_list">
-      <el-table :data="tableData" :cell-style="changecolor" style="width: 100%" v-loading="isLoading" @cell-mouse-enter="showEdit" @cell-mouse-leave="leaveEdit">
+      <el-table :data="tableData"  :cell-style="changecolor" style="width: 100%" v-loading="isLoading" @cell-mouse-enter="showEdit" @cell-mouse-leave="leaveEdit">
         <el-table-column prop="date" type='index' :index="setIndex" label="序号" width='100%'></el-table-column>
         <el-table-column prop="name" label="姓名" ></el-table-column>
-        <el-table-column prop="address" label="年龄" ></el-table-column>
-        <el-table-column prop="date" label="联系方式" ></el-table-column>
-        <el-table-column prop="name" label="申请时间" ></el-table-column>
+        <el-table-column prop="age" label="年龄" ></el-table-column>
+        <el-table-column prop="mobile" label="联系方式" ></el-table-column>
+        <el-table-column prop="date_joined" label="申请时间" ></el-table-column>
         <el-table-column
         prop="operation"
         label="操作">
-        <template slot-scope="scope">
-            <el-button  type="text" size="small" v-show="scope.row.flag"><img src="../../assets/img/bianji.png" alt="" srcset=""></el-button>
+        <template slot-scope="scope"> 
+            <el-button  type="text" size="small"   @click="handleClick(scope.row)" v-show="scope.row.flag"><img src="../../assets/img/bianji.png" alt="" srcset=""></el-button>
         </template>
         </el-table-column>
       </el-table>
@@ -32,7 +32,7 @@
         next-text=">>">
     </el-pagination>
   </div>
-  <memberDetail v-else/>
+  <memberDetail v-else :VipId='vipId'/>
 </template>
 <script>
 import memberDetail from './memberDetail.vue'
@@ -41,42 +41,18 @@ export default {
   name: "memberManagement",
   data() {
     return {
-      tableData: [
-        {
-          date: "2016-05-02",
-          flag: false,
-          name: "王小虎",
-          address: "上"
-        },
-        {
-          flag: false,
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上"
-        },
-        {
-          flag: false,
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上"
-        },
-        {
-          flag: false,
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上"
-        }
-      ],
+      tableData: [],
       currentPage: 1,
       perPage: 10,  
       activelyNumber:1,
-      isLoading: false,
-      isMemberEdit: true
+      isLoading: true,
+      isMemberEdit: true,
+      vipId: -1
     };
   },
   methods: {
       setIndex(index){
-          if(index < 10 ){
+          if(index < 9 ){
               return '0'+ (index +1)
           }else{
              return (this.currentPage - 1) * this.perPage + index + 1
@@ -84,6 +60,7 @@ export default {
       },
        changePage(pageNumber){
         this.currentPage = pageNumber
+        this.setPageViplist()
       },
       showEdit(row) {
         row.flag = true;
@@ -100,9 +77,39 @@ export default {
         }
       },
       goMemberDetail(){
+        this.vipId = -1
         this.isMemberEdit = false
+
+      },
+      handleClick(row){
+        this.vipId = row.id
+        this.isMemberEdit = false
+      },
+      getVipList(){
+        this.isLoading = false
+        this.$http.get(this.$conf.env.setVipData).then( res =>{
+          this.isLoading = false
+           if (res.data && res.data.length > 0) {
+              res.data.forEach(element => {
+                element.flag = false;
+              });
+              
+              this.tableData = res.data.slice(0, 10);
+            }else{
+              this.tableData = []
+            }
+        }).catch(err =>{
+          this.isLoading = false;
+          this.$message.error("网络错误");
+        })
+      },
+      setPageViplist(){
+        console.log( Math.ceil(res.data.length/10));
       }
   },
+  mounted(){
+    this.getVipList()
+  }
 };
 </script>
 <style lang="scss">
