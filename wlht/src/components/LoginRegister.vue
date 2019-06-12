@@ -52,14 +52,14 @@ import store from "../store/index.js"
         name: "LoginRegister",
       data() {
         return {
-          username: '17630718188',
-          password:'asd123456',
+          username: this.$store.state.userName ? this.$store.state.userName : '',
+          password: this.$store.state.Password ? this.$store.state.Password : '',
           YZM:'',
           NewPas:'',
           OKPas:'',
           timeDown: 60,
           isTimeDown: true,
-          rememberPassword: false,
+          rememberPassword: this.$store.state.Password ? true : false,
           AA: this.$store.state.isEditOut ,
         }
       },
@@ -84,8 +84,6 @@ import store from "../store/index.js"
             
         },
         setTime(){
-          this.isTimeDown = false
-          this.Countdown()
           this.getCode()
         },
         Countdown(){
@@ -101,6 +99,7 @@ import store from "../store/index.js"
           },1000)
         },
         LoginDown(){
+          if(!this.VerificationData(1)) return
           const loading = this.$loading({
               lock: true,
               text: 'Loading',
@@ -109,7 +108,7 @@ import store from "../store/index.js"
             });
           console.log(this.username, this.password)
           var params={
-            'username': this.username,
+            'username': this.username.replace(/(^\s*)|(\s*$)/g, ""),
             'password': this.password,
             'remember': this.rememberPassword
           }
@@ -131,50 +130,86 @@ import store from "../store/index.js"
               }
           }).catch(err =>{
             loading.close()
-            console.log(err.code)
-            this.$message({
-              message: '网络错误',
-              duration:1000,
-              type: 'warning'
-            });
+            if(err.response.status== ' 401'){
+              this.$message({
+                message: err.response.data.message,
+                duration:1000,
+                type: 'warning'
+              });
+            }else{
+              this.$message.error("网络错误");
+            }
           })
         },
         /**@name 获取短信验证码 */
         getCode(){
-          if(!this.VerificationData) return
+          if(!this.VerificationData(3)) return
           var params={
-            'username': this.username
+            'username': this.username.replace(/(^\s*)|(\s*$)/g, "")
           }
           this.$http.post(this.$conf.env.getCode, params).then(res =>{
             if(res.status == '200'){
+                this.isTimeDown = false
+                this.Countdown()
             }
-            
           }).catch(err =>{
-            console.log(err)
+            if(err.response.state == '500'){
+              this.$message.error("服务器错误");
+            }else  if(err.response.status== ' 400'){
+              this.$message({
+                message: '用户不存在',
+                duration:1000,
+                type: 'warning'
+              });
+            }
           })
         },
 
         /**@name手机号验证 */
-        VerificationData(){
+        VerificationData(flag){
            var myreg = /^0?(13[0-9]|14[5-9]|15[012356789]|166|17[0-8]|18[0-9]|19[8-9])[0-9]{8}$/;
-            if (!this.username) {
-                this.$message({ message: '请填写正确的手机号', type: 'warning'});
-                return false
+           if(flag == 1){
+             if(!this.username || !this.password){
+                  this.$message({ message: '请完善您的信息', type: 'warning'});
+                  return false
+              }
+           }else if(flag == 2){
+             if(!this.username || !this.NewPas || !this.OKPas || !this.YZM){
+                  this.$message({ message: '请完善您的信息', type: 'warning'});
+                  return false
+              }else{
+                if(this.NewPas != this.OKPas){
+                  this.$message({
+                    message: "两次密码输入不一致",
+                    type: "warning"
+                  });
+                  return false
+                }
+              }
+           }
+            if (!myreg.test(this.username.replace(/(^\s*)|(\s*$)/g, ""))) {
+              this.$message({ message: '请填写正确的手机号', type: 'warning'});
+              return false
             }else{
               return true
             }
+           
+            
         },
         LoginSubmit(){
+          if(!this.VerificationData(2)) return
+          
           const loading = this.$loading({
               lock: true,
               text: 'Loading',
               spinner: 'el-icon-loading',
               background: 'rgba(0, 0, 0, 0.7)'
             });
+          
           console.log(this.username, this.password)
           var params={
-            'username': this.username,
-            'code': this.YZM,
+            'username': this.username.replace(/(^\s*)|(\s*$)/g, ""),
+            'code': this.YZM.replace(/(^\s*)|(\s*$)/g, ""),
             'password': this.NewPas,
             'password1': this.OKPas
           }
@@ -195,8 +230,26 @@ import store from "../store/index.js"
               }
           }).catch(err =>{
              loading.close()
-            console.log(errr)
+            if(err.response.status== ' 401'){
+              this.$message({
+                message: err.response.data.message,
+                duration:1000,
+                type: 'warning'
+              });
+            }else{
+              this.$message.error("网络错误");
+            }
           })
+        }
+      },
+      watch:{
+        rememberPassword(newData, oldData){
+          if(newData == true){
+            this.$store.commit('rememberPassword',{'userName': this.username, 'Password': this.password})
+          }else{
+            this.$store.commit('rememberPassword',{'userName': this.username, 'Password': ''})
+
+          }
         }
       }
     }

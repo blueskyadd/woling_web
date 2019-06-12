@@ -1,5 +1,5 @@
 <template>
-  <div class="wl_classDetail">
+  <div class="wl_classDetail" v-loading.fullscreen.lock="isLoading">
     <header>
       <span @click="goclassManage">
         <img src="../../assets/img/goback.png" alt>{{classId == -1 ? '添加课程': '编辑课程'}}
@@ -358,11 +358,14 @@ export default {
       params.append('desc' , this.classDesc)//介绍
       params.append('front_image' , this.classImgFile ? this.classImgFile : '')//封面图
       params.append('medal' , this.classMedalImgFile ? this.classMedalImgFile : '')//勋章图
-      this.classListDetail.forEach( elements =>{
-        if(!elements.id){
-          params.append('good_detail' , elements.raw)//详情图列表[image,image]
-        }
-      })
+      if(tis.classListDetail.length > 0){
+        this.classListDetail.forEach( elements =>{
+          if(!elements.id){
+            params.append('good_detail' , elements.raw)//详情图列表[image,image]
+          }
+        })
+      }
+      this.isLoading = true
       this.classId == -1 ? this.addClass(params):this.updataClass(params)
     },
     addClass(params){
@@ -490,6 +493,7 @@ export default {
   mounted(){
     this.getCoachList()
     if(this.classId != -1){
+      this.isLoading = true
       this.getClassDetail()
     }
   },

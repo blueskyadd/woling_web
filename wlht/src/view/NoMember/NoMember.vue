@@ -33,32 +33,7 @@
         name: "NoMember",
       data() {
         return {
-          tableData: [
-            {
-              date: "1100",
-              flag: false,
-              name: "02/06/2018",
-              address: "13"
-            },
-            {
-              flag: false,
-              date: "120",
-              name: "02/06/2019",
-              address: "13"
-            },
-            {
-              flag: false,
-              date: "119",
-              name: "02/06/2020",
-              address: "12"
-            },
-            {
-              flag: false,
-              date: "911",
-              name: "02/06/2021",
-              address: "11"
-            }
-          ],
+          tableData: [],
           currentPage: 1,
           perPage: 10,
           activelyNumber:1,

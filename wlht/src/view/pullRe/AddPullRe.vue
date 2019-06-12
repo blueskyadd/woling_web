@@ -6,7 +6,7 @@
           <span>
             <img src="../../assets/img/goback.png" alt="">
           </span>
-          <span>添加主推热点</span>
+          <span>{{activelyId == -1 ?'添加': '编辑'}}主推热点</span>
         </div>
       </div>
       <div class="NewWords">
@@ -15,7 +15,7 @@
           <tr>
             <td class="One">
               <label for="">主推热点</label>
-              <el-input v-model="ReName" placeholder="请输入场地名称"></el-input>
+              <el-input v-model="ReName" placeholder="请输入热点名称"></el-input>
               <label for="">热点状态</label>
               <el-select v-model="activelyStatus" placeholder="请选择" popper-class="shenqi">
                 <el-option
@@ -93,6 +93,7 @@
 <script>
     export default {
       name: "AddPullRe",
+      inject:['reload'],
       props:{
         activelyId:{
           type:Number,
@@ -111,7 +112,7 @@
               label: '下架'
             }],
           value: '',
-          pullBeginsTime:"",
+          pullBeginsTime: [],
           classImgFile:"",
           classImg:"",
           classListDetail:[],
@@ -170,13 +171,20 @@
           this.classListDetail = fileList
           console.log('fileList',fileList);
           if(file.id){
+            this.isLoading = true;
             this.deleteActivelyImg(file.id)
           }
         },
         deleteActivelyImg(ID){
-          this.http.delete(this.conf.env.deleteActivelyImg + '/').then( res =>{
-            console.log(res)
+          this.$http.delete(this.$conf.env.deleteActivelyImg + ID + '/').then( res =>{
+            this.isLoading = false;
+            if (res.status == "204") {
+              this.$message({ message: "删除成功", type: "success" });
+            }else{
+              this.$message({ message: '删除失败', type: 'warning'});
+            }
           }).catch(err =>{
+           this.isLoading = false;
            this.message.error('网络错误');
           })
         },
@@ -212,13 +220,43 @@
               params.append('activity_image', elements.raw)//详情图列表[image,image]
             }
           })
+          this.isLoading = true
+        this.activelyId == -1 ? this.addPull(params) : this.updataPull(params)
 
-
+        },
+        addPull(params){
+          this.$http.post(this.$conf.env.setActivelyData, params, true).then( res =>{
+          this.isLoading = false
+            if(res.status == '201'){
+              this.$message({  message: '添加成功', type: 'success'});
+              this.reload()
+            }else{
+                this.$message({ message: '添加失败', type: 'warning'});
+            } 
+          }).catch(err =>{
+            this.isLoading = false;
+            this.$message.error("网络错误");
+          })
+        },
+        updataPull(params){
+          this.$http.put(this.$conf.env.setActivelyData + this.activelyId + '/', params, true).then( res =>{
+            this.isLoading = false
+            if(res.status == '200'){
+                this.$message({ message: '修改成功', type: 'success'});
+                this.reload()
+            }else{
+                this.$message({ message: '修改失败', type: 'warning'});              
+            }
+          }).catch(err =>{
+            console.log(err)
+            this.isLoading = false;
+            this.$message.error("网络错误");
+          })
         },
         //数据校验
         VerificationData(){
-          for(let i = 0 ; i < this.getElements('formData').length - 2; i++){  
-            if(!this.getElements('formData')[i]){
+          for(let i = 0 ; i < this.getElements('formData').length; i++){  
+            if(!this.getElements('formData')[i] || this.pullBeginsTime.length==0){
               this.$message({ message: '请完善您的信息', type: 'warning'});
               return false
             }else{
@@ -246,8 +284,8 @@
             if(!res.data)return 
             this.isLoading = false
             this.setElements(res.data.name?res.data.name : '', 0 )//课程名称
-            this.pullNewTime = res.data.start_time?res.data.start_time : ''//开始日期
-            this.pullOldTime = res.data.end_time ? res.data.end_time : ''//结束日期
+            this.pullNewTime = res.data.start_time?res.data.start_time.split('-')[2]+'-'+res.data.start_time.split('-')[1]+'-'+res.data.start_time.split('-')[0] : ''//开始日期
+            this.pullOldTime = res.data.end_time ? res.data.end_time.split('-')[2]+'-'+res.data.end_time.split('-')[1]+'-'+ res.data.end_time.split('-')[0]: ''//结束日期
             this.pullBeginsTime = [this.pullNewTime, this.pullOldTime]
             this.activelyStatus = res.data.status?res.data.status : ''//状态 True False
             this.classImg = res.data.image?res.data.image : ''//封面图
@@ -311,6 +349,10 @@
             font-size: .2rem;
           }
         }
+      }
+      .el-upload-list__item-status-label{
+        margin: 0!important;;
+        line-height: initial;
       }
       .NewWords{
         width: 100%;

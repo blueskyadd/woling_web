@@ -9,41 +9,42 @@
     <div class="member_table_list">
       <el-table
       @cell-mouse-enter="showEdit"
+        v-loading='isLoading'
        @cell-mouse-leave="leaveEdit"
         ref="filterTable"
         :data="tableData"
         style="width: 100%">
-        <el-table-column prop="date" type='index' :index="setIndex" label="序号"></el-table-column>
+        <el-table-column width="100%" prop="date" type='index' :index="setIndex" label="序号"></el-table-column>
         <el-table-column
-          prop="Yname"
+          prop="name"
           label="员工姓名"
           column-key="date"
 
         >
         </el-table-column>
         <el-table-column
-          prop="phone"
+          prop="username"
           label="联系方式">
         </el-table-column>
         <el-table-column
-          prop="WeiOne"
+          prop="groups[0].name"
           label="职位1">
         </el-table-column>
         <el-table-column
-          prop="WeiTwo"
+          prop="groups[1].name"
           label="职位2">
         </el-table-column>
         <el-table-column
-          prop="tag"
+          prop="state_employee"
           label="员工状态"
-          :filters="[{ text: '在职', value: '在职' }, { text: '离职', value: '离职' }]"
+          :filters="[{ text: '在职', value: 1 },{ text: '兼职', value: 2 }, { text: '离职', value: 0 }]"
           :filter-method="filterTag"
           :filter-multiple=false
           filter-placement="bottom-end">
           <template slot-scope="scope">
             <el-tag
-              :type="scope.row.tag === '在职' ? 'primary' : 'success'"
-              disable-transitions>{{scope.row.tag}}</el-tag>
+              :type="scope.row.state_employee == 0 ? 'primary' : scope.row.state_employee == 1 ?  'success' : 'info'"
+              disable-transitions>{{setScope(scope.row.state_employee)}}</el-tag>
           </template>
         </el-table-column>
         <el-table-column
@@ -54,7 +55,7 @@
           prop="operation"
           label="操作">
           <template slot-scope="scope">
-            <el-button  type="text" size="small" v-show="scope.row.flag"><img src="../../assets/img/bianji.png" alt="" srcset=""></el-button>
+            <el-button  type="text" size="small" v-show="scope.row.flag" @click="handleClick(scope.row)"><img src="../../assets/img/bianji.png" alt="" srcset=""></el-button>
             <el-button type="text" size="small" v-show="scope.row.flag"><img src="../../assets/img/del.png" alt="" srcset=""></el-button>
           </template>
         </el-table-column>
@@ -70,7 +71,7 @@
       next-text=">>">
     </el-pagination>
   </div>
-  <PerDetail v-else/>
+  <PerDetail v-else :perId='perId'/>
 </template>
 
 <script>
@@ -80,43 +81,12 @@ import PerDetail from "./PerDetail"
         name: "PerManage",
       data() {
         return {
-          tableData: [{
-              Yname: '瑞文',
-              phone: '110',
-              WeiOne: '教练',
-              WeiTwo:'顾问',
-              tag: '在职',
-              ping:'图',
-              flag:false,
-            }, {
-              Yname: '亚索',
-              phone: '111',
-              WeiOne: '酱油',
-              WeiTwo:'买菜',
-              tag: '离职',
-              ping:'图',
-              flag:false,
-            }, {
-              Yname: '劫',
-              phone: '112',
-              WeiOne: '刺客',
-              WeiTwo:'做饭吗',
-              tag: '离职',
-              flag:false,
-              ping:'图',
-            }, {
-              Yname: '瞎瞎',
-              phone: '113',
-              WeiOne: '吴志伟',
-              WeiTwo:'吃',
-              tag: '在职',
-              ping:'图',
-              flag:false,
-          }],
+          tableData: [],
           currentPage: 1,
           perPage: 10,
           activelyNumber:1,
-          isLoading: false,
+          isLoading: true,
+          perId: -1,
           isperManage: true,
         };
       },
@@ -138,21 +108,53 @@ import PerDetail from "./PerDetail"
         //   return row.address;
         // },
         filterTag(value, row) {
-          return row.tag === value;
+          return row.state_employee === value;
         },
         changePage(pageNumber){
           this.currentPage = pageNumber
         },
         goPerDetail(){
+          this.perId = -1
           this.isperManage=false
         },
         showEdit(row) {
         row.flag = true;
+        },
+        leaveEdit(row) {
+          row.flag = false;
+        },
+        handleClick(row){
+          this.perId = row.id
+          this.isperManage = false
+        },
+        setScope(data){
+          switch(data){
+            case 1:
+            return '在职';
+            case 2:
+            return '兼职';
+            case 0:
+            return '离职';
+            break;
+          }
+        },
+        getUserList(){
+          this.$http.get(this.$conf.env.userList).then( res =>{
+            this.isLoading = false
+            if(!res.data)return
+            res.data.forEach( element =>{
+              element.flag = false
+            })
+            this.tableData = res.data
+
+          }).catch(err =>{
+            this.isLoading = false
+          })
+        }
       },
-      leaveEdit(row) {
-        row.flag = false;
-      },
-      },
+      mounted(){
+        this.getUserList()
+      }
     }
 </script>
 

@@ -12,9 +12,6 @@ module.exports = {
     setVipData: winchaingroupApi +'user/vip/',//会员
     getTeacherList: winchaingroupApi + 'user/counselor/',// 顾问列表 
 
-    //非会员
-    userList: winchaingroupApi + 'user/staff/',//非会员
-
     //课程
     setClassData: winchaingroupApi + 'good/course/',//课程
     getCoachList: winchaingroupApi +'user/coach/',//教练列表
@@ -26,4 +23,10 @@ module.exports = {
     setActivelyData: winchaingroupApi + 'good/activity/',//热点
     deleteActivelyImg: winchaingroupApi + 'good/activity_image/',//主推热点详情图删除
 
+    //员工
+    userList: winchaingroupApi + 'user/staff/',//员工
+
+    //商品
+    getProjectDara: winchaingroupApi +'good/good/',//商品
+    deleteProjectDetailImg: winchaingroupApi + 'good/image/',//商品详情图删除
 }
