@@ -149,7 +149,7 @@
         },
         gochangeManage(){
           console.log('aaaa')
-          this.$parent.isChangEdit = true
+          this.$parent.isChangEdit = 1
         },
         submit(){
           if(!this.VerificationData()) return

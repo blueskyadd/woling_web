@@ -1,5 +1,5 @@
 // 开发环境配置
-const winchaingroupApi = "http://94.191.15.122/";
+const winchaingroupApi = "http://10.102.100.23:8080/";
 
 module.exports = {
 //API
@@ -12,12 +12,16 @@ module.exports = {
     setVipData: winchaingroupApi +'user/vip/',//会员
     getTeacherList: winchaingroupApi + 'user/counselor/',// 顾问列表 
 
+    //非会员
+    getCommonList: winchaingroupApi + 'user/common/',//非会员列表
     //课程
     setClassData: winchaingroupApi + 'good/course/',//课程
     getCoachList: winchaingroupApi +'user/coach/',//教练列表
 
     //场地
     setPitchData: winchaingroupApi + 'good/pitch/',//场地
+    createdPitchTime: winchaingroupApi + 'good/pitchtime/',//球场时间创建
+    getPitchList: winchaingroupApi + '/good/pitchtime/?day',//球场时间查看
 
     //热点
     setActivelyData: winchaingroupApi + 'good/activity/',//热点

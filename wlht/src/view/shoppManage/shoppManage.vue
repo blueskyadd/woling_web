@@ -84,7 +84,7 @@ export default {
       return row.status === value;
     },
     setIndex(index) {
-      if (index < 10) {
+      if (index < 9 && this.currentPage == 1) {
         return "0" + (index + 1);
       } else {
         return (this.currentPage - 1) * this.perPage + index + 1;
@@ -120,7 +120,7 @@ export default {
         this.tableData = res.data.results
       }).catch(err =>{
         this.isLoading = false;
-        this.message.error('网络错误');
+        this.$message.error('网络错误');
       })
     }
   },

@@ -156,7 +156,7 @@ export default {
       return row.orderstatus === value;
     },
     setIndex(index) {
-      if (index < 10) {
+      if (index < 9 && this.currentPage == 1) {
         return "0" + (index + 1);
       } else {
         return (this.currentPage - 1) * this.perPage + index + 1;

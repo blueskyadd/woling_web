@@ -1,5 +1,5 @@
 <template>
-  <div class="wl_PerManage_list" v-if="isperManage">
+  <div class="wl_PerManage_list" v-if="isperManage == 1">
     <div class="Per_head_addIcon">
       <span @click="goPerDetail">
         <img src="../../assets/img/add.png" alt>添加会员
@@ -50,6 +50,11 @@
         <el-table-column
           prop="ping"
           label="评价">
+          <template slot-scope="scope">
+              <el-button type="text"  @click="openPDetail(scope.row)">
+                <img src="../../assets/img/ck.png" alt srcset>
+              </el-button>
+            </template>
         </el-table-column>
         <el-table-column
           prop="operation"
@@ -71,13 +76,15 @@
       next-text=">>">
     </el-pagination>
   </div>
+  <coach v-else-if="isperManage == 2"/>
   <PerDetail v-else :perId='perId'/>
 </template>
 
 <script>
 import PerDetail from "./PerDetail"
+import Coach from './coach/coach.vue'
     export default {
-      components:{PerDetail},
+      components:{PerDetail, Coach},
         name: "PerManage",
       data() {
         return {
@@ -87,12 +94,12 @@ import PerDetail from "./PerDetail"
           activelyNumber:1,
           isLoading: true,
           perId: -1,
-          isperManage: true,
+          isperManage: 1,
         };
       },
       methods: {
         setIndex(index){
-          if(index < 10 ){
+          if(index < 9 && this.currentPage == 1){
             return '0'+ (index +1)
           }else{
             return (this.currentPage - 1) * this.perPage + index + 1
@@ -137,6 +144,9 @@ import PerDetail from "./PerDetail"
             return '离职';
             break;
           }
+        },
+        openPDetail(data){
+          this.isperManage = 2
         },
         getUserList(){
           this.$http.get(this.$conf.env.userList).then( res =>{

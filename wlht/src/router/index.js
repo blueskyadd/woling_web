@@ -115,7 +115,7 @@ router.beforeEach((to, from, next) => {
   }else{
     let token = sessionStorage.getItem('jp_token');
     if (token === null || token === '') {
-      next({name: "Login"});
+      next({name: "LoginRegister"});
       return false;
     } else {
       next()

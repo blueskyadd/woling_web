@@ -1,7 +1,7 @@
 <template>
     <div class="appoIntemnt_Box">
       <div class="AppoInontemt">
-          <div class="Back"></div>
+          <div class="Back" @click="goBack()">返回</div>
           <div class="Tab_Box">
             <div class="Tab_Scroll">
               <div class="Today_Box">
@@ -47,261 +47,6 @@
                     <div class="Pro_Num">3人</div>
                     <div class="chaKan"></div>
                   </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="Today_Box">
-                <div class="Tab_Tit">2019.03.18</div>
-                <div class="ProWarp_Box">
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="Today_Box">
-                <div class="Tab_Tit">2019.03.18</div>
-                <div class="ProWarp_Box">
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="Today_Box">
-                <div class="Tab_Tit">2019.03.18</div>
-                <div class="ProWarp_Box">
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
-                  <div class="ProPeo_Box">
-                    <div class="Pro_Num">0~2</div>
-                    <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -312,7 +57,22 @@
 
 <script>
     export default {
-        name: "appointment"
+        name: "appointment",
+        methods:{
+          goBack(){
+            this.$parent.isChangEdit = 1
+          },
+          getPitchList(){
+            this.$http.get(this.$conf.env.getPitchList + '').then( res =>{
+            console.log(res)
+            }).catch(err =>{
+            this.$message.error('网络错误');
+            })
+          }
+        },
+        mounted(){
+          this.getPitchList()
+        }
     }
 </script>
 
@@ -322,6 +82,7 @@
     padding:.24rem .32rem .47rem .32rem;
     background: RGBA(242, 245, 248, 1);
     width: 100%;
+    height: calc(100% - 1.71rem);
     flex: 1;
     box-sizing: border-box;
     .AppoInontemt{
@@ -330,29 +91,29 @@
       overflow: hidden;
       position: relative;
         .Back{
-          float: right;
-          width:.94rem;
-          height:.33rem;
-          background:rgba(253,253,253,1);
-          box-shadow:0px 3px 7px 0px rgba(6,33,88,0.3);
-          border-radius:17px;
-          font-size:.16rem;
-          color:rgba(70,74,83,1);
-          line-height:.33rem;
+          // float: right;
+          // width:.94rem;
+          // height:.33rem;
+          // background:rgba(253,253,253,1);
+          // box-shadow:0px 3px 7px 0px rgba(6,33,88,0.3);
+          // border-radius:17px;
+          // font-size:.16rem;
+          // color:rgba(70,74,83,1);
+          // line-height:.33rem;
         }
         .Tab_Box{
           width: 100%;
           height: 8.54rem;
           margin-top: .24rem;
-          position: absolute;
-          bottom: 0;
-          left: 0;
+          // position: absolute;
+          // bottom: 0;
+          // left: 0;
           overflow: hidden;
           .Tab_Scroll{
             width: 100%;
             height: 100%;
             overflow-x: hidden;
-            overflow-y: scroll;
+            // overflow-y: scroll;
             .Today_Box{
               .Tab_Tit{
                 width: 100%;
@@ -367,7 +128,7 @@
                 display: flex;
                 flex-wrap: wrap;
                 .ProPeo_Box{
-                  width:7.6922%;
+                  width:12.5%;
                   height:1.28rem;
                   box-sizing: border-box;
                   padding:.06rem 0;

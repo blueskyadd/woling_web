@@ -10,9 +10,9 @@
       <el-table :data="tableData" :cell-style="changecolor" style="width: 100%" v-loading="isLoading" >
         <el-table-column prop="date" type='index' width="100%" :index="setIndex"  label="序号"></el-table-column>
         <el-table-column prop="name" label="姓名" ></el-table-column>
-        <el-table-column prop="address" label="年龄"></el-table-column>
-        <el-table-column prop="date" label="联系方式" ></el-table-column>
-        <el-table-column prop="name" label="申请时间"></el-table-column>
+        <el-table-column prop="age" label="年龄"></el-table-column>
+        <el-table-column prop="mobile" label="联系方式" ></el-table-column>
+        <el-table-column prop="create_time" label="申请时间"></el-table-column>
 
       </el-table>
     </div>
@@ -42,7 +42,7 @@
       },
       methods: {
         setIndex(index){
-          if(index < 10 ){
+          if(index < 9 && this.currentPage == 1){
             return '0'+ (index +1)
           }else{
             return (this.currentPage - 1) * this.perPage + index + 1
@@ -50,6 +50,7 @@
         },
         changePage(pageNumber){
           this.currentPage = pageNumber
+          this.getCommonList(pageNumber)
         },
          changecolor(data){
           if (data.columnIndex == 3) {
@@ -59,16 +60,18 @@
             return "color:#ABAFB3";
           }
         },
-        getUserList(){
-          this.$http.get(this.$conf.env.userList).then( res =>{
+        getCommonList(number){
+          var url = this.$conf.env.getCommonList + 'p=' + number
+          this.$http.get(number ? url :this.$conf.env.getCommonList).then( res =>{
             this.isLoading = false
+            this.tableData = res.data.results
           }).catch(err =>{
             this.isLoading = false
           })
         }
       },
       mounted() {
-        this.getUserList()
+        this.getCommonList()
       },
     }
 </script>

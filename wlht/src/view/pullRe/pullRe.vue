@@ -82,7 +82,7 @@ import AddPullRe from './AddPullRe.vue'
           this.isPullEdit = false
         },
         setIndex(index){
-          if(index < 10 ){
+          if(index < 9 && this.currentPage == 1){
             return '0'+ (index +1)
           }else{
             return (this.currentPage - 1) * this.perPage + index + 1
@@ -116,7 +116,7 @@ import AddPullRe from './AddPullRe.vue'
               this.tableData = []
             }
           }).catch(err =>{
-            this.message.error('网络错误');
+            this.$message.error('网络错误');
           })
         }
       },

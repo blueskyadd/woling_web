@@ -118,6 +118,7 @@ export default {
   },
   methods: {
     goeditLogin(flag){
+      sessionStorage.removeItem("jp_token");
       this.$store.commit("changeisEditOut", flag);
       this.$router.push({name:'LoginRegister'})
     }

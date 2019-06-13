@@ -52,7 +52,7 @@ export default {
   },
   methods: {
       setIndex(index){
-          if(index < 9 ){
+          if(index < 9 && this.currentPage == 1){
               return '0'+ (index +1)
           }else{
              return (this.currentPage - 1) * this.perPage + index + 1

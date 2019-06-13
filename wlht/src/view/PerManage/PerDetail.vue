@@ -369,7 +369,7 @@ export default {
       tagElements[index].value = data
     },
     close() {
-      this.$parent.isperManage = true;
+      this.$parent.isperManage = 1;
     },
     getPerDetail() {
       this.$http.get(this.$conf.env.userList + this.perId +'/').then( res =>{
