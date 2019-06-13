@@ -8,8 +8,8 @@ export default new Vuex.Store({
     // 内存数据状态，UI可通过this.$store.state.* 获得数据
     state : {
         isEditOut: true,
-        userName: '',
-        Password: '',
+        userName: '17630718188',
+        Password: 'asd123456',
     }, //新加的
     mutations : {
         changeisEditOut: (state, flag) => {
