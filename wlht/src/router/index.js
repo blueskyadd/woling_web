@@ -93,6 +93,12 @@ const router = new Router({
           component:() => import('../view/orderManage/AddOrder'),
         },
         {
+          path: '/Bookingdetails',
+          name: 'Bookingdetails',
+          component:() => import('../view/orderManage/Bookingdetails'),
+
+        },
+        {
           path: '/shoppManage',
           name: 'shoppManage',
           component:() => import('../view/shoppManage/shoppManage'),

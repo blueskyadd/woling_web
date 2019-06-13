@@ -14,11 +14,13 @@
               v-for="(item, index) in tabList"
               :key="index"
             >
-              <span>
-                <img :src="item.image_normal" alt :class="{'active': item.link == $route.path}">
-                <img :src="item.image_actively" alt :class="{'active': item.link != $route.path}">
-              </span>
-              <p>{{item.name}}</p>
+              <a href="javascript:void(0)">
+                <span>
+                  <img :src="item.image_normal" alt :class="{'active': item.link == $route.path}">
+                  <img :src="item.image_actively" alt :class="{'active': item.link != $route.path}">
+                </span>
+                <p>{{item.name}}</p>
+              </a>
             </router-link>
           </ul>
         </nav>
@@ -103,14 +105,14 @@ export default {
         },
         {
           name: "订单管理",
-          image_normal: require("../../assets/img/cd_normal.png"),
-          image_actively: require("../../assets/img/cd_actively.png"),
+          image_normal: require("../../assets/img/order.png"),
+          image_actively: require("../../assets/img/ordered.png"),
           link: "/orderManage"
         },
         {
           name: "商城商品管理",
-          image_normal: require("../../assets/img/cd_normal.png"),
-          image_actively: require("../../assets/img/cd_actively.png"),
+          image_normal: require("../../assets/img/shopp.png"),
+          image_actively: require("../../assets/img/shopped.png"),
           link: "/shoppManage"
         }
       ]
@@ -153,8 +155,9 @@ export default {
     .router-link-exact-active {
       background: #f2effe;
       border-left: 0.05rem solid #7f63f4;
-      color: #7f63f4;
-
+      p {
+        color: #7f63f4;
+      }
       .no_active {
         // display:
       }
@@ -163,12 +166,18 @@ export default {
       line-height: 0.56rem;
       font-size: 0.16rem;
       height: 0.56rem;
-      color: #888d98;
       padding-left: 0.44rem;
-      span {
-        float: left;
-        margin-right: 0.15rem;
+      a{
+        p{
+          display: inline;
+          color: #888d98;
+        }
+        span {
+          display: inline;
+          margin-right: 0.15rem;
+        }
       }
+
     }
   }
 }
@@ -245,10 +254,10 @@ export default {
         text-align: center;
         font-size: .16rem;
         line-height: .5rem;
-       
+
       }
     }
   }
-  
+
 }
 </style>
