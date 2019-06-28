@@ -410,6 +410,7 @@ export default {
     },
     mounted() {
       if(this.VipId != -1){
+        this.isLoading = true
         this.getVipDetail()
       }
       this.getTeacherList()

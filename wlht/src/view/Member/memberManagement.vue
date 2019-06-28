@@ -7,7 +7,7 @@
     </div>
     <!--表格部分-->
     <div class="member_table_list">
-      <el-table :data="tableData"  :cell-style="changecolor" style="width: 100%" v-loading="isLoading" @cell-mouse-enter="showEdit" @cell-mouse-leave="leaveEdit">
+      <el-table :data="tableData"  :cell-style="changecolor" style="width: 100%" v-loading="isLoading"  @cell-mouse-enter="showEdit" @cell-mouse-leave="leaveEdit">
         <el-table-column prop="date" type='index' :index="setIndex" label="序号" width='100%'></el-table-column>
         <el-table-column prop="name" label="姓名" ></el-table-column>
         <el-table-column prop="age" label="年龄" ></el-table-column>
@@ -60,7 +60,8 @@ export default {
       },
        changePage(pageNumber){
         this.currentPage = pageNumber
-        this.setPageViplist()
+        this.isLoading = true
+        this.getVipList(pageNumber)
       },
       showEdit(row) {
         row.flag = true;
@@ -85,16 +86,18 @@ export default {
         this.vipId = row.id
         this.isMemberEdit = false
       },
-      getVipList(){
-        this.isLoading = false
-        this.$http.get(this.$conf.env.setVipData).then( res =>{
+      getVipList(number){
+        var url =  this.$conf.env.setVipData + '?p=' + number
+        this.$http.get(number!=1 ? url :this.$conf.env.setVipData +'?page_size='+this.perPage).then( res =>{
           this.isLoading = false
-           if (res.data && res.data.length > 0) {
-              res.data.forEach(element => {
+          this.activelyNumber = res.data.count
+           if (res.data.results && res.data.results.length > 0) {
+             
+              res.data.results.forEach(element => {
                 element.flag = false;
               });
               
-              this.tableData = res.data.slice(0, 10);
+              this.tableData = res.data.results;
             }else{
               this.tableData = []
             }
@@ -108,7 +111,7 @@ export default {
       }
   },
   mounted(){
-    this.getVipList()
+    this.getVipList(1)
   }
 };
 </script>

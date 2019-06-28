@@ -238,7 +238,6 @@
         },
         getpitchDetail(){
           this.$http.get(this.$conf.env.setPitchData + this.changId + '/').then( res =>{
-            this.isLoading = false;
             this.setElements(res.data.name ? res.data.name : '', 0)//课程名称
             this.setElements(res.data.price ? res.data.price : '', 2)//价格
             this.setElements(res.data.all_price ? res.data.all_price : '', 3)//包场价格
@@ -247,6 +246,7 @@
             this.setElements(res.data.address ? res.data.address : '', 5)//位置详情
             this.changJan = res.data.desc ? res.data.desc : ''//介绍
             this.classImg = res.data.front_image ? res.data.front_image : ''//封面图
+            this.isLoading = false;
           }).catch(err =>{
             this.isLoading = false;
             this.message.error('网络错误');
@@ -255,6 +255,7 @@
       },
       mounted(){
         if(this.changId != -1){
+          this.isLoading = true
           this.getpitchDetail()
         }
       }

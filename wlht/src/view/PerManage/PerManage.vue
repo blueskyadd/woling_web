@@ -119,6 +119,8 @@ import Coach from './coach/coach.vue'
         },
         changePage(pageNumber){
           this.currentPage = pageNumber
+          this.isLoading = true
+          this.getUserList(pageNumber)
         },
         goPerDetail(){
           this.perId = -1
@@ -148,14 +150,16 @@ import Coach from './coach/coach.vue'
         openPDetail(data){
           this.isperManage = 2
         },
-        getUserList(){
-          this.$http.get(this.$conf.env.userList).then( res =>{
+        getUserList(number){
+          var  url = this.$conf.env.userList + '?p=' +number 
+          this.$http.get(number!=1 ? url :this.$conf.env.userList +'?page_size='+this.perPage).then( res =>{
             this.isLoading = false
-            if(!res.data)return
-            res.data.forEach( element =>{
+            if(!res.data.results)return
+            this.activelyNumber = res.data.count
+            res.data.results.forEach( element =>{
               element.flag = false
             })
-            this.tableData = res.data
+            this.tableData = res.data.results
 
           }).catch(err =>{
             this.isLoading = false
@@ -163,7 +167,7 @@ import Coach from './coach/coach.vue'
         }
       },
       mounted(){
-        this.getUserList()
+        this.getUserList(1)
       }
     }
 </script>

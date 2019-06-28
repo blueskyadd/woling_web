@@ -71,9 +71,8 @@ export default {
       }
     },
     changePage(pageNumber) {
-
       this.currentPage = pageNumber;
-
+      this.getClassList(pageNumber)
     },
     handleClick(row){
       console.log('row',row);
@@ -100,10 +99,12 @@ export default {
       this.isclassEdit = false
     },
     /**@name获取课程列表 */
-    getClassList(){
-      this.$http.get(this.$conf.env.setClassData).then( res =>{
+    getClassList(number){
+      var url = this.$conf.env.setClassData + '?p=' +number
+      this.$http.get(number != 1 ? url :this.$conf.env.setClassData + '?page_size=' + this.perPage).then( res =>{
         this.isLoading = false;
         if(res.status == '200'){
+          this.activelyNumber = res.data.count
           if (res.data.results && res.data.results.length > 0) {
               res.data.results.forEach(element => {
                 element.flag = false;
@@ -118,7 +119,7 @@ export default {
     }
   },
   mounted(){
-    this.getClassList()
+    this.getClassList(1)
   }
 };
 </script>

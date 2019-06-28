@@ -33,8 +33,19 @@
           </el-select>
         </label>
         <label>
-          <span>职位</span>
+          <span>职位1</span>
           <el-select popper-class="per_selete_list" v-model="PositionId" placeholder="请选择职位">
+            <el-option
+              v-for="item in classPosition"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >{{item.label}}</el-option>
+          </el-select>
+        </label>
+        <label>
+          <span>职位2</span>
+          <el-select popper-class="per_selete_list" v-model="PositionIdTwo" placeholder="请选择职位">
             <el-option
               v-for="item in classPosition"
               :key="item.value"
@@ -177,7 +188,8 @@ export default {
           value: 7
         }
       ], //职位列表
-      PositionId: "", //职位ID
+      PositionId: "", //职位1ID
+      PositionIdTwo: '',//职位二ID
       value: "",
       classImg: "",
       classImgFile: "",
@@ -276,13 +288,15 @@ export default {
       params.append("mobile", this.getElements("formData")[1]); //工号
       params.append("sex", this.classSex); //性别
       params.append("shop", this.PithId); //所属门店 接口20
-      params.append("username", this.getElements("formData")[5]); //手机号
+      params.append("wechat", this.getElements("formData")[5]); //微信
+      params.append("username", this.getElements("formData")[6]); //手机号
       params.append("groups", this.PositionId); //职位
-      params.append("email", this.getElements("formData")[6]); //	邮箱
-      params.append("positive_dates", this.getElements("formData")[9]); //转正日期
+      params.append('groups', this.PositionIdTwo);//职位二
+      params.append("email", this.getElements("formData")[7]); //	邮箱
+      params.append("positive_dates", this.getElements("formData")[10]); //转正日期
       params.append("picture", this.classImgFile ? this.classImgFile : ""); //头像
-      params.append("entry_date", this.getElements("formData")[10]); //入职日期
-      params.append("term_date", this.getElements("formData")[11]); //离职日期
+      params.append("entry_date", this.getElements("formData")[11]); //入职日期
+      params.append("term_date", this.getElements("formData")[12]); //离职日期
       params.append("comment", this.classIntroduction); //简介
       params.append("state_employee", this.perStatusData); //状态(1, ‘在职’),(2,”兼职”),(0, ‘离职’)
       this.isLoading = true;
@@ -303,7 +317,11 @@ export default {
         })
         .catch(err => {
           this.isLoading = false;
-          this.$message.error("网络错误");
+          if(err.response.status == '400'){
+            this.$message({ message: err.response.data.username[0], type: "warning" });
+          }else{
+            this.$message.error("网络错误");
+          }
         });
     },
     //修改员工
@@ -326,12 +344,12 @@ export default {
     },
     //数据校验
     VerificationData() {
-      for (let i = 0; i < 6; i++) {
+      for (let i = 0; i < 7; i++) {
         if (
           !this.getElements("formData")[i] ||
-          !this.getElements("formData")[7] ||
           !this.getElements("formData")[8] ||
-          !this.getElements("formData")[9]
+          !this.getElements("formData")[9] ||
+          !this.getElements("formData")[10]
         ) {
           this.$message({ message: "请完善您的信息", type: "warning" });
           return false;
@@ -340,12 +358,12 @@ export default {
         var reg = new RegExp(
           "^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$"
         );
-        if (!myreg.test(this.getElements("formData")[5])) {
+        if (!myreg.test(this.getElements("formData")[6])) {
           this.$message({ message: "请填写正确的手机号", type: "warning" });
           return false;
         } else if (
-          this.getElements("formData")[6] &&
-          !reg.test(this.getElements("formData")[6])
+          this.getElements("formData")[7] &&
+          !reg.test(this.getElements("formData")[7])
         ) {
           this.$message("请填写正确的邮箱地址");
           return;
@@ -378,13 +396,15 @@ export default {
         this.setElements(res.data.mobile?res.data.mobile:'', 1); //工号
         this.classSex = res.data.sex ? res.data.sex : 0; //性别
         this.PithId = res.data.shop?res.data.shop:''; //所属门店 接口20
-        this.setElements(res.data.username?res.data.username:'', 5); //手机号
+        this.setElements(res.data.wechat?res.data.wechat:'', 5); //wechat
+        this.setElements(res.data.username?res.data.username:'', 6); //手机号
         this.PositionId = res.data.groups?res.data.groups[0].id:''; //职位
-        this.setElements(res.data.email?res.data.email:'', 6); //	邮箱
-        this.setElements(res.data.positive_dates?res.data.positive_dates:'', 9); //转正日期
+        this.PositionIdTwo = res.data.groups?res.data.groups[1].id:''; //职位
+        this.setElements(res.data.email?res.data.email:'', 7); //	邮箱
+        this.setElements(res.data.positive_dates?res.data.positive_dates:'', 10); //转正日期
         this.classImg = res.data.picture?res.data.picture:'' ; //头像
-        this.setElements(res.data.entry_date?res.data.entry_date:'', 10); //入职日期
-        this.setElements(res.data.term_date?res.data.term_date:'', 11); //离职日期
+        this.setElements(res.data.entry_date?res.data.entry_date:'', 11); //入职日期
+        this.setElements(res.data.term_date?res.data.term_date:'', 12); //离职日期
         this.classIntroduction = res.data.comment?res.data.comment:''; //简介
         this.perStatusData = res.data.state_employee ? res.data.state_employee : 0;//员工状态
       }).catch(err =>{
@@ -523,15 +543,6 @@ export default {
       }
       .class_list > span {
         width: 6.2%;
-      }
-      .email_list {
-        width: 34%;
-        input {
-          width: 60%;
-        }
-      }
-      .email_list > span {
-        width: 18%;
       }
       .perStatus {
         width: 70%;

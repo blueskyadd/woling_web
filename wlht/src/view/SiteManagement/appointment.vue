@@ -45,19 +45,29 @@
                   <div class="ProPeo_Box">
                     <div class="Pro_Num">0~2</div>
                     <div class="Pro_Num">3人</div>
-                    <div class="chaKan"></div>
+                    <div class="chaKan" @click="setPitchTime"></div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
       </div>
+    <transition name="el-fade-in-linear">
+      <look-pitch v-if="PitchTime"></look-pitch>
+    </transition>
     </div>
 </template>
 
 <script>
+import lookPitch from "./lookPitchTime.vue";
     export default {
         name: "appointment",
+        components:{lookPitch},
+        data(){
+          return{
+            PitchTime:true
+          }
+        },
         methods:{
           goBack(){
             this.$parent.isChangEdit = 1
@@ -68,10 +78,13 @@
             }).catch(err =>{
             this.$message.error('网络错误');
             })
+          },
+          setPitchTime(){
+            this.PitchTime = true
           }
         },
         mounted(){
-          this.getPitchList()
+          // this.getPitchList()
         }
     }
 </script>

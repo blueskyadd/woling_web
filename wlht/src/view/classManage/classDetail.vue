@@ -268,6 +268,7 @@ export default {
       ],
       curriculumStatusData: '',
       classBeginsTime: [],//上课时间
+      isLoading:false,
 
     };
   },
@@ -358,7 +359,7 @@ export default {
       params.append('desc' , this.classDesc)//介绍
       params.append('front_image' , this.classImgFile ? this.classImgFile : '')//封面图
       params.append('medal' , this.classMedalImgFile ? this.classMedalImgFile : '')//勋章图
-      if(tis.classListDetail.length > 0){
+      if(this.classListDetail.length > 0){
         this.classListDetail.forEach( elements =>{
           if(!elements.id){
             params.append('good_detail' , elements.raw)//详情图列表[image,image]
@@ -400,6 +401,7 @@ export default {
     //数据校验
     VerificationData(){
       for(let i = 0 ; i < this.getElements('formData').length - 3; i++){  
+        console.log(this.getElements('formData')[i])
         if(!this.getElements('formData')[i]){
           this.$message({ message: '请完善您的信息', type: 'warning'});
           return false
