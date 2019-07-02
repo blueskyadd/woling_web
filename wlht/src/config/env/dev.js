@@ -22,6 +22,7 @@ module.exports = {
     setPitchData: winchaingroupApi + 'good/pitch/',//场地
     createdPitchTime: winchaingroupApi + 'good/pitchtime/',//球场时间创建
     getPitchList: winchaingroupApi + 'good/pitchtime/?day',//球场时间查看
+    getptimeList: winchaingroupApi + 'good/ptime/?store=',//球场时间列表
 
     //热点
     setActivelyData: winchaingroupApi + 'good/activity/',//热点

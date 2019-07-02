@@ -96,11 +96,11 @@ import coachSelf  from "./coachSelfEvaluate.vue";
         getUserList(){
           this.$http.get(this.$conf.env.userList).then( res =>{
             this.isLoading = false
-            if(!res.data)return
-            res.data.forEach( element =>{
+            if(!res.data.results)return
+            res.data.results.forEach( element =>{
               element.flag = false
             })
-            this.tableData = res.data
+            this.tableData = res.data.results
 
           }).catch(err =>{
             this.isLoading = false

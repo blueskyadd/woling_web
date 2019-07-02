@@ -136,7 +136,7 @@
       </el-dialog>
     </transition>
   </div>
-  <site-manage v-else-if="isChangEdit == 2" :siteTime="siteTime"></site-manage>
+  <site-manage v-else-if="isChangEdit == 2" :siteTime="siteTime" :changId="changId"></site-manage>
 
   <change-chang v-else :changId="changId"></change-chang>
 </template>
@@ -201,6 +201,7 @@ export default {
     },
     openYxDetail(data) {
       this.isChangEdit = 2;
+      this.changId = data.id;
     },
     openTimeDetail(data) {
       this.changId = data.id;
