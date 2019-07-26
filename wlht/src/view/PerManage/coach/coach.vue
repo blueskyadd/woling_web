@@ -14,18 +14,18 @@
         style="width: 100%">
         <el-table-column width="100%" prop="date" type='index' :index="setIndex" label="序号"></el-table-column>
         <el-table-column
-          prop="name"
+          prop="classify"
           label="评价类型"
           column-key="date"
 
         >
         </el-table-column>
         <el-table-column
-          prop="username"
+          prop="date"
           label="时间">
         </el-table-column>
         <el-table-column
-          prop="groups[0].name"
+          prop="name"
           label="主题">
         </el-table-column>
         <el-table-column
@@ -38,7 +38,7 @@
             </template>
         </el-table-column>
        <el-table-column
-          prop="groups[0].name"
+          prop="score"
           label="得分">
         </el-table-column>
       </el-table>
@@ -54,8 +54,8 @@
     </el-pagination>
   </div>
 
-  <coach-self  v-else-if="iscoach == 2"></coach-self>
-  <coach-evaluate v-else></coach-evaluate>
+  <coach-self  v-else-if="iscoach == 2" :AssessDeatilID='AssessDeatilID'></coach-self>
+  <coach-evaluate v-else :AssessDeatilID='AssessDeatilID' :perId='perId'></coach-evaluate>
 
 </template>
 
@@ -64,7 +64,13 @@ import coachEvaluate from './coachEvaluate.vue'
 import coachSelf  from "./coachSelfEvaluate.vue";
     export default {
       components:{coachEvaluate, coachSelf},
-        name: "coach",
+      name: "coach",
+      props: {
+        perId: {
+          type: Number,
+          required: true
+        }
+      },
       data() {
         return {
           tableData: [],
@@ -74,6 +80,7 @@ import coachSelf  from "./coachSelfEvaluate.vue";
           isLoading: true,
           perId: -1,
           iscoach: 1,
+          AssessDeatilID: -1,
         };
       },
       methods: {
@@ -86,17 +93,21 @@ import coachSelf  from "./coachSelfEvaluate.vue";
         },
         changePage(pageNumber){
           this.currentPage = pageNumber
+          this.getAssessList(pageNumber)
         },
         openPDetail(data){
-          this.iscoach = 2
+          this.AssessDeatilID = data.id
+          this.iscoach = data.classify == '考评' ? 3 :  2
+
         },
         close(){
             this.$parent.isperManage = 1;
         },
-        getUserList(){
-          this.$http.get(this.$conf.env.userList).then( res =>{
+        getAssessList(number){
+          this.$http.get(this.$conf.env.getAssessList +this.perId +'&p=' + number +'&page_size='+this.perPage).then( res =>{
             this.isLoading = false
             if(!res.data.results)return
+            this.activelyNumber = res.data.count
             res.data.results.forEach( element =>{
               element.flag = false
             })
@@ -108,7 +119,7 @@ import coachSelf  from "./coachSelfEvaluate.vue";
         }
       },
       mounted(){
-        this.getUserList()
+        this.getAssessList(1)
       }
     }
 </script>

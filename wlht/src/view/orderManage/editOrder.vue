@@ -14,63 +14,35 @@
         <table>
           <tr>
             <td class="One">
-              <label for="">电话检索</label>
-               <el-autocomplete
-                class="inline-input"
-                v-model="orderPhone"
-                :fetch-suggestions="searchPhone"
-                placeholder="请输入电话号码"
-                :trigger-on-focus="false"
-                @select="handleSelect"
-              ></el-autocomplete>
-
-              <label for="">学生选择</label>
-              <el-select v-model="studentNameID" placeholder="请选择" popper-class="shenqi">
-                <el-option
-                  v-for="item in studentNameData"
-                  :key="item.name"
-                  :label="item.name"
-                  :value="item.id">{{item.name}}
-                </el-option>
-              </el-select>
-              
-            </td>
-            <td class="One">
-              <label for="">订单类型</label>
-              <el-select v-model="orderTypeID" placeholder="请选择" popper-class="shenqi">
-                <el-option
-                  v-for="item in orderType"
-                  :key="item.value"
-                  :label="item.value"
-
-                  :value="item.id">{{item.value}}
-                </el-option>
-              </el-select>
-              <label for="">课程选择</label>
-              <el-select v-model="orderClassID" placeholder="请选择" popper-class="shenqi">
-                <el-option
-                  v-for="item in orderClassList"
-                  :key="item.name"
-                  :label="item.name"
-
-                  :value="item.id">{{item.name}}
-                </el-option>
-              </el-select>
+              <label for="">订单号</label>
+              <el-input v-model="orderDetail.order_sn" placeholder="请输入场地名称"></el-input>
               <label for="">订单状态</label>
-              <el-select v-model="orderStatusID" placeholder="请选择" popper-class="shenqi">
+              <el-select v-model="orderDetail.pay_status.pay_status" placeholder="请选择" popper-class="shenqi">
                 <el-option
                   v-for="item in orderStatus"
                   :key="item.name"
                   :label="item.name"
-                  :value="item.id">{{item.name}}
+                  :value="item.id">
+                  {{item.name}}
+                </el-option>
+              </el-select>
+              <label for="">订单类型</label>
+              <el-select v-model="classDetailID" placeholder="请选择" popper-class="shenqi">
+                <el-option
+                  v-for="item in orderType"
+                  :key="item.value"
+                  :label="item.value"
+                  :value="item.value">
+                  {{item.value}}
                 </el-option>
               </el-select>
             </td>
             <td class="One">
-             <label for="">价格&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-              <el-input type="number" v-model="orderPrice" placeholder="请输入场地名称"></el-input>
-              <label for="">折扣&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-              <el-input type="number" v-model="orderDiscount" placeholder="请输入场地名称"></el-input>
+              <label for="">价格</label>
+              <el-input v-model="orderDetail.goods_money" placeholder="请输入场地名称"></el-input>
+              <label for="">折扣</label>
+              <el-input v-model="orderDetail.money" placeholder="请输入场地名称"></el-input>
+
             </td>
             <td class="Four">
               <label for="">订单备注</label>
@@ -78,7 +50,7 @@
                 type="textarea"
                 :autosize="{ minRows: 12,maxRows:17}"
                 placeholder="请输入内容"
-                v-model="orderRemark">
+                v-model="orderDetail.info">
               </el-input>
             </td>
             <td  class="bcBox">
@@ -100,29 +72,19 @@
             type: Number,
             request: true
           },
-          orderUrl:{
+          classDetailID:{
             type: String,
             request: true
-          }
+          },
         },
       data(){
         return{
-          phoneList:[],//手机号检索
-          restaurants: [],
-          studentNameData: [],
+          orderDetail: {},
           orderType:[{ id: 1, value: '课程订单' }, { id: 2, value: '课程手工订单' },{ id: 3, value: '试听订单' },{ id: 4, value: '球场预定' },{ id: 5, value: '球场包场' },{ id: 6, value: '商品订单' }],
           orderStatus: [{name: '待支付', id: 0},{name: '已取消', id:  1},{name: '已支付', id:  2},{name: '已完成', id:  3}],
-          orderClassList: [],
-          orderPhone: '',
-          studentNameID: '',
-          orderTypeID: '',
-          orderClassID: '',
-          orderStatusID: '',
-          orderPrice:'',
-          orderDiscount: '',
-          orderRemark: '',
           headerTitle: this.orderID  == -1 ? '添加订单' : '编辑订单',
-          isLoading: false
+          restaurants: [],
+          isLoading: true
         }
       },
       methods: {
@@ -130,43 +92,38 @@
           this.$parent.isorderEdit = true
         },
         submit(){
-          if(!this.VerificationData())return
+          if(!this.VerificationData()) return
+         
           this.isLoading = true
-          var params = {
-            'user': this.studentNameID,
-            'goods': this.orderClassID,
-            'money': this.orderPrice * this.orderDiscount,
-            'info': this.orderRemark,
+          console.log(this.getElements('formData'))
+          let params ={
+            'pay_status': this.orderDetail.pay_status.pay_status,
+            'info': this.orderDetail.info
           }
-          this.$http.post(this.$conf.env.setOrderClass, params).then( res =>{
-             this.isLoading = false
-          if(res.status == '201'){
-              this.$message({  message: '添加成功', type: 'success'});
+          this.$http.put(this.$conf.env.setOrderClass + this.orderID +'/', params).then( res =>{
+            if(res.status == '200'){
+              this.$message({  message: '修改成功', type: 'success'});
               this.reload()
             }else{
-                this.$message({ message: '添加失败', type: 'warning'});
+                this.$message({ message: '修改失败', type: 'warning'});
             } 
           }).catch(err =>{
-             this.isLoading = false
-            this.$message.error("服务器错误");
+            this.isLoading = false
+            if(res.request.status == '400'){
+              this.$message.error("此订单已创建");
+            }else{
+               this.$message.error("服务器错误");
+            }
           })
         },
         //数据校验
         VerificationData(){
-          for(let i = 0 ; i < this.getElements('formData').length-1; i++){
-            if(!this.getElements('formData')[i] || !this.orderRemark){
-               console.log(this.getElements('formData')[i])
+            if(!this.orderDetail.pay_status.pay_status || !this.orderDetail.info){
               this.$message({ message: '请完善您的信息', type: 'warning'});
-              return false
-            }
-          }
-           var myreg = /^0?(13[0-9]|14[5-9]|15[012356789]|166|17[0-8]|18[0-9]|19[8-9])[0-9]{8}$/;
-            if (!myreg.test(this.orderPhone.replace(/(^\s*)|(\s*$)/g, ""))) {
-              this.$message({ message: '请填写正确的手机号', type: 'warning'});
               return false
             }else{
               return true
-            }
+            }   
         },
         getElements(formId) {    
             var form = document.getElementById(formId);    
@@ -178,52 +135,17 @@
             return elements;    
         },
         getOrderDetail(){
-
-          this.$http.get(this.$conf.env.getOrderDetail + this.orderUrl).then( res =>{
-          console.log(res)
+          this.$http.get(this.$conf.env.setOrderClass + this.orderID).then( res =>{
+            this.isLoading = false
+            this.orderDetail = res.data
           }).catch(err =>{
-            this.$message.error("服务器错误");
-          })
-        },
-       
-        //电话选择
-        handleSelect(item) {
-          this.studentNameData = [];
-          this.studentNameData.push(item);
-          this.studentNameID = item.id;
-
-        },
-        //电话检索
-        searchPhone(queryString, cb) {
-          var restaurants = this.restaurants;
-          var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
-          this.$http.get(this.$conf.env.searchPhone + queryString).then( res =>{
-            res.data.forEach( value =>{
-              value.value = value.mobile
-            })
-            cb(res.data)
-            this.studentNameData = res.data
-            }).catch(err =>{
-            this.$message.error("服务器错误");
-          })
-        },
-        createFilter(queryString) {
-          return (restaurant) => {
-            return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-          };
-        },
-        orderClassData(){
-          this.$http.get(this.$conf.env.orderClassData).then( res =>{
-          console.log(res)
-          this.orderClassList = res.data
-          }).catch(err =>{
+            this.isLoading = false
             this.$message.error("服务器错误");
           })
         }
       },
       mounted(){
-        this.orderClassData()
-        // this.orderID == -1 ?  this.searchPhone: this.getOrderDetail()
+        this.getOrderDetail()
       }
     }
 </script>
@@ -276,13 +198,14 @@
           height:100%;
           tr{
             td{
-              margin-bottom:.4rem;
+              margin-bottom:.18rem;
               display: flex;
               align-items: center;
               padding-left: .3rem;
               label{
                 margin-right: .18rem;
                 white-space: nowrap;
+                width: .76rem;
                     font-size: .18rem;
               }
               .photo{

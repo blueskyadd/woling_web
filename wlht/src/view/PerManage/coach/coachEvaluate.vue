@@ -14,15 +14,15 @@
         style="width: 100%">
         <el-table-column width="100%" prop="date" type='index' :index="setIndex" label="序号"></el-table-column>
         <el-table-column
-          prop="groups[0].name"
+          prop="assess"
           label="主题">
         </el-table-column>
         <el-table-column
-          prop="groups[0].name"
+          prop="lead"
           label="评价人">
         </el-table-column>
        <el-table-column
-          prop="groups[0].name"
+          prop="total"
           label="得分">
         </el-table-column>
       </el-table>
@@ -41,9 +41,16 @@
 </template>
 
 <script>
-
     export default {
-        name: "coachEvaluate",
+      name: "coachEvaluate",
+      props:{
+        AssessDeatilID:{
+          type:Number,
+        },
+        perId:{
+          type:Number,
+        }
+      },
       data() {
         return {
           tableData: [],
@@ -72,8 +79,8 @@
         close(){
             this.$parent.iscoach = 1;
         },
-        getUserList(){
-          this.$http.get(this.$conf.env.userList).then( res =>{
+        getcoachassess(){
+          this.$http.get(this.$conf.env.getcoachassess + this.perId + '&assess=' + this.AssessDeatilID).then( res =>{
             this.isLoading = false
             if(!res.data)return
             res.data.forEach( element =>{
@@ -87,7 +94,7 @@
         }
       },
       mounted(){
-        this.getUserList()
+        this.getcoachassess()
       }
     }
 </script>

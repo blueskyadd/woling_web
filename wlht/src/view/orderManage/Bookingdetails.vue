@@ -1,109 +1,39 @@
 <template>
   <div class="wl_coach_list" v-if="iscoach == 1">
     <header>
-      <span @click="close()">
-      <img src="../../assets/img/goback.png" alt>教练考核评分表</span><span @click="close()">
+      <span @click="$parent.isorderEdit = true">
+      <img src="../../assets/img/goback.png" alt>{{headerTitle}}预约详情</span><span @click="$parent.isorderEdit = true">
       </span>
     </header>
     <!--表格部分-->
-    <div class="member_table_list">
-      <el-table
-        v-loading='isLoading'
-        ref="filterTable"
-        :data="tableData"
-        style="width: 100%">
-        <el-table-column width="100%" prop="date" type='index' :index="setIndex" label="序号"></el-table-column>
-        <el-table-column
-          prop="address"
-          label="场地名称">
-        </el-table-column>
-        <el-table-column
-          prop="num"
-          label="人数">
-        </el-table-column>
-        <el-table-column
-          prop="data"
-          label="预约日期">
-        </el-table-column>
-        <el-table-column
-          prop="timer"
-          label="预约时间">
-        </el-table-column>
-        <el-table-column
-          prop="price"
-          label="价格 ">
-        </el-table-column>
-      </el-table>
-    </div>
-    <el-pagination
-      background
-      layout="prev, pager, next"
-      :page-size= 'perPage'
-      :total="activelyNumber"
-      @current-change='changePage'
-      prev-text='<<'
-      next-text=">>">
-    </el-pagination>
+    <SiteList :tableData='tableData' v-if="headerTitle == '场地'"/>
+    <ProjectList :tableData='tableData' v-if="headerTitle == '商品'"/>
+    <classList :tableData='tableData' v-if="headerTitle == '课程'"/>
+    <AuditionList :tableData='tableData' v-if="headerTitle == '试听'"/>
   </div>
 </template>
 
 <script>
-
+import SiteList from './orderList/site';//场地
+import ProjectList from './orderList/project';//商品
+import classList from  './orderList/class';//商品
+import AuditionList from './orderList/audition';//试听
   export default {
     name: "Bookingdetails",
+    components:{SiteList, ProjectList, classList, AuditionList},
+    props:{
+      orderUrl:{
+        type: String,
+        request: true
+      },
+      headerTitle:{
+        type: String,
+        request: true
+      }
+    },
     data() {
       return {
-        tableData: [
-          {
-            address:'黄埔球场',
-            num:'3',
-            data:'2019.03.26',
-            timer:'18:00-20:00',
-            price:'280.00',
-          },{
-            address:'黄埔球场',
-            num:'3',
-            data:'2019.03.26',
-            timer:'18:00-20:00',
-            price:'280.00',
-          },{
-            address:'黄埔球场',
-            num:'3',
-            data:'2019.03.26',
-            timer:'18:00-20:00',
-            price:'280.00',
-          },{
-            address:'黄埔球场',
-            num:'3',
-            data:'2019.03.26',
-            timer:'18:00-20:00',
-            price:'280.00',
-          },{
-            address:'黄埔球场',
-            num:'3',
-            data:'2019.03.26',
-            timer:'18:00-20:00',
-            price:'280.00',
-          },{
-            address:'黄埔球场',
-            num:'3',
-            data:'2019.03.26',
-            timer:'18:00-20:00',
-            price:'280.00',
-          },{
-            address:'黄埔球场',
-            num:'3',
-            data:'2019.03.26',
-            timer:'18:00-20:00',
-            price:'280.00',
-          },{
-            address:'黄埔球场',
-            num:'3',
-            data:'2019.03.26',
-            timer:'18:00-20:00',
-            price:'280.00',
-          },
-        ],
+        tableData: [],
         currentPage: 1,
         perPage: 10,
         activelyNumber:1,
@@ -120,18 +50,40 @@
           return (this.currentPage - 1) * this.perPage + index + 1
         }
       },
-      changePage(pageNumber){
-        this.currentPage = pageNumber
-      },
       openPDetail(data){
         this.iscoach = 2
       },
       close(){
         this.$parent.iscoach = 1;
       },
+      getOrderlistDetail(){
+        this.$http.get(this.$conf.env.getOrderDetail + this.orderUrl).then( res =>{
+          console.log(res)
+          this.tableData = []
+          switch(this.headerTitle){
+            case '课程':
+              this.tableData.push(res.data);
+              break;
+            case '场地':
+              this.tableData = res.data.order_details
+              break;
+            case '试听':
+              this.tableData.push(res.data);
+              break;
+            case '商品':
+              res.data.order_details.forEach(value =>{
+                value.address = res.data.address
+              })
+              this.tableData = res.data.order_details
+              break;
+          }
+        }).catch(err =>{
+          this.$message.error("服务器错误");
+        })
+      }
     },
     mounted(){
-      this.getUserList()
+      this.getOrderlistDetail()
     }
   }
 </script>
@@ -150,10 +102,11 @@
       }
     }
     .member_table_list{
-      height: 100%;
+        height: calc(100% - .42rem);
       .el-table{
         th{
           background-color: #EEF1F4;
+          
         }
       }
     }

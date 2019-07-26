@@ -11,31 +11,32 @@
         </span>
       </div>
       <el-main>
-                <el-table
-                    v-loading="isLoading"
-                    :data="tableData"
-                    stripe
-                    style="width: 100%">
-                    <el-table-column
-                    prop="create_time"
-                    label="姓名">
-                    </el-table-column>
-                    <el-table-column
-                    style="text-align:left"
-                    prop="user"
-                    label="联系方式"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                    prop="price"
-                    label="人数">
-                    </el-table-column>
-                    <el-table-column
-                    prop="price"
-                    label="用途">
-                    </el-table-column>
-                </el-table>
-            </el-main>
+            <el-table
+                v-loading="isLoading"
+                :data="tableData"
+                stripe
+                style="width: 100%">
+                <el-table-column
+                prop="name"
+                label="姓名">
+                </el-table-column>
+                <el-table-column
+                style="text-align:left"
+                prop="mobile"
+                label="联系方式"
+                >
+                </el-table-column>
+                <el-table-column
+                prop="num"
+                label="人数">
+                </el-table-column>
+                <el-table-column
+                style=""
+                prop="info"
+                label="用途">
+                </el-table-column>
+            </el-table>
+        </el-main>
     </div>
   </div>
 </template>
@@ -43,10 +44,10 @@
 export default {
   name: "lookPitch",
   props: {
-    // PitchId: {
-    //   type: Number,
-    //   required: true
-    // }
+    activelyId: {
+      type: Number,
+      required: true
+    }
   },
   data() {
     return {
@@ -74,35 +75,12 @@ export default {
       this.$http
         .get(this.$conf.env.getAcitvelyThreeLifeList + this.activelyId)
         .then(res => {
-          this.isLoadinga = false;
-
-            this.oneName = res.data.title[0] ? res.data.title[0][1] : ''
-            this.twoName = res.data.title[1]? res.data.title[1][1] : ''
-            this.threeName = res.data.title[2] ? res.data.title[2][1] : ''
-          var userObj = {};
-          res.data.user.forEach((element, index) => {
-            userObj = {
-              img: element[0] ? element[0] : "",
-              name: element[1] ? element[1] : "",
-              one: element[2] ? element[2] : 0,
-              two: element[3] ? element[3] : 0,
-              three: element[4] ? element[4] : 0,
-            };
-            this.tableData.push(userObj);
-          });
-
-          this.totaldata = res.data.total ? res.data.total : [];
+          this.isLoading = false;
+          this.tableData = res.data
         })
         .catch(err => {
-          this.isLoadinga = false;
+          this.isLoading = false;
         });
-    },
-     getPitchList(){
-    this.$http.get(this.$conf.env.getPitchList + '2019-06-25' + '&store='+2).then( res =>{
-        console.log(res)
-    }).catch(err =>{
-        this.$message.error('网络错误');
-    })
     },
     setParentData(){
     //   this.$parent.activelyId = -1
@@ -110,7 +88,7 @@ export default {
     },
   },
   mounted() {
-    this.getPitchList();
+    this.getAcitvelyThreeLifeList();
   }
 };
 </script>
@@ -165,6 +143,15 @@ export default {
     /*主体*/
     .el-main {
     padding: 0 .31rem;
+    .el-table .cell{
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      padding: 0!important;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 5;
+      word-wrap: break-word;
+    }
       .view-box {
         width: 100%;
         height: 100%;

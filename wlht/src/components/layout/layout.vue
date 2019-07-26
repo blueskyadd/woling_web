@@ -16,8 +16,8 @@
             >
               <a href="javascript:void(0)">
                 <span>
-                  <img :src="item.image_normal" alt :class="{'active': item.link == $route.path}">
-                  <img :src="item.image_actively" alt :class="{'active': item.link != $route.path}">
+                  <img :src="item.image_normal" alt  v-show="item.link != $route.path">
+                  <img :src="item.image_actively" alt v-show="item.link == $route.path">
                 </span>
                 <p>{{item.name}}</p>
               </a>

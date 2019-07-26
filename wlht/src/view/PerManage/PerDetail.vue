@@ -64,7 +64,7 @@
         </label>
         <label>
           <span>微信账号</span>
-          <input placeholder="请填写微信账号" type="text">
+          <input placeholder="请填写微信账号" type="text" v-model="wechat">
         </label>
         <label class="perStatus">
           <span>员工状态</span>
@@ -125,8 +125,8 @@
           </el-upload>
         </label>
         <label class="class_introduction">
-          <span>课程介绍</span>
-          <textarea placeholder="填写课程介绍" v-model="classIntroduction"></textarea>
+          <span>教练介绍</span> 
+          <textarea placeholder="填写教练介绍" maxlength="254" v-model="classIntroduction"></textarea>
         </label>
       </form>
       <button class="tijiao" @click="submitProject">确定</button>
@@ -217,7 +217,8 @@ export default {
       BecomeTime: "",
       classIntroduction: "", //课程介绍
       classSex: "", //性别
-      isLoading: false
+      isLoading: false,
+      wechat:'',//微信账号
     };
   },
   methods: {
@@ -288,7 +289,7 @@ export default {
       params.append("mobile", this.getElements("formData")[1]); //工号
       params.append("sex", this.classSex); //性别
       params.append("shop", this.PithId); //所属门店 接口20
-      params.append("wechat", this.getElements("formData")[5]); //微信
+      params.append("wechat", this.wechat); //微信
       params.append("username", this.getElements("formData")[6]); //手机号
       params.append("groups", this.PositionId); //职位
       params.append('groups', this.PositionIdTwo);//职位二
@@ -297,7 +298,7 @@ export default {
       params.append("picture", this.classImgFile ? this.classImgFile : ""); //头像
       params.append("entry_date", this.getElements("formData")[11]); //入职日期
       params.append("term_date", this.getElements("formData")[12]); //离职日期
-      params.append("comment", this.classIntroduction); //简介
+      params.append("intro", this.classIntroduction); //简介
       params.append("state_employee", this.perStatusData); //状态(1, ‘在职’),(2,”兼职”),(0, ‘离职’)
       this.isLoading = true;
       this.perId == -1 ? this.addPer(params) : this.updataPer(params);
@@ -396,7 +397,7 @@ export default {
         this.setElements(res.data.mobile?res.data.mobile:'', 1); //工号
         this.classSex = res.data.sex ? res.data.sex : 0; //性别
         this.PithId = res.data.shop?res.data.shop:''; //所属门店 接口20
-        this.setElements(res.data.wechat?res.data.wechat:'', 5); //wechat
+        this.wechat = res.data.wechat?res.data.wechat:'' ; //wechat
         this.setElements(res.data.username?res.data.username:'', 6); //手机号
         this.PositionId = res.data.groups?res.data.groups[0].id:''; //职位
         this.PositionIdTwo = res.data.groups?res.data.groups[1].id:''; //职位
@@ -405,7 +406,7 @@ export default {
         this.classImg = res.data.picture?res.data.picture:'' ; //头像
         this.setElements(res.data.entry_date?res.data.entry_date:'', 11); //入职日期
         this.setElements(res.data.term_date?res.data.term_date:'', 12); //离职日期
-        this.classIntroduction = res.data.comment?res.data.comment:''; //简介
+        this.classIntroduction = res.data.intro?res.data.intro:''; //简介
         this.perStatusData = res.data.state_employee ? res.data.state_employee : 0;//员工状态
       }).catch(err =>{
         this.isLoading=false
@@ -498,7 +499,8 @@ export default {
         display: block;
         float: left;
         color: #464a53;
-        font-size: 70%;
+        font-size: 90%;
+        font-weight: 400;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -527,9 +529,14 @@ export default {
             width: 100%;
           }
         }
+        
       }
+      
       .pone_one > span {
         width: 6.4%;
+      }
+      .el-upload__tip{
+        margin-left: 6.4%;
       }
       .class_list {
         width: 100%;

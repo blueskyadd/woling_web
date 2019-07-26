@@ -87,7 +87,7 @@ export default {
         this.isMemberEdit = false
       },
       getVipList(number){
-        var url =  this.$conf.env.setVipData + '?p=' + number
+        var url =  this.$conf.env.setVipData + '?p=' + number +'&page_size='+this.perPage
         this.$http.get(number!=1 ? url :this.$conf.env.setVipData +'?page_size='+this.perPage).then( res =>{
           this.isLoading = false
           this.activelyNumber = res.data.count

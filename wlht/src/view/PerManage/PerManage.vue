@@ -1,8 +1,11 @@
 <template>
   <div class="wl_PerManage_list" v-if="isperManage == 1">
     <div class="Per_head_addIcon">
+      <span @click="goPerAssess">
+        <img src="../../assets/img/add.png" alt>考核
+      </span>
       <span @click="goPerDetail">
-        <img src="../../assets/img/add.png" alt>添加会员
+        <img src="../../assets/img/add.png" alt>添加
       </span>
     </div>
     <!--表格部分-->
@@ -75,16 +78,20 @@
       prev-text='<<'
       next-text=">>">
     </el-pagination>
+    <transition name="el-fade-in-linear">
+      <upAssess v-if="isupAssess"/>
+    </transition>
   </div>
-  <coach v-else-if="isperManage == 2"/>
+  <coach v-else-if="isperManage == 2" :perId='perId'/>
   <PerDetail v-else :perId='perId'/>
 </template>
 
 <script>
 import PerDetail from "./PerDetail"
 import Coach from './coach/coach.vue'
+import upAssess from './upAssess.vue'
     export default {
-      components:{PerDetail, Coach},
+      components:{PerDetail, Coach, upAssess},
         name: "PerManage",
       data() {
         return {
@@ -95,6 +102,7 @@ import Coach from './coach/coach.vue'
           isLoading: true,
           perId: -1,
           isperManage: 1,
+          isupAssess: false
         };
       },
       methods: {
@@ -126,6 +134,9 @@ import Coach from './coach/coach.vue'
           this.perId = -1
           this.isperManage=false
         },
+        goPerAssess(){
+          this.isupAssess = true
+        },
         showEdit(row) {
         row.flag = true;
         },
@@ -148,10 +159,11 @@ import Coach from './coach/coach.vue'
           }
         },
         openPDetail(data){
+          this.perId = data.id
           this.isperManage = 2
         },
         getUserList(number){
-          var  url = this.$conf.env.userList + '?p=' +number 
+          var  url = this.$conf.env.userList + '?p=' +number +'&page_size='+this.perPage
           this.$http.get(number!=1 ? url :this.$conf.env.userList +'?page_size='+this.perPage).then( res =>{
             this.isLoading = false
             if(!res.data.results)return
@@ -178,9 +190,11 @@ import Coach from './coach/coach.vue'
     height: calc(100% - 1.7rem);
     .Per_head_addIcon {
       float: right;
+      display: flex;
       margin-bottom: .07rem;
       span {
         box-shadow:0 .03rem .07rem 0 rgba(6,33,88,0.3);
+        margin-right: .2rem;
         line-height: 0.33rem;
         height: 0.33rem;
         background: #fff;

@@ -59,7 +59,7 @@ import AddPullRe from './AddPullRe.vue'
           perPage: 10,
           activelyNumber:1,
           isPullEdit: true,
-          isLoading: false,
+          isLoading: true,
           activelyId: -1,
         };
       },
@@ -90,6 +90,7 @@ import AddPullRe from './AddPullRe.vue'
         },
         changePage(pageNumber){
           this.currentPage = pageNumber
+          this.getActivelyList(pageNumber)
         },
         showEdit(row) {
           row.flag = true;
@@ -100,10 +101,12 @@ import AddPullRe from './AddPullRe.vue'
         gopullDetail(){
           this.isPullEdit = false
         },
-        getActivelyList(){
-          this.$http.get(this.$conf.env.setActivelyData).then( res =>{
+        getActivelyList(number){
+          this.$http.get(this.$conf.env.setActivelyData + '?p=' + number +'&page_size='+this.perPage).then( res =>{
             console.log(res)
+            this.isLoading = false
             if(res.status == '200'){
+              this.activelyNumber = res.data.count
                if (res.data.results && res.data.results.length > 0) {
                 res.data.results.forEach(element => {
                   element.flag = false;
@@ -116,12 +119,13 @@ import AddPullRe from './AddPullRe.vue'
               this.tableData = []
             }
           }).catch(err =>{
+            this.isLoading = false
             this.$message.error('网络错误');
           })
         }
       },
       mounted() {
-        this.getActivelyList()
+        this.getActivelyList(1)
       },
     }
 </script>

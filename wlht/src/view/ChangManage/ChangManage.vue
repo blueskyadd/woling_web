@@ -19,7 +19,7 @@
         <el-table-column prop="price" label="场地租金"></el-table-column>
         <el-table-column prop="all_price" label="包场租金"></el-table-column>
         <!-- <el-table-column prop="proNum" label="预约人数"></el-table-column> -->
-        <el-table-column prop="status" label="预定详情">
+        <el-table-column prop="status" label="预约详情">
           <template slot-scope="scope">
             <el-button type="text" @click="openYxDetail(scope.row)">
               <img src="../../assets/img/ck.png" alt srcset>
@@ -29,7 +29,7 @@
         <el-table-column prop="status" label="时间修改">
           <template slot-scope="scope">
             <el-button type="text" @click="openTimeDetail(scope.row)">
-              <img src="../../assets/img/ck.png" alt srcset>
+              <img src="../../assets/img/time.png" alt srcset>
             </el-button>
           </template>
         </el-table-column>
@@ -43,7 +43,7 @@
             >
               <img src="../../assets/img/bianji.png" alt srcset>
             </el-button>
-            <el-button type="text" size="small" v-show="scope.row.flag">
+            <el-button type="text" size="small" v-show="scope.row.flag"  @click="deleteClick(scope.row)">
               <img src="../../assets/img/del.png" alt srcset>
             </el-button>
           </template>
@@ -62,7 +62,6 @@
     <transition name="el-fade-in-linear">
       <el-dialog
         class="transition-box"
-        v-if="showTime"
         :visible.sync="showTime"
         center
         v-loading.fullscreen.lock="isLoadingTable"
@@ -73,7 +72,7 @@
             type="button"
             aria-label="Close"
             class="el-dialog__headerbtn"
-            @click.stop="showTime = false"
+            @click="handleClose"
           >
             <i class="el-dialog__close el-icon el-icon-close"></i>
           </button>
@@ -123,7 +122,7 @@
           <el-button type="primary" class="Pub_But" @click="SubmitTime()">确定</el-button>
         </div>
         <div class="Box_left">
-          <button type="button" aria-label="Close" class="el-dialog__headerbtn">
+          <button type="button" aria-label="Close" class="el-dialog__headerbtn" @click="handleClose">
             <i class="el-dialog__close el-icon el-icon-close"></i>
           </button>
           <Calendar
@@ -136,8 +135,8 @@
       </el-dialog>
     </transition>
   </div>
-  <site-manage v-else-if="isChangEdit == 2" :siteTime="siteTime" :changId="changId"></site-manage>
-
+  <SiteManage v-else-if="isChangEdit == 2" :siteTime="siteTime" :changId="changId"/>
+  
   <change-chang v-else :changId="changId"></change-chang>
 </template>
 <script>
@@ -189,6 +188,7 @@ export default {
       this.changId = row.id;
       this.isChangEdit = false;
     },
+    
     showEdit(row) {
       row.flag = true;
     },
@@ -221,6 +221,19 @@ export default {
           }
         })
         .catch(err => {
+          this.isLoading = false;
+          this.$message.error("网络错误");
+        });
+    },
+    deleteClick(row){
+       this.isLoading = true;
+       this.$http.delete(this.$conf.env.setPitchData + row.id).then(res => {
+          this.isLoading = false;
+           this.$message({ message: '删除成功', type: 'success'});
+          this.reload()
+        })
+        .catch(err => {
+          console.log(err)
           this.isLoading = false;
           this.$message.error("网络错误");
         });
@@ -394,6 +407,7 @@ export default {
       margin-right: -0.01rem;
       box-shadow: 0 0 0.02rem 0.03rem rgba(146, 139, 177, 1);
       padding-top: 0.4rem;
+      position: relative;
       .wh_content_item {
         color: #343434;
       }

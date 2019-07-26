@@ -1,7 +1,7 @@
 <template>
   <div class="appoIntemnt_Box"  v-loading.fullscreen.lock="isLoading">
     <div class="AppoInontemt">
-      <div class="Back" @click="goBack()"><img src="../../assets/img/add.png" alt>返回</div>
+      <div class="Back" @click="goBack()"><img src="../../assets/img/goback_img.png" alt>返回</div>
       <div class="Tab_Box" >
         <div class="Tab_Scroll" >
           <div class="Today_Box" v-for="item in listTimeData" :key="item.id">
@@ -10,7 +10,7 @@
               <div class="ProPeo_Box" v-for="value in item.pitch_time" :key="value.id">
                 <div class="Pro_Num">{{value.start_time}}-{{value.end_time}}</div>
                 <div class="Pro_Num">{{value.num}}人</div>
-                <div class="chaKan" @click="setPitchTime()"></div>
+                <div class="chaKan" @click="setPitchTime(item.id)"></div>
               </div>
             </div>
           </div>
@@ -18,7 +18,7 @@
       </div>
     </div>
     <transition name="el-fade-in-linear">
-      <look-pitch v-if="PitchTime"></look-pitch>
+      <look-pitch v-if="PitchTime" :activelyId='activelyId'></look-pitch>
     </transition>
   </div>
 </template>
@@ -38,7 +38,8 @@ export default {
     return {
       PitchTime: false,
       listTimeData: [],
-      isLoading:true
+      isLoading:true,
+      activelyId: -1
     };
   },
   methods: {
@@ -46,17 +47,17 @@ export default {
       this.$parent.isChangEdit = 1;
     },
     getPitchList() {
-      this.$http
-        .get(this.$conf.env.getPitchList + "")
-        .then(res => {
+      this.$http.get(this.$conf.env.getPitchList + "").then(res => {
           console.log(res);
         })
         .catch(err => {
           this.$message.error("网络错误");
         });
     },
-    setPitchTime() {
+    setPitchTime(ID) {
+      this.activelyId = ID
       this.PitchTime = true;
+
     },
     /**@name获取球场时间列表 */
     getptimeList() {
@@ -64,48 +65,10 @@ export default {
         .get(this.$conf.env.getptimeList + this.changId)
         .then(res => {
           console.log(res);
-          res.data = [
-            {
-              id: 5,
-              day: "2019-06-25",
-              pitch_time: [
-                {
-                  id: 5,
-                  start_time: "08:00",
-                  end_time: "10:00",
-                  num: 0
-                },
-                {
-                  id: 6,
-                  start_time: "10:00",
-                  end_time: "12:00",
-                  num: 0
-                }
-              ]
-            },
-            {
-              id: 6,
-              day: "2019-06-26",
-              pitch_time: [
-                {
-                  id: 7,
-                  start_time: "08:00",
-                  end_time: "10:00",
-                  num: 0
-                },
-                {
-                  id: 8,
-                  start_time: "10:00",
-                  end_time: "12:00",
-                  num: 0
-                }
-              ]
-            }
-          ];
-          if(!res.data){
+           this.isLoading = false
+          if(!res.data || res.data.length == 0){
              this.$message({ message: '暂无数据', type: 'warning'});
           }else{
-            this.isLoading = false
             this.listTimeData = res.data;
           }
         })

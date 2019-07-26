@@ -61,3 +61,12 @@
   -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
   background: RGBA(243, 243, 243, 1);
 }
+.el-input__inner{
+  height: .49rem;
+}
+input::placeholder{
+  color: #c0C4CC;
+}
+textarea::placeholder{
+  color: #c0C4CC;
+}

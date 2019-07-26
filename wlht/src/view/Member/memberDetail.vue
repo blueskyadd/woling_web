@@ -1,7 +1,7 @@
 <template>
     <div class="wl_memberDetail" v-loading.fullscreen.lock="isLoading">
-        <header @click="gomemberManage">
-            <span><img src="../../assets/img/goback.png" alt="">{{VipId == -1 ?'添加会员':'编辑会员'}}</span>
+        <header >
+            <span @click="gomemberManage"><img src="../../assets/img/goback.png" alt="">{{VipId == -1 ?'添加会员':'编辑会员'}}</span>
         </header>
         <div class="member_main">
             <form action="" method="post" id="formData">
@@ -446,7 +446,7 @@ export default {
           justify-content: space-between;
            .Form_Left{
              width:49%;
-             height: 70%;
+            //  height: 70%;
              /*background: red;*/
              table{
                width: 100%;
@@ -472,7 +472,7 @@ export default {
            }
           .Form_RIght{
             width: 49%;
-            height: 70%;
+            // height: 70%;
             /*background: blue;*/
             table{
               width: 100%;
@@ -485,7 +485,7 @@ export default {
                   .LR{
                     padding-left: .3rem;
                     display: block;
-                    width: 2rem;
+                    // width: 2rem;
                   }
                   .dandu{
                     width: 50%;
@@ -497,6 +497,7 @@ export default {
                   }
                   .el-date-editor.el-input, .el-date-editor.el-input__inner{
                     width: auto;
+                    height: .49rem;
                   }
                 }
               }
@@ -556,7 +557,12 @@ export default {
         }
       }
     }
-
+  .el-input__inner{
+    height: .49rem;
+  }
+  .el-textarea__inner{
+    height: .89rem;
+  }
 }
 .member_selete_list{
     margin-top: .56rem !important;

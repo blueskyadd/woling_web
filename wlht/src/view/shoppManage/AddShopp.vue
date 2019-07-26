@@ -15,7 +15,7 @@
           <tr>
             <td class="One">
               <label for="">商品名称</label>
-              <el-input v-model="ReName" placeholder="请输入商品名称"></el-input>
+              <el-input v-model="ReName" :maxlength='100'  placeholder="请输入商品名称"></el-input>
               <label for="">商品状态</label>
               <el-select v-model="projectStatus" placeholder="请选择" popper-class="shenqi">
                 <el-option
@@ -64,7 +64,7 @@
                 </el-upload>
               </div>
               <div class="Right">
-                <label for="">热点详情</label>
+                <label for="">商品图片</label>
                 <el-upload
                   action="string"
                   ref="upload"

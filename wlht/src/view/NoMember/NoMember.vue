@@ -61,9 +61,10 @@
           }
         },
         getCommonList(number){
-          var url = this.$conf.env.getCommonList + 'p=' + number
-          this.$http.get(number ? url :this.$conf.env.getCommonList).then( res =>{
+          var url = this.$conf.env.getCommonList + '?p=' + number +'&page_size='+this.perPage
+          this.$http.get(number ? url :this.$conf.env.getCommonList +'?page_size='+this.perPage).then( res =>{
             this.isLoading = false
+            this.activelyNumber = res.data.count
             this.tableData = res.data.results
           }).catch(err =>{
             this.isLoading = false

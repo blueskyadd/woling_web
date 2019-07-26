@@ -42,9 +42,6 @@
             <el-button type="text" size="small"  @click="goaddshopDetail(scope.row)" v-show="scope.row.flag">
               <img src="../../assets/img/bianji.png" alt srcset>
             </el-button>
-            <el-button type="text" size="small" v-show="scope.row.flag">
-              <img src="../../assets/img/del.png" alt srcset>
-            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -72,7 +69,7 @@ export default {
       tableData: [],
       ProjectId: -1,
       currentPage: 1,
-      perPage: 6,
+      perPage: 10,
       activelyNumber: 1,
       isLoading: true,
       isshopEdit: true
@@ -108,8 +105,8 @@ export default {
     },
     /**@获取商品列表 */
     getProjectDara(number){
-      var url = this.$conf.env.getProjectDara + "?p=" + number;
-      this.$http.get(number ? url : this.$conf.env.getProjectDara ).then( res =>{
+      var url = this.$conf.env.getProjectDara + "?p=" + number +'&page_size='+this.perPage;
+      this.$http.get(number ? url : this.$conf.env.getProjectDara +'?page_size='+this.perPage).then( res =>{
         console.log(res)
         this.isLoading = false;
         if(!res.data) return

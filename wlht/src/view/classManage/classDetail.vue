@@ -346,8 +346,8 @@ export default {
       params.append('course_type' , this.curriculumData)//课程类别 (1, “基础足球课”), (2, “进阶足球课”), (3, “成人足球课”), (4, “守门员课”)
       params.append('inventory' , this.getElements('formData')[3])//上课人数
       params.append('price' , this.getElements('formData')[4])//价格
-      // params.append('price' , this.getElements('formData')[4])//课时
-      params.append('course_num' , this.Miancoach)//主教练 18接口 传id
+      params.append('course_num' , this.getElements('formData')[5])//课时
+      params.append('coach' , this.Miancoach)//主教练 18接口 传id
       params.append('assistant_coach' , this.Vicecoach)//	副教练 18接口 传id
       params.append('start_time' ,this.classNewTime)//开始日期
       params.append('end_time' ,  this.classOldTime)//结束日期
@@ -466,9 +466,9 @@ export default {
         this.ageData = res.data.age_type?res.data.age_type:'';//	年龄段 (1,”5-6”),(2,”7-8”),(3,”8-10”),(4,”10-12”)
         this.curriculumData = res.data.course_type ?res.data.course_type :'';//课程类别 (1, “基础足球课”), (2, “进阶足球课”), (3, “成人足球课”), (4, “守门员课”)
         this.setElements(res.data.inventory?res.data.inventory:'', 3)//上课人数
-        this.setElements(res.data.price?res.data.price:'',4)//价格
-        // params.append('price' , this.getElements('formData')[4])//课时
-        this.Miancoach = res.data.course_num ? res.data.course_num : ''//主教练 18接口 传id
+        this.setElements(res.data.price?res.data.price:'',4)//价格  
+        this.setElements(res.data.course_num?res.data.course_num:'',5)//课时
+        this.Miancoach = res.data.coach ? res.data.coach : ''//主教练 18接口 传id
         this.Vicecoach = res.data.assistant_coach ? res.data.assistant_coach : ''//	副教练 18接口 传id
         this.classNewTime = res.data.start_time ? res.data.start_time : ''//开始日期
         this.classOldTime = res.data.end_time ? res.data.end_time : ''//结束日期
