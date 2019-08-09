@@ -119,7 +119,7 @@ import store from "../store/index.js"
                  loading.close()
               if(res.data.token){
                 sessionStorage.setItem('jp_token', res.data.token)
-                this.$router.push({name:"memberManagement"})
+                this.$router.replace({name:"memberManagement"})
               }
             }else{
                 loading.close()
@@ -263,6 +263,9 @@ import store from "../store/index.js"
     background: url("../assets/img/bj.png") no-repeat;
     background-size: cover;
     position: relative;
+    .el-input__suffix{
+      right: .1rem;
+    }
     .activea{
       /*transform: rotateY(90deg) !important;*/
       opacity: 0 !important;

@@ -122,6 +122,7 @@
                 将文件拖到此处，或
                 <em>点击上传</em>
               </div>
+              <div class="el-upload__tip" slot="tip">请上传188 X 286的图片，且不超过500kb</div>
             </el-upload>
           </label>
           <label class="pone_one" for>
@@ -140,10 +141,11 @@
                 将文件拖到此处，或
                 <em>点击上传</em>
               </div>
+              <div class="el-upload__tip" slot="tip">请上传宽度为160 X 160的图片，且不超过500kb</div>
             </el-upload>
           </label>
           <label for class="class_list">
-            <span>课程介绍</span>
+            <span>课程详情图</span>
             <el-upload
               action="string"
               ref="upload"
@@ -160,6 +162,7 @@
               class="photo"
             >
               <i class="el-icon-plus"></i>
+              <div class="el-upload__tip" style="margin-left: 6%;" slot="tip">请上传宽度为1114的图片，且不超过500kb</div>
             </el-upload>
 
             <el-dialog :visible.sync="dialogVisible">
@@ -321,7 +324,24 @@ export default {
     },
     /**@name图片删除 */
     handleRemovelist(file, fileList){
-        this.classListDetail = fileList
+      this.classListDetail = fileList;
+      if(file.id){
+            this.isLoading=true
+            this.deleteClassDetailImg(file.id)
+          }
+    },
+    deleteClassDetailImg(ID){
+      this.$http.delete(this.$conf.env.deleteProjectDetailImg + ID +'/').then( res =>{
+          this.isLoading = false;
+          if (res.status == "204") {
+            this.$message({ message: "删除成功", type: "success" });
+          }else{
+            this.$message({ message: '删除失败', type: 'warning'});
+          }
+        }).catch(err =>{
+          this.isLoading = false;
+          this.message.error('网络错误');
+        })
     },
     /**@文件超出个数限制 */
     onExceed() {
@@ -395,7 +415,17 @@ export default {
       }).catch(err =>{
         console.log(err)
         this.isLoading = false;
-        this.$message.error("网络错误");
+        console.log(err.request)
+        if(err.request.status == '400'){
+          if(err.request.data){
+            this.$message({message:err.request.data,  type: 'warning'});  
+          }else{
+            this.$message({message:err.request.responseText, type: 'warning'});  
+          }
+        }else{
+          this.$message.error("网络错误");
+        }
+        
       })
     },
     //数据校验
@@ -677,7 +707,6 @@ export default {
           width: 100%;
           .el-upload-list--picture-card,
           .el-upload-list__item-status-label {
-            top: -0.02rem;
             right: -0.6rem;
             width: 40%;
             height: 20%;

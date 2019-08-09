@@ -39,9 +39,9 @@
             </td>
             <td class="One">
               <label for="">价格</label>
-              <el-input v-model="orderDetail.goods_money" placeholder="请输入场地名称"></el-input>
+              <el-input v-model="orderDetail.goods_money" placeholder="请输入价格"></el-input>
               <label for="">折扣</label>
-              <el-input v-model="orderDetail.money" placeholder="请输入场地名称"></el-input>
+              <el-input v-model="orderDetail.money" placeholder="请输入折扣"></el-input>
 
             </td>
             <td class="Four">
@@ -80,8 +80,8 @@
       data(){
         return{
           orderDetail: {},
-          orderType:[{ id: 1, value: '课程订单' }, { id: 2, value: '课程手工订单' },{ id: 3, value: '试听订单' },{ id: 4, value: '球场预定' },{ id: 5, value: '球场包场' },{ id: 6, value: '商品订单' }],
-          orderStatus: [{name: '待支付', id: 0},{name: '已取消', id:  1},{name: '已支付', id:  2},{name: '已完成', id:  3}],
+          orderType:[{ id: 2, value: '课程手工订单' }],
+          orderStatus: [{name: '已取消', id:  1},{name: '已支付', id:  2},{name: '已完成', id:  3}],
           headerTitle: this.orderID  == -1 ? '添加订单' : '编辑订单',
           restaurants: [],
           isLoading: true
@@ -109,8 +109,8 @@
             } 
           }).catch(err =>{
             this.isLoading = false
-            if(res.request.status == '400'){
-              this.$message.error("此订单已创建");
+            if(err.request.status == '400'){
+              this.$message.error("此订单已不可修改");
             }else{
                this.$message.error("服务器错误");
             }

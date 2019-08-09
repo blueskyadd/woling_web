@@ -10,7 +10,11 @@
       <el-table :data="tableData" style="width: 100%" v-loading="isLoading"  @cell-mouse-enter="showEdit" @cell-mouse-leave="leaveEdit">
         <el-table-column prop="date" type='index' width="100%" :index="setIndex" label="序号"></el-table-column>
         <el-table-column prop="name" label="主推地点" ></el-table-column>
-        <el-table-column prop="start_time" label="热点时间"></el-table-column>
+        <el-table-column prop="start_time" label="热点时间">
+          <template slot-scope="scope">
+            {{scope.row.start_time.split('.')[2]}}.{{scope.row.start_time.split('.')[1]}}.{{scope.row.start_time.split('.')[0]}}
+          </template>
+        </el-table-column>
         <el-table-column
           prop="status"
           label="热点状态"

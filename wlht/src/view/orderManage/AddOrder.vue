@@ -68,9 +68,9 @@
             </td>
             <td class="One">
              <label for="">价格&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-              <el-input type="number" v-model="orderPrice" placeholder="请输入场地名称"></el-input>
+              <el-input type="number" v-model="orderPrice" placeholder="请输入价格"></el-input>
               <label for="">折扣&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-              <el-input type="number" v-model="orderDiscount" placeholder="请输入场地名称"></el-input>
+              <el-input type="number" v-model="orderDiscount" placeholder="请输入折扣"></el-input>
             </td>
             <td class="Four">
               <label for="">订单备注</label>
@@ -110,8 +110,8 @@
           phoneList:[],//手机号检索
           restaurants: [],
           studentNameData: [],
-          orderType:[{ id: 1, value: '课程订单' }, { id: 2, value: '课程手工订单' },{ id: 3, value: '试听订单' },{ id: 4, value: '球场预定' },{ id: 5, value: '球场包场' },{ id: 6, value: '商品订单' }],
-          orderStatus: [{name: '待支付', id: 0},{name: '已取消', id:  1},{name: '已支付', id:  2},{name: '已完成', id:  3}],
+          orderType:[{ id: 2, value: '课程手工订单' }],
+          orderStatus: [{name: '已取消', id:  1},{name: '已支付', id:  2},{name: '已完成', id:  3}],
           orderClassList: [],
           orderPhone: '',
           studentNameID: '',
@@ -135,7 +135,7 @@
           var params = {
             'user': this.studentNameID,
             'goods': this.orderClassID,
-            'money': this.orderPrice * this.orderDiscount,
+            'money': (this.orderPrice * this.orderDiscount).toFixed(2),
             'info': this.orderRemark,
           }
           this.$http.post(this.$conf.env.setOrderClass, params).then( res =>{
@@ -148,7 +148,13 @@
             } 
           }).catch(err =>{
              this.isLoading = false
-            this.$message.error("服务器错误");
+             if(err.request.status == '400'){
+               console.log(err.request.responseText)
+                this.$message.error(err.request.responseText);
+             }else{
+                this.$message.error("服务器错误");
+             }
+           
           })
         },
         //数据校验

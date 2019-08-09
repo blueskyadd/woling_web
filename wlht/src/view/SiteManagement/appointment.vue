@@ -47,7 +47,7 @@ export default {
       this.$parent.isChangEdit = 1;
     },
     getPitchList() {
-      this.$http.get(this.$conf.env.getPitchList + "").then(res => {
+      this.$http.get(this.$conf.env.getpitch_order + this.changId +'/').then(res => {
           console.log(res);
         })
         .catch(err => {

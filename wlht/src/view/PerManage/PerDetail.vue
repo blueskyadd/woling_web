@@ -7,7 +7,7 @@
     </header>
     <div class="per_main">
       <form action method="post" id="formData">
-        <label>
+        <label for="">
           <span>员工姓名</span>
           <input placeholder="请填写员工姓名" type="text">
         </label>
@@ -15,7 +15,7 @@
           <span>工号</span>
           <input placeholder="请填写工号" type="text">
         </label>
-        <label class="sex_list">
+        <label class="sex_list" for="">
           <span>性别</span>
           <el-select popper-class="per_selete_list" v-model="classSex" placeholder="请选择性别">
             <el-option
@@ -26,35 +26,35 @@
             ></el-option>
           </el-select>
         </label>
-        <label>
+        <label for="">
           <span>所属门店</span>
           <el-select popper-class="per_selete_list" v-model="PithId" placeholder="请选择门店">
             <el-option v-for="item in PithList" :key="item.id" :label="item.name" :value="item.id"></el-option>
           </el-select>
         </label>
-        <label>
+        <label for="">
           <span>职位1</span>
           <el-select popper-class="per_selete_list" v-model="PositionId" placeholder="请选择职位">
             <el-option
               v-for="item in classPosition"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >{{item.label}}</el-option>
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            >{{item.name}}</el-option>
           </el-select>
         </label>
-        <label>
+        <label for="">
           <span>职位2</span>
           <el-select popper-class="per_selete_list" v-model="PositionIdTwo" placeholder="请选择职位">
             <el-option
               v-for="item in classPosition"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >{{item.label}}</el-option>
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            >{{item.name}}</el-option>
           </el-select>
         </label>
-        <label>
+        <label for="">
           <span>联系电话</span>
           <input placeholder="请填写联系电话" type="tel">
         </label>
@@ -66,7 +66,7 @@
           <span>微信账号</span>
           <input placeholder="请填写微信账号" type="text" v-model="wechat">
         </label>
-        <label class="perStatus">
+        <label class="perStatus" for="">
           <span>员工状态</span>
           <el-select popper-class="per_selete_list" v-model="perStatusData" placeholder="请选择状态">
             <el-option
@@ -77,7 +77,7 @@
             ></el-option>
           </el-select>
         </label>
-        <label>
+        <label for="">
           <span>转正日期</span>
           <el-date-picker
             popper-class="per_selete_list_time"
@@ -121,15 +121,16 @@
               将文件拖到此处，或
               <em>点击上传</em>
             </div>
-            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+            <div class="el-upload__tip" slot="tip">请上传90 X 90的图片，且不超过500kb</div>
           </el-upload>
         </label>
         <label class="class_introduction">
           <span>教练介绍</span> 
           <textarea placeholder="填写教练介绍" maxlength="254" v-model="classIntroduction"></textarea>
         </label>
+        
       </form>
-      <button class="tijiao" @click="submitProject">确定</button>
+      <span class="tijiao" @click="submitProject">确定</span>
     </div>
   </div>
 </template>
@@ -158,36 +159,7 @@ export default {
           label: "女"
         }
       ],
-      classPosition: [
-        {
-          label: "教练员",
-          value: 1
-        },
-        {
-          label: "总教练",
-          value: 2
-        },
-        {
-          label: "教务老师",
-          value: 3
-        },
-        {
-          label: "文员",
-          value: 4
-        },
-        {
-          label: "新媒体运营",
-          value: 5
-        },
-        {
-          label: "总经理",
-          value: 6
-        },
-        {
-          label: "课程顾问",
-          value: 7
-        }
-      ], //职位列表
+      classPosition: [], //职位列表
       PositionId: "", //职位1ID
       PositionIdTwo: '',//职位二ID
       value: "",
@@ -282,6 +254,8 @@ export default {
     },
     //表单提交
     submitProject() {
+      console.log('this.perStatusData', this.perStatusData)
+      // return false;
       if (!this.VerificationData()) return;
       console.log(this.getElements("formData"));
       var params = new FormData();
@@ -311,7 +285,7 @@ export default {
           this.isLoading = false;
           if (res.status == "201") {
             this.$message({ message: "添加成功", type: "success" });
-            this.reload();
+            // this.reload();
           } else {
             this.$message({ message: "添加失败", type: "warning" });
           }
@@ -387,6 +361,15 @@ export default {
       var tagElements = form.getElementsByTagName('input');
       tagElements[index].value = data
     },
+    /**职位列表 */
+    getGropList(){
+      this.$http.get(this.$conf.env.getGropList).then( res =>{
+        this.classPosition = res.data
+      }).catch(err =>{
+        console.log(err)
+        this.$message.error("网络错误");
+      })
+    },
     close() {
       this.$parent.isperManage = 1;
     },
@@ -399,8 +382,8 @@ export default {
         this.PithId = res.data.shop?res.data.shop:''; //所属门店 接口20
         this.wechat = res.data.wechat?res.data.wechat:'' ; //wechat
         this.setElements(res.data.username?res.data.username:'', 6); //手机号
-        this.PositionId = res.data.groups?res.data.groups[0].id:''; //职位
-        this.PositionIdTwo = res.data.groups?res.data.groups[1].id:''; //职位
+        this.PositionId = res.data.groups[0]?res.data.groups[0].id:''; //职位
+        this.PositionIdTwo = res.data.groups[1]?res.data.groups[1].id:''; //职位
         this.setElements(res.data.email?res.data.email:'', 7); //	邮箱
         this.setElements(res.data.positive_dates?res.data.positive_dates:'', 10); //转正日期
         this.classImg = res.data.picture?res.data.picture:'' ; //头像
@@ -415,7 +398,8 @@ export default {
     }
   },
   mounted() {
-    this.getPitchList();
+    this.getPitchList();//场地列表
+    this.getGropList();//职位列表
     if (this.perId != -1) {
       this.isLoading = true;
       this.getPerDetail();
@@ -440,12 +424,14 @@ export default {
   }
   .per_main {
     padding: 0.39rem 0 0;
+     overflow-y: scroll;
     height: calc(100% - 3.2%);
     form {
       overflow: hidden;
       width: calc(100% - 2.32rem);
       display: flex;
       flex-wrap: wrap;
+     
       input {
         border: 1px solid #dddfe1;
         height: 0.49rem;
@@ -542,7 +528,6 @@ export default {
         width: 100%;
         .el-upload-list--picture-card,
         .el-upload-list__item-status-label {
-          top: -0.02rem;
           right: -0.6rem;
           width: 40%;
           height: 20%;
@@ -571,23 +556,28 @@ export default {
           width: 100%;
         }
       }
+      
     }
+    
     .tijiao {
-      display: block;
-      width: 1.71rem;
-      height: 0.39rem;
-      line-height: 0.39rem;
-      background: rgba(127, 99, 244, 1);
-      border-radius: 3px;
-      left: 4.86rem;
-      color: #fff;
-      font-size: 0.18rem;
-      margin: 0 auto;
-      cursor: pointer;
-      position: absolute;
-      bottom: 10%;
-      left: 50%;
-    }
+        display: block;
+        width: 1.71rem;
+        height: 0.39rem;
+        line-height: 0.39rem;
+        background: rgba(127, 99, 244, 1);
+        border-radius: 3px;
+        left: 4.86rem;
+        color: #fff;
+        font-size: 0.18rem;
+        margin: 0 auto;
+        cursor: pointer;
+        // position: absolute;
+        bottom: 10%;
+        left: 50%;
+        margin-top: 0.7rem;
+        text-align: center;
+        margin-bottom: .3rem;
+      }
     .activelyOne-right {
       position: absolute;
       top: 0.52rem;
@@ -617,6 +607,9 @@ export default {
       }
     }
   }
+  .per_main::-webkit-scrollbar{
+      display: none;
+    }
 }
 .per_selete_list {
   margin-top: 0.56rem !important;

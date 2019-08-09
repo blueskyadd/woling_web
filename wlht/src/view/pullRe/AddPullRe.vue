@@ -22,7 +22,6 @@
                   v-for="item in changStatus"
                   :key="item.value"
                   :label="item.label"
-
                   :value="item.value">
                 </el-option>
               </el-select>
@@ -53,6 +52,7 @@
                   将文件拖到此处，或
                   <em>点击上传</em>
                 </div>
+                <div class="el-upload__tip" style="margin:0" slot="tip">请上传454 X 124的图片，且不超过500kb</div>
               </el-upload>
             </td>
             <td class="Four">
@@ -73,6 +73,7 @@
                 class="photo"
               >
                 <i class="el-icon-plus"></i>
+                <div class="el-upload__tip" style="margin:0" slot="tip">请上传宽度为1298的图片，且不超过500kb</div>
               </el-upload>
 
               <el-dialog :visible.sync="dialogVisible">

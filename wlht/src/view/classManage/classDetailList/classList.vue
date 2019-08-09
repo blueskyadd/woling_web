@@ -1,6 +1,7 @@
 <template>
     <div class="wl_ClassMange_list" v-if="isClassList">
          <img @click="$parent.isclassEdit = 1" src="../../../assets/img/goback.png" alt="" />
+         <span @click="$parent.isclassEdit = 1" style="font-size: .2rem;color: #464A53;">返回</span>
     <div class="Class_head_addIcon_class_list">
         
       <span >
@@ -11,7 +12,6 @@
               :http-request="setUpdataFile"
               :file-list="classListDetail"
               :multiple="true"
-              :limit="1"
               accept='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel'
               class="photo"
             >
@@ -31,8 +31,16 @@
       >
         <el-table-column prop="date" type="index" width="100%" :index="setIndex" label="序号"></el-table-column>
         <el-table-column prop="course" label="课程名称"></el-table-column>
-        <el-table-column prop="start_time" label="上课日期"></el-table-column>
-        <el-table-column prop="end_time" label="上课时间"></el-table-column>
+        <el-table-column prop="start_time" label="上课日期">
+          <template slot-scope="scope">
+            {{scope.row.start_time.split(' ')[0]}}
+           </template>
+        </el-table-column>
+        <el-table-column prop="end_time" label="上课时间">
+          <template slot-scope="scope">
+            {{scope.row.start_time.split(' ')[1]}}&nbsp;-&nbsp;{{scope.row.end_time.split(' ')[1]}}
+          </template>
+        </el-table-column>
         <el-table-column prop="ClassTab" label="学员管理">
           <template slot-scope="scope">
             <el-button type="text"  size="small"  @click="goClassDetail(scope.row)">
@@ -42,10 +50,10 @@
         </el-table-column>
         <el-table-column prop="operation" label="操作">
           <template slot-scope="scope">
-            <el-button type="text" size="small"  @click="handleClick(scope.row)" v-show="scope.row.flag">
+            <el-button type="text" size="small"  @click="changeStatus(scope.row)" v-if=" scope.row.status == 1">
               正常
             </el-button>
-            <el-button type="text" size="small" v-show="scope.row.flag">
+            <el-button type="text" size="small"  @click="changeStatus(scope.row)"  v-if="scope.row.status == 0">
               取消
             </el-button>
           </template>
@@ -120,7 +128,6 @@ data() {
       }
     },
     getCourse_time(number){
-       
         this.$http.get(this.$conf.env.getCourse_time + this.classId + '&p=' + number + '&page_size=' + this.perPage).then( res =>{
             this.isLoading = false;
             if(res.status == '200'){
@@ -149,7 +156,7 @@ data() {
         }).catch(err =>{
              this.isLoading = false;
              if(err.request.status == '400'){
-                 this.$message.error(err.request.data[0]);
+                 this.$message.error(err.request.responseText.split("'")[1]);
              }else{
                  this.$message.error('网络错误');
              }
@@ -159,6 +166,18 @@ data() {
         console.log(data)
         this.classStudentId = data.id
         this.isClassList = false
+    },
+    changeStatus(data){
+      this.$http.put(this.$conf.env.changeStatus + data.id + '/', {'status': data.status == 0 ? 1 : 0 }).then( res =>{
+        this.$message({  message: '修改成功', type: 'success'});
+            this.getCourse_time(1)
+      }).catch(err =>{
+        if(err.request.status == '400'){
+          this.$message.error('该课程已不可修改');
+        }else{
+          this.$message.error('网络错误');
+        }
+      })
     }
   },
   mounted() {
@@ -168,7 +187,7 @@ data() {
 </script>
 <style lang="scss">
 .Class_head_addIcon_class_list{
-        float: right;
+    float: right;
     margin-bottom: 0.07rem;
     span{
         display: block;

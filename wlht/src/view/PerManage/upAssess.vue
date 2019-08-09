@@ -11,24 +11,23 @@
         </span>
       </div>
       <el-main>
-          <label>
+          <label for="">
             <span>主题</span>
             <input placeholder="请填写主题" type="text" v-model="classtheme">
           </label>
-          <label class="classTime">
+          <label class="classTime" for="">
             <span>选择考核日期</span>
               <el-date-picker
                 value-format="yyyy-MM-dd"
                  :picker-options="expireTimeOption"
-                class="birtody"
                 v-model="statusTime"
                 type="date"
                 placeholder="选择日期">
                 </el-date-picker>
           </label>
-          <label>
+          <label for="">
           <span>考核门店</span>
-          <el-select popper-class="per_selete_list" v-model="PithId" placeholder="请选择门店">
+          <el-select v-model="PithId" placeholder="请选择门店">
             <el-option v-for="item in PithList" :key="item.id" :label="item.name" :value="item.id"></el-option>
           </el-select>
         </label>
@@ -212,5 +211,8 @@ export default {
         }
     }
   }
+}
+.per_selete_list{
+  margin: 0;
 }
 </style>

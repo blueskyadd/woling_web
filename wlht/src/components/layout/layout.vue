@@ -39,7 +39,7 @@
             <div class="image-box">
               <img src="../../assets/img/header_img.jpg" alt>
             </div>
-            <span>名字</span>
+            <span>管理员</span>
           </div>
           <transition name="el-zoom-in-top">
             <div  v-show="showOut" class="header_out transition-box">

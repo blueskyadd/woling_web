@@ -53,7 +53,6 @@
 
                   <el-input
                     type="textarea"
-                    autosize
                     :autosize="{ minRows: 12,maxRows:17}"
                     placeholder="请输入内容"
                     v-model="changJan">
@@ -74,6 +73,7 @@
                       将文件拖到此处，或
                       <em>点击上传</em>
                     </div>
+                    <div class="el-upload__tip" style="margin-left:0" slot="tip">请上传294 X 178的图片，且不超过500kb</div>
                   </el-upload>
                 </td>
                 <td style="height: .4rem;position: relative" class="bcBox">

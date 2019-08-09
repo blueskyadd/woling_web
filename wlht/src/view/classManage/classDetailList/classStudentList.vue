@@ -2,6 +2,7 @@
     <div class="wl_ClassMange_list scrollPage" v-if="isClassList" style="overflow:hidden">
     <div class="Class_head_addIcon_classStudent_list">
         <span @click="$parent.isClassList = true"><img src="../../../assets/img/goback.png" alt="" /></span>
+        <span @click="$parent.isClassList = true" style="font-size: .2rem;color: #464A53;">返回</span>
     </div>
     <!--表格部分-->
     <div class="member_table_list">

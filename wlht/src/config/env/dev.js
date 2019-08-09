@@ -1,7 +1,10 @@
 // 开发环境配置
-const winchaingroupApi = "http://47.103.94.61:8080/";
+// const winchaingroupApi = "http://vvv.volley2018.club/";
+const winchaingroupApi = "https://www.volley2019.club/";
+//
+
 // const winchaingroupApi = "http://94.191.15.122/";
-// const winchaingroupApi = "http://10.102.100.23:8080/";
+// const winchaingroupApi = "http://10.102.100.34:8080/";
 
 
 
@@ -24,13 +27,15 @@ module.exports = {
     getCourse_time: winchaingroupApi + 'good/course_time/?course=',//课程课表 
     setUpdataFile: winchaingroupApi + 'good/up/',//课程时间上传  todo
     getCourse_student: winchaingroupApi + 'good/course_student/?lesson=',//课表学生
+    changeStatus: winchaingroupApi + 'good/course_time/',//课程课表修改
 
     //场地
     setPitchData: winchaingroupApi + 'good/pitch/',//场地
     createdPitchTime: winchaingroupApi + 'good/pitchtime/',//球场时间创建
-    getPitchList: winchaingroupApi + 'good/pitchtime/?day',//球场时间查看
+    getPitchList: winchaingroupApi + 'good/pitchtime/?day=',//球场时间查看
     getptimeList: winchaingroupApi + 'good/ptime/?store=',//球场时间列表
     getAcitvelyThreeLifeList: winchaingroupApi + 'order/detail/?time=',//预定详情
+    getpitch_order: winchaingroupApi + 'order/pitch_order/',//  球场订单详情
 
     //热点
     setActivelyData: winchaingroupApi + 'good/activity/',//热点
@@ -41,6 +46,7 @@ module.exports = {
     getAssessList: winchaingroupApi + 'assess/assess/?user=',//考核列表
     upAssess: winchaingroupApi + 'assess/assess/',//发起考核
     getcoachassess: winchaingroupApi + 'assess/coachassess/?user=',//考核评分列表
+    getGropList: winchaingroupApi + 'user/group/',//4 权限组列表
 
     //商品
     getProjectDara: winchaingroupApi +'good/good/',//商品

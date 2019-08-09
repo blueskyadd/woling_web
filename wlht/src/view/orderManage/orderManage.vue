@@ -41,7 +41,7 @@
         <el-table-column
           prop="pay_status"
           label="订单状态"
-          :filters="[{ text: '已完成', value: '已完成' }, { text: '已取消', value: '已取消' }, { text: '已支付', value: '已支付' }]"
+          :filters="[{ text: '已完成', value: '已完成' }, { text: '已取消', value: '已取消' }, { text: '已支付', value: '已支付' },{ text: '待支付', value: '待支付' }]"
           :filter-method="filterOrder"
           :filter-multiple="false"
           filter-placement="bottom-end"

@@ -2,11 +2,11 @@
   <div class="Shopp_BOx" v-loading.fullscreen.lock="isLoading">
     <section class="Shopping">
       <div class="header_Tit">
-        <div class="Title" @click="goshopManage">
-          <span>
+        <div class="Title" >
+          <span @click="goshopManage">
             <img src="../../assets/img/goback.png" alt="">
           </span>
-          <span>{{ProjectId == -1 ? '添加': '编辑'}}商品</span>
+          <span @click="goshopManage">{{ProjectId == -1 ? '添加': '编辑'}}商品</span>
         </div>
       </div>
       <div class="NewWords">
@@ -61,6 +61,7 @@
                     将文件拖到此处，或
                     <em>点击上传</em>
                   </div>
+                  <div class="el-upload__tip" style="margin:0" slot="tip">请上传188 X 264的图片，且不超过500kb</div>
                 </el-upload>
               </div>
               <div class="Right">
@@ -81,6 +82,7 @@
                   class="photo"
                 >
                   <i class="el-icon-plus"></i>
+                  <div class="el-upload__tip" style="margin:0" slot="tip">请上传144 X 256的图片，且不超过500kb</div>
                 </el-upload>
 
                 <el-dialog :visible.sync="dialogVisible">
